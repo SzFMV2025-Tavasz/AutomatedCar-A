@@ -13,7 +13,7 @@
         xmlns:visualization="clr-namespace:AutomatedCar.Visualization;assembly=AutomatedCar"
         xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
         >
-    <md:MarkdownScrollViewer>
+  <md:MarkdownScrollViewer xml:space="preserve">
         # Controls
 
         * F1: this help

@@ -16,11 +16,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 8.0.x
     - name: Clean
       run: dotnet clean && dotnet nuget locals all --clear
     - name: Install dependencies
@@ -29,9 +29,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
-    - name: Codecov report
+    - name: Upload coverage reports to Codecov
       if: success()
-      run: |
-        curl -s https://codecov.io/bash > codecov
-        chmod +x codecov
-        ./codecov -t ${{ secrets.CODECOV_TOKEN }}
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
