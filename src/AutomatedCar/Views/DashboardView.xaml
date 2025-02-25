@@ -28,9 +28,9 @@
                         <StackPanel>
                             <TextBlock Text="F1: Help"/>
                             <Grid ColumnDefinitions="2*,2*" RowDefinitions="50,15">
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Revolution}" FontSize="40" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Car.Revolution}" FontSize="40" TextAlignment="Center"/>
                                 <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Center">rpm</TextBlock>
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Velocity}" FontSize="40" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Car.Velocity}" FontSize="40" TextAlignment="Center"/>
                                 <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">km/h</TextBlock>
                             </Grid>
                             <Separator Height="15"></Separator>
@@ -61,9 +61,9 @@
                                 <TextBlock Grid.Row="3" Grid.Column="0">Rotation:</TextBlock>
                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Rotation}"/>
                                 <TextBlock Grid.Row="4" Grid.Column="0">Distance X:</TextBlock>
-                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding VirtualFunctionBus.DummyPacket.DistanceX}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceX}"/>
                                 <TextBlock Grid.Row="5" Grid.Column="0">Distance Y:</TextBlock>
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding VirtualFunctionBus.DummyPacket.DistanceY}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceY}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>

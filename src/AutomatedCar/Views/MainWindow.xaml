@@ -18,9 +18,9 @@
             <ColumnDefinition Width="320"/>
         </Grid.ColumnDefinitions>
         <views:CourseDisplayView Name="courseDisplay" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
-            Width="{Binding ElementName=panel, Path=ActualWidth}"
-            Height="{Binding ElementName=panel, Path=ActualHeight}" />
-        <views:DashboardView Grid.Column="1" HorizontalAlignment="Right" Height="{Binding ElementName=panel, Path=ActualHeight}"/>
+            Width="{Binding ElementName=panel, Path=Bounds.Width}"
+            Height="{Binding ElementName=panel, Path=Bounds.Height}" />
+        <views:DashboardView Grid.Column="1" HorizontalAlignment="Right" Height="{Binding ElementName=panel, Path=Bounds.Height}"/>
     </Grid>
 
 </Window>
