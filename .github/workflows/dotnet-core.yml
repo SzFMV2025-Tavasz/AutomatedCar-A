@@ -1,0 +1,37 @@
+name: .NET Ubuntu
+
+on:
+  push:
+    branches: 
+        - master
+        - develop
+  pull_request:
+    branches: 
+        - master
+        - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Clean
+      run: dotnet clean && dotnet nuget locals all --clear
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
+    - name: Codecov report
+      if: success()
+      run: |
+        curl -s https://codecov.io/bash > codecov
+        chmod +x codecov
+        ./codecov -t ${{ secrets.CODECOV_TOKEN }}

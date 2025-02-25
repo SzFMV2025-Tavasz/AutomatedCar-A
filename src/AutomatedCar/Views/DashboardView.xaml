@@ -1,0 +1,74 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodels="clr-namespace:AutomatedCar.ViewModels;assembly=AutomatedCar"
+             Width="320" Height="720"
+             x:Class="AutomatedCar.Views.DashboardView"
+             DataContext="{Binding Dashboard}"
+             xmlns:visualization="clr-namespace:AutomatedCar.Visualization;assembly=AutomatedCar"
+             >
+
+    <UserControl.Styles>
+        <Style Selector="ContentControl#Dashboard">
+            <Setter Property="Background" Value="#424242"/>
+            <Setter Property="Foreground" Value="#EEEEEE"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style Selector="ContentControl#Dashboard TextBlock">
+            <Setter Property="Foreground" Value="#EEEEEE"/>
+        </Style>
+    </UserControl.Styles>
+
+    <DockPanel>
+        <Border Padding="2 0 0 0" >
+            <ContentControl Name="Dashboard" Content="{Binding ControlledCar, Mode=OneWay}" >
+                <ContentControl.ContentTemplate>
+                    <DataTemplate DataType="{x:Type viewmodels:CarViewModel}">
+                        <StackPanel>
+                            <TextBlock Text="F1: Help"/>
+                            <Grid ColumnDefinitions="2*,2*" RowDefinitions="50,15">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Revolution}" FontSize="40" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Center">rpm</TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Velocity}" FontSize="40" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center">km/h</TextBlock>
+                            </Grid>
+                            <Separator Height="15"></Separator>
+                            <Grid ColumnDefinitions="2*,6*,2*" RowDefinitions="30,15">
+                                <TextBlock Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Text="L" FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Text="R" FontSize="20" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="N" FontSize="20" TextAlignment="Center"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="Gear" TextAlignment="Center"/>
+                            </Grid>
+                            <Separator Height="15"></Separator>
+                            <TextBlock Text="Throttle"/>
+                            <ProgressBar Value="50"></ProgressBar>
+                            <TextBlock Text="Brake"/>
+                            <ProgressBar Value="50"></ProgressBar>
+                            <Separator Height="12"></Separator>
+                            <Image
+                                Width="90" Height="90"
+                                Source="resm:AutomatedCar.Assets.steering-wheel.png?assembly=AutomatedCar"
+                                RenderTransformOrigin="{Binding RotationPoint, Converter={x:Static visualization:RenderTransformOriginTransformer.Instance}}">
+                            </Image>
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                                <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0">Y:</TextBlock>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Y}"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0">Filename:</TextBlock>
+                                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Filename}"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0">Rotation:</TextBlock>
+                                <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Rotation}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0">Distance X:</TextBlock>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding VirtualFunctionBus.DummyPacket.DistanceX}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="0">Distance Y:</TextBlock>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding VirtualFunctionBus.DummyPacket.DistanceY}"/>
+                            </Grid>
+                        </StackPanel>
+                    </DataTemplate>
+                </ContentControl.ContentTemplate>
+            </ContentControl>
+        </Border>
+    </DockPanel>
+</UserControl>

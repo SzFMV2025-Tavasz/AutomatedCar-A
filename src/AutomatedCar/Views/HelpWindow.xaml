@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AutomatedCar.ViewModels;assembly=AutomatedCar"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="720"
+        x:Class="AutomatedCar.Views.HelpWindow"
+        Icon="/Assets/car-icon.png"
+        Title="Help"
+        Width="640" Height="720"
+        xmlns:views="clr-namespace:AutomatedCar.Views;assembly=AutomatedCar"
+        xmlns:local="clr-namespace:AutomatedCar;assembly=AutomatedCar"
+        xmlns:visualization="clr-namespace:AutomatedCar.Visualization;assembly=AutomatedCar"
+        xmlns:md="clr-namespace:Markdown.Avalonia;assembly=Markdown.Avalonia"
+        >
+    <md:MarkdownScrollViewer>
+        # Controls
+
+        * F1: this help
+        * Up: push throttle down
+        * Down: brake
+        * Left: turn steering wheel left
+        * Right: turn steering wheel right
+        * Q: step gear forward on P--R--N--D sequence
+        * A: step gear backward on P--R--N--D sequence
+
+        * F5: Next controlled car
+        * F6: Previous controlled car
+
+        * L: turn on LKA
+        * C: turn on ACC
+        * T: set target distance cyclicly (0.8/1.0/1.2/1.4)
+        * \+: increase target speed by 10 (km/h)
+        * \-: decrease target speed by 10 (km/h)
+
+        * 1: Turn on Dispaly Debug mode
+            * WorldObject polygons are displayes
+        * 2: Display the field of view of the camera sensor
+        * 3: Display the field of view of the radar sensor
+        * 4: Display the field of view of the ultrasonic sensor
+    </md:MarkdownScrollViewer>
+
+
+</Window>

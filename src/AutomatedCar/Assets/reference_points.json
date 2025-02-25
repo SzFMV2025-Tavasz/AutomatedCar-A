@@ -1,0 +1,87 @@
+[
+  {
+    "type": "road_2lane_rotary",
+    "x": 0,
+    "y": 875
+  },
+  {
+    "type": "road_2lane_crossroad_1",
+    "x": 0,
+    "y": 875
+  },
+  {
+    "type": "road_2lane_crossroad_2",
+    "x": 0,
+    "y": 875
+  },
+  {
+    "type": "road_2lane_tjunctionleft",
+    "x": 875,
+    "y": 0
+  },
+  {
+    "type": "road_2lane_90left",
+    "x": 175,
+    "y": 525
+  },
+  {
+    "type": "road_2lane_90right",
+    "x": 349,
+    "y": 525
+  },
+  {
+    "type": "road_2lane_45left",
+    "x": 51,
+    "y": 371
+  },
+  {
+    "type": "road_2lane_45right",
+    "x": 351,
+    "y": 371
+  },
+  {
+    "type": "road_2lane_6left",
+    "x": 17,
+    "y": 367
+  },
+  {
+    "type": "road_2lane_6right",
+    "x": 350,
+    "y": 367
+  },
+  {
+    "type": "car_1_white",
+    "x": 54,
+    "y": 120
+  },
+  {
+    "type": "car_1_red",
+    "x": 54,
+    "y": 120
+  },
+  {
+    "type": "car_1_blue",
+    "x": 54,
+    "y": 120
+  },
+  {
+    "type": "car_2_white",
+    "x": 51,
+    "y": 104
+  },
+  {
+    "type": "car_2_red",
+    "x": 51,
+    "y": 104
+  },
+  {
+    "type": "car_2_blue",
+    "x": 51,
+    "y": 104
+  },
+  {
+    "type": "car_3_black",
+    "x": 60,
+    "y": 145
+  }
+]

@@ -1,0 +1,94 @@
+<UserControl xmlns="https://github.com/avaloniaui" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             x:Class="AutomatedCar.Views.CourseDisplayView" Width="960" Height="720"
+             xmlns:viewmodels="clr-namespace:AutomatedCar.ViewModels;assembly=AutomatedCar" 
+             xmlns:local="clr-namespace:AutomatedCar;assembly=AutomatedCar" 
+             xmlns:visualization="clr-namespace:AutomatedCar.Visualization;assembly=AutomatedCar" 
+             DataContext="{Binding CourseDisplay}">
+
+    <UserControl.Styles>
+        <Style Selector="ItemsControl#CourseDisplay">
+            <Setter Property="Background" Value="#97D1A2" />
+        </Style>
+        <Style Selector="ItemsControl#CourseDisplay > ContentPresenter">
+            <Setter Property="Canvas.Left" Value="{Binding X, Mode=OneWay}" />
+            <Setter Property="Canvas.Top" Value="{Binding Y, Mode=OneWay}" />
+            <Setter Property="ZIndex" Value="{Binding ZIndex, Mode=OneWay}" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Offset="{Binding Offset, Mode=OneWay}" >
+        <ItemsControl Name="CourseDisplay" Items="{Binding WorldObjects, Mode=OneWay}" Width="{Binding Width, Mode=OneWay}" Height="{Binding Height, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+
+            <ItemsControl.DataTemplates>
+                <DataTemplate DataType="{x:Type viewmodels:WorldObjectViewModel}">
+                    <Canvas>
+                        <!-- use this when the polygons are not rotated in the model and both the image and the polygon should be rotated -->
+                        <Canvas RenderTransformOrigin="{Binding RotationPoint, Converter={x:Static visualization:RenderTransformOriginTransformer.Instance}}">
+                            <Canvas.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding Rotation}" />
+                                    <TranslateTransform X="{Binding RotationPoint.X, Converter={x:Static visualization:Inverter.Instance}}" Y="{Binding RotationPoint.Y, Converter={x:Static visualization:Inverter.Instance}}" />
+                                </TransformGroup>
+                            </Canvas.RenderTransform>
+                            <Image Width="{Binding Filename, Converter={x:Static visualization:WorldObjectWidthTransformer.Instance}}" Height="{Binding Filename, Converter={x:Static visualization:WorldObjectHeightTransformer.Instance}}" Source="{Binding Filename, Converter={x:Static visualization:WorldObjectTransformer.Instance}}" RenderTransformOrigin="{Binding RotationPoint, Converter={x:Static visualization:RenderTransformOriginTransformer.Instance}}"></Image>
+                          
+                          <ItemsControl Items="{Binding RawGeometries, Mode=OneWay}" Tag="{Binding . }" Width="{Binding Filename, Converter={x:Static visualization:WorldObjectWidthTransformer.Instance}}" Height="{Binding Filename, Converter={x:Static visualization:WorldObjectHeightTransformer.Instance}}" IsVisible="{Binding Path=DataContext.DebugStatus.Enabled, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Polyline Stroke="#007ACB" StrokeThickness="3" Points="{Binding Points}" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                          
+                        </Canvas>
+                        <!-- I have to transform the canvas, otherwise the object will be outside of the canvas -->
+                        <Canvas RenderTransformOrigin="{Binding RotationPoint, Converter={x:Static visualization:RenderTransformOriginTransformer.Instance}}">
+                            <Canvas.RenderTransform>
+                                <TransformGroup>
+                                    <RotateTransform Angle="{Binding Rotation}" />
+                                    <TranslateTransform X="{Binding RotationPoint.X, Converter={x:Static visualization:Inverter.Instance}}" Y="{Binding RotationPoint.Y, Converter={x:Static visualization:Inverter.Instance}}" />
+                                </TransformGroup>
+                            </Canvas.RenderTransform>
+                      
+                            <ItemsControl Items="{Binding Geometries, Mode=OneWay}" Tag="{Binding . }" Width="{Binding Filename, Converter={x:Static visualization:WorldObjectWidthTransformer.Instance}}" Height="{Binding Filename, Converter={x:Static visualization:WorldObjectHeightTransformer.Instance}}" IsVisible="{Binding Path=DataContext.DebugStatus.Rotate, RelativeSource={RelativeSource AncestorType=UserControl}}" Background="orange" Opacity="0.50">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        
+                                        <Polyline Stroke="#471D70" StrokeThickness="5" Points="{Binding Points}" RenderTransformOrigin="{Binding Tag.RotationPoint, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={x:Static visualization:RenderTransformOriginTransformer.Instance}}">
+                                            <Polyline.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="{Binding Tag.Rotation, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={x:Static visualization:Inverter.Instance}}" />
+                                                    <TranslateTransform X="{Binding Tag.RotationPoint.X, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={x:Static visualization:Inverter.Instance}}" Y="{Binding Tag.RotationPoint.Y, RelativeSource={RelativeSource AncestorType=ItemsControl}, Converter={x:Static visualization:Inverter.Instance}}" />
+                                                </TransformGroup>
+                                            </Polyline.RenderTransform>
+                                        </Polyline>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                   
+                        </Canvas>
+                    </Canvas>
+                </DataTemplate>
+            </ItemsControl.DataTemplates>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

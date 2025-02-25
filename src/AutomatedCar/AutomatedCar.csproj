@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <AvaloniaResource Include="**\*.xaml">
+      <SubType>Designer</SubType>
+    </AvaloniaResource>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\**;Resources\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Remove="Assets\oval.csv" />
+    <AvaloniaResource Remove="Assets\oval.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\oval.csv" />
+    <None Remove="Assets\oval.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.7" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Markdown.Avalonia" Version="0.10.7" />
+    <PackageReference Include="Microsoft.CodeCoverage" Version="16.8.0-preview-20200812-03" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="GeoLibrary" Version="1.1.0" />
+    <!-- <PackageReference Include="reactiveui" Version="13.2.2" /> -->
+    <!-- <PackageReference Include="Splat" Version="10.0.1" /> -->
+  </ItemGroup>
+</Project>

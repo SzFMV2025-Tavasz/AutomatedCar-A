@@ -1,0 +1,26 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:AutomatedCar.ViewModels;assembly=AutomatedCar"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="AutomatedCar.Views.MainWindow"
+        Icon="/Assets/car-icon.png"
+        Title="AutomatedCar"
+        Width="1280" Height="720"
+        xmlns:views="clr-namespace:AutomatedCar.Views;assembly=AutomatedCar"
+        xmlns:local="clr-namespace:AutomatedCar;assembly=AutomatedCar"
+        xmlns:visualization="clr-namespace:AutomatedCar.Visualization;assembly=AutomatedCar"
+        >
+    <Grid Name="panel">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="320"/>
+        </Grid.ColumnDefinitions>
+        <views:CourseDisplayView Name="courseDisplay" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            Width="{Binding ElementName=panel, Path=ActualWidth}"
+            Height="{Binding ElementName=panel, Path=ActualHeight}" />
+        <views:DashboardView Grid.Column="1" HorizontalAlignment="Right" Height="{Binding ElementName=panel, Path=ActualHeight}"/>
+    </Grid>
+
+</Window>
