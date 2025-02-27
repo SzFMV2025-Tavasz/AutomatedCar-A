@@ -11,7 +11,7 @@
 
     <UserControl.Styles>
         <Style Selector="ContentControl#Dashboard">
-            <Setter Property="Background" Value="#424242"/>
+            <Setter Property="Background" Value="#414141"/>
             <Setter Property="Foreground" Value="#EEEEEE"/>
             <Setter Property="Padding" Value="5"/>
         </Style>
