@@ -1,9 +1,10 @@
 namespace AutomatedCar
 {
+    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Reflection;
+    using AutomatedCar.Helpers;
     using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using AutomatedCar.Views;
@@ -38,6 +39,8 @@ namespace AutomatedCar
             // this.AddDummyCircleTo(world);
 
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
+
+            this.AddNpcsTo(world);
 
             this.AddControlledCarsTo(world);
 
@@ -93,6 +96,12 @@ namespace AutomatedCar
 
             world.AddControlledCar(controlledCar);
             world.AddControlledCar(controlledCar2);
+        }
+
+        private void AddNpcsTo(World world)
+        {
+            var npcJsonObjects = NpcLoader.ReadNpcsJson();
+            Console.WriteLine(npcJsonObjects);
         }
     }
 }
