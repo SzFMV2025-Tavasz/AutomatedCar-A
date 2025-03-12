@@ -13,5 +13,7 @@ namespace AutomatedCar.Models
         public List<NpcPointJsonObject> Points { get; set; }
 
         public NpcType Type { get; set; }
+
+        public string Filename { get; set; }
     }
 }
