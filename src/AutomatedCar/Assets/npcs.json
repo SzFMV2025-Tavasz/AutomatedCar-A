@@ -5,8 +5,8 @@
       {
         "rotation": 0,
         "speed": 50,
-        "x": 100,
-        "y": 100
+        "x": 325,
+        "y": 1150
       },
       {
         "rotation": 180,
@@ -15,7 +15,8 @@
         "y": 200
       }
     ],
-    "type": "car"
+    "type": "car",
+    "filename": "car_1_red.png"
   },
   {
     "loop": true,
@@ -33,6 +34,7 @@
         "y": 200
       }
     ],
-    "type": "pedestrian"
+    "type": "pedestrian",
+    "filename": "man.png"
   }
 ]
