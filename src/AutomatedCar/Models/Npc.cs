@@ -27,7 +27,7 @@ namespace AutomatedCar.Models
             return this.Path.Points[0];
         }
 
-        public NpcPathPoint GetNextPoint()
+        public NpcPathPoint? GetNextPoint()
         {
             int currentIndex = this.Path.Points.IndexOf(this.CurrentPoint);
             if (currentIndex + 1 < this.Path.Points.Count)
