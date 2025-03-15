@@ -195,21 +195,57 @@
   },
   {
     "loop": true,
+    "type": "pedestrian",
+    "filename": "man.png",
     "points": [
       {
         "rotation": 0,
         "speed": 3.2,
-        "x": 200,
-        "y": 100
+        "x": 1645,
+        "y": 550
+      },
+      {
+        "rotation": 270,
+        "speed": 3.2,
+        "x": 1645,
+        "y": 70
       },
       {
         "rotation": 180,
         "speed": 3.2,
-        "x": 200,
-        "y": 200
+        "x": 1240,
+        "y": 70
+      },
+      {
+        "rotation": 90,
+        "speed": 3.2,
+        "x": 1240,
+        "y": 110
+      },
+      {
+        "rotation": 180,
+        "speed": 3.2,
+        "x": 1550,
+        "y": 110
+      },
+      {
+        "rotation": 90,
+        "speed": 3.2,
+        "x": 1550,
+        "y": 635
+      },
+      {
+        "rotation": 0,
+        "speed": 3.2,
+        "x": 2030,
+        "y": 635
+      },
+      {
+        "rotation": 270,
+        "speed": 3.2,
+        "x": 2030,
+        "y": 550
       }
-    ],
-    "type": "pedestrian",
-    "filename": "man.png"
+    ]
   }
 ]
