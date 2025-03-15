@@ -197,6 +197,7 @@
     "loop": true,
     "type": "pedestrian",
     "filename": "man.png",
+    "world": "test_world",
     "points": [
       {
         "rotation": 0,
