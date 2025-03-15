@@ -62,16 +62,6 @@ namespace AutomatedCar.ViewModels
             World.Instance.ControlledCar.X += 5;
         }
 
-        public void KeyQ()
-        {
-            World.Instance.ControlledCar.Rotation -= 5;
-        }
-
-        public void KeyE()
-        {
-            World.Instance.ControlledCar.Rotation += 5;
-        }
-
         public void PageUp()
         {
             World.Instance.ControlledCar.Rotation += 5;

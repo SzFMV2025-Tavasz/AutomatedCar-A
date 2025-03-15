@@ -81,7 +81,7 @@ namespace AutomatedCar
             controlledCar.Geometry = this.GetControlledCarBoundaryBox();
             controlledCar.RawGeometries.Add(controlledCar.Geometry);
             controlledCar.Geometries.Add(controlledCar.Geometry);
-            controlledCar.RotationPoint = new System.Drawing.Point(20,36);
+            controlledCar.RotationPoint = new System.Drawing.Point(54, 120);
             controlledCar.Rotation = rotation;
 
             controlledCar.Start();
@@ -91,7 +91,7 @@ namespace AutomatedCar
 
         private void AddControlledCarsTo(World world)
         {
-            var controlledCar = this.CreateControlledCar(480, 1425, 0, "man.png");
+            var controlledCar = this.CreateControlledCar(480, 1425, 0, "car_1_white.png");
             var controlledCar2 = this.CreateControlledCar(4250, 1420, -90, "car_1_red.png");
 
             world.AddControlledCar(controlledCar);
