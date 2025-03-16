@@ -12,10 +12,10 @@
     {
         Vector2 dir;
         Vector2 offset;
-        Vector2 position;
+        Vector2 anchor;
         public Vector2 Position
         {
-            get => position + offset;
+            get => anchor + offset;
         }
         public Vector2 Direction
         {
@@ -29,7 +29,7 @@
         public Sensor(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
         {
             this.offset = offset;
-            this.position = new Vector2(car.X, car.Y);
+            this.anchor = new Vector2(car.X, car.Y);
             this.dir = new Vector2((float)Math.Cos(car.Rotation), (float)Math.Sin(car.Rotation));
         }
     }
