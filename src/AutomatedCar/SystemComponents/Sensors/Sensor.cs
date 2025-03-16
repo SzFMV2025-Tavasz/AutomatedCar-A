@@ -15,7 +15,7 @@
         Vector2 anchor;
         public Vector2 Position
         {
-            get => anchor + offset;
+            get => anchor + (offset * dir);
         }
         public Vector2 Direction
         {
