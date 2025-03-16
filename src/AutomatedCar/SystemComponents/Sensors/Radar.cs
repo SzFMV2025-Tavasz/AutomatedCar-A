@@ -8,7 +8,7 @@
     using System.Threading.Tasks;
     using AutomatedCar.Models;
 
-    class Sensor : SystemComponent
+    class Radar : SystemComponent
     {
         Vector2 dir;
         Vector2 offset;
@@ -26,7 +26,7 @@
         {
             throw new NotImplementedException();
         }
-        public Sensor(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
+        public Radar(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
         {
             this.offset = offset;
             this.anchor = new Vector2(car.X, car.Y);
