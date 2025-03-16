@@ -10,12 +10,13 @@
 
     class Radar : SystemComponent
     {
+        Circle c;
+        int offsetLength;
         Vector2 dir;
-        Vector2 offset;
         Vector2 anchor;
         public Vector2 Position
         {
-            get => anchor + (offset * dir);
+            get => anchor - (dir * offsetLength);
         }
         public Vector2 Direction
         {
@@ -23,7 +24,15 @@
         }
         public override void Process()
         {
-            throw new NotImplementedException();
+            MoveDebugCircle();
+        }
+        void MoveDebugCircle()
+        {
+            if (c == null)
+                return;
+
+            c.X = (int)Position.X;
+            c.Y = (int)Position.Y;
         }
         double CorrectRotation(double rotation)
         {
@@ -33,9 +42,10 @@
             rotation %= 360;
             return rotation;
         }
-        public Radar(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
+        public Radar(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, int offset) : base(virtualFunctionBus)
         {
-            this.offset = offset;
+            this.c = World.Instance.WorldObjects.FirstOrDefault(wo => wo is Circle) as Circle;
+            this.offsetLength = offset;
             this.anchor = new Vector2(car.X, car.Y);
             this.dir = new Vector2((float)Math.Cos(CorrectRotation(car.Rotation) * (Math.PI/180)), (float)Math.Sin(CorrectRotation(car.Rotation) * (Math.PI / 180)));
             car.PropertyChangedEvent += (s, e) =>
