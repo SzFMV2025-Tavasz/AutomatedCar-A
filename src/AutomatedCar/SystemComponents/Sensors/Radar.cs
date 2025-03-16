@@ -21,16 +21,23 @@
         {
             get => dir;
         }
-
         public override void Process()
         {
             throw new NotImplementedException();
+        }
+        double CorrectRotation(double rotation)
+        {
+            if (rotation < 0)
+                rotation += 360;
+            rotation += 90;
+            rotation %= 360;
+            return rotation;
         }
         public Radar(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
         {
             this.offset = offset;
             this.anchor = new Vector2(car.X, car.Y);
-            this.dir = new Vector2((float)Math.Cos(car.Rotation * (Math.PI/180)), (float)Math.Sin(car.Rotation * (Math.PI / 180)));
+            this.dir = new Vector2((float)Math.Cos(CorrectRotation(car.Rotation) * (Math.PI/180)), (float)Math.Sin(CorrectRotation(car.Rotation) * (Math.PI / 180)));
             car.PropertyChangedEvent += (s, e) =>
             {
                 switch (e.PropertyName)
@@ -42,8 +49,8 @@
                         anchor.Y = car.Y;
                         break;
                     case "Rotation":
-                        dir.X = (float)Math.Cos(car.Rotation * (Math.PI / 180));
-                        dir.Y = (float)Math.Sin(car.Rotation * (Math.PI / 180));
+                        dir.X = (float)Math.Cos(CorrectRotation(car.Rotation) * (Math.PI / 180));
+                        dir.Y = (float)Math.Sin(CorrectRotation(car.Rotation) * (Math.PI / 180));
                         break;
                     default:
                         break;
