@@ -31,6 +31,24 @@
             this.offset = offset;
             this.anchor = new Vector2(car.X, car.Y);
             this.dir = new Vector2((float)Math.Cos(car.Rotation), (float)Math.Sin(car.Rotation));
+            car.PropertyChangedEvent += (s, e) =>
+            {
+                switch (e.PropertyName)
+                {
+                    case "X":
+                        anchor.X = car.X;
+                        break;
+                    case "Y":
+                        anchor.Y = car.Y;
+                        break;
+                    case "Rotation":
+                        dir.X = (float)Math.Cos(car.Rotation);
+                        dir.Y = (float)Math.Sin(car.Rotation);
+                        break;
+                    default:
+                        break;
+                }
+            };
         }
     }
 }
