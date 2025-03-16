@@ -3,19 +3,34 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Numerics;
     using System.Text;
     using System.Threading.Tasks;
     using AutomatedCar.Models;
 
     class Sensor : SystemComponent
     {
-        public Sensor(VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
+        Vector2 dir;
+        Vector2 offset;
+        Vector2 position;
+        public Vector2 Position
         {
+            get => position + offset;
+        }
+        public Vector2 Direction
+        {
+            get => dir;
         }
 
         public override void Process()
         {
             throw new NotImplementedException();
+        }
+        public Sensor(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, Vector2 offset) : base(virtualFunctionBus)
+        {
+            this.offset = offset;
+            this.position = new Vector2(car.X, car.Y);
+            this.dir = new Vector2((float)Math.Cos(car.Rotation), (float)Math.Sin(car.Rotation));
         }
     }
 }
