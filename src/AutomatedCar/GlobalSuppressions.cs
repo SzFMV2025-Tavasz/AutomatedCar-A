@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "<Pending>", Scope = "namespace", Target = "~N:AutomatedCar.Models")]
+[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "<Pending>", Scope = "namespace", Target = "~N:AutomatedCar.SystemComponents.Packets")]
