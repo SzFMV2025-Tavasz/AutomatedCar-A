@@ -1,7 +1,6 @@
 namespace AutomatedCar.SystemComponents.Packets
 {
     using AutomatedCar.SystemComponents.Enums;
-    using System;
 
     /// <summary>
     /// Represents a read-only packet containing information about a <see cref="AutomatedCar.Models.WorldObject"/> as seen by the <see cref="AutomatedCar.Models.Camera"/>.
