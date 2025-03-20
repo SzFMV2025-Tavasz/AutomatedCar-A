@@ -5,10 +5,12 @@ on:
     branches:
         - main
         - develop
+        - 19-radar-konstruktor
   pull_request:
     branches:
         - main
         - develop
+        - 19-radar-konstruktor
 
 jobs:
   build:
