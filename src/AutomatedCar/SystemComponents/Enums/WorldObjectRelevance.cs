@@ -5,8 +5,6 @@
     /// </summary>
     public enum WorldObjectRelevance
     {
-        
-
         /// <summary>
         /// Represents a pedestrian object.
         /// </summary>

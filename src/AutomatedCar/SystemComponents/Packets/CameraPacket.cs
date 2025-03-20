@@ -2,7 +2,6 @@ namespace AutomatedCar.SystemComponents.Packets
 {
     using AutomatedCar.SystemComponents.Enums;
     using ReactiveUI;
-    using System;
 
     /// <summary>
     /// Represents a packet containing information about a <see cref="AutomatedCar.Models.WorldObject"/> as seen by the <see cref="AutomatedCar.Models.Camera"/>.
