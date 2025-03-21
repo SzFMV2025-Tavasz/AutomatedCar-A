@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Avalonia;
+    using Avalonia.Media;
     using global::AutomatedCar.Helpers;
     using global::AutomatedCar.SystemComponents;
     using global::AutomatedCar.SystemComponents.Packets;
@@ -59,13 +61,13 @@
                 switch (e.PropertyName)
                 {
                     case "X":
-                        this.camera.x = this.controlledCar.X - 90;
+                        this.UpdateCoordinates();
                         break;
                     case "Y":
-                        this.camera.y = this.controlledCar.Y - 90;
+                        this.UpdateCoordinates();
                         break;
                     case "Rotation":
-                        this.rotation = this.controlledCar.Rotation - 90;
+                        this.rotation = this.controlledCar.Rotation + 90;
                         break;
                     default:
                         break;
@@ -77,7 +79,7 @@
         /// Gets or sets the x coordinate of the <see cref="Camera"/>.
         /// </summary>
         /// <remarks>
-        /// If both coordinates are changing, use <see cref="SetCameraCoordinates"/>.
+        /// If both coordinates are changing, use <see cref="CameraCoordinates"/>.
         /// </remarks>
         public int X
         {
@@ -92,7 +94,7 @@
         /// Gets or sets the y coordinate of the <see cref="Camera"/>.
         /// </summary>
         /// <remarks>
-        /// If both coordinates are changing, use <see cref="SetCameraCoordinates"/>.
+        /// If both coordinates are changing, use <see cref="CameraCoordinates"/>.
         /// </remarks>
         public int Y
         {
@@ -107,7 +109,7 @@
         /// Gets or sets both coordinates of the <see cref="Camera"/>.
         /// If both coordinates are changing, use this setter.
         /// </summary>
-        public (int x, int y) SetCameraCoordinates
+        public (int x, int y) CameraCoordinates
         {
             get => this.camera;
             set
@@ -120,6 +122,11 @@
         /// Gets or sets the rotation of the <see cref="Camera"/>.
         /// </summary>
         public double Rotation { get => this.rotation; set => this.rotation = value; }
+
+        /// <summary>
+        /// Gets the rotation of the <see cref="Camera"/> in radians.
+        /// </summary>
+        public double RotationInRadian => this.rotation / 180 * Math.PI;
 
         /// <summary>
         /// Processes the camera's view.
@@ -139,20 +146,50 @@
 
             foreach (var obj in visibleObjects)
             {
-                double relativeAngle = this.CalculateAngle(this.rotation, obj.Rotation);
+                var relativeSpeed = this.CalculateRelativeSpeedVector(this.controlledCar.Speed, this.CalculateSpeed(obj), this.rotation, obj.Rotation, out double relativeAngle);
                 this.functionBus.CameraPackets.Add(
                     new CameraPacket
                     {
-                        Distance = Math.Sqrt(Math.Pow(this.controlledCar.X - obj.X, 2) + Math.Pow(this.controlledCar.Y - obj.Y, 2)),
+                        Distance = this.CalculateClosestPoint(obj),
                         Angle = relativeAngle,
-                        RelativeSpeed = this.CalculateRelativeSpeed(this.controlledCar.Speed, this.CalculateSpeed(obj), relativeAngle),
+                        RelativeSpeed = relativeSpeed,
                         ObjectType = obj.WorldObjectType,
                         Collideable = obj.Collideable,
                     });
             }
+
+            this.previusTickWorldObjects = this.worldObjects.Select(o =>
+                new WorldObject(o.X, o.Y, o.Filename, o.ZIndex, o.Collideable, o.WorldObjectType)
+                {
+                    Rotation = o.Rotation,
+                    RotationPoint = o.RotationPoint,
+                    RenderTransformOrigin = o.RenderTransformOrigin,
+                    Geometries = new List<PolylineGeometry>(o.Geometries.Select(g =>
+                        new PolylineGeometry(g.Points.Select(p => new Point(p.X, p.Y)), g.IsFilled))),
+                    RawGeometries = new List<PolylineGeometry>(o.RawGeometries.Select(g =>
+                        new PolylineGeometry(g.Points.Select(p => new Point(p.X, p.Y)), g.IsFilled))),
+                });
         }
 
-        private double CalculateRelativeSpeed(double speed, double obj, double relativeAngle)
+        private double CalculateClosestPoint(WorldObject obj)
+        {
+            return obj
+                .Geometries
+                .FirstOrDefault()
+                .Points
+                .Min(p =>
+                    Math.Sqrt(
+                        Math.Pow(p.X - this.camera.x, 2) + Math.Pow(p.Y - this.camera.y, 2)));
+        }
+
+        private void UpdateCoordinates()
+        {
+            var x = this.controlledCar.X + (int)(CameraOffset * Math.Cos(this.rotation));
+            var y = this.controlledCar.Y + (int)(CameraOffset * Math.Sin(this.rotation));
+            this.CameraCoordinates = (x, y);
+        }
+
+        private double CalculateRelativeSpeedVector(double speed, double obj, double relativeAngle, double rotation, out double relativeAngle1)
         {
             throw new NotImplementedException();
         }
@@ -167,11 +204,6 @@
             {
                 throw new NotImplementedException();
             }
-        }
-
-        private double CalculateAngle(double rotation1, double rotation2)
-        {
-            throw new NotImplementedException();
         }
     }
 }
