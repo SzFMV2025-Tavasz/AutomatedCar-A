@@ -1,6 +1,6 @@
 namespace AutomatedCar.SystemComponents.Packets
 {
-    using AutomatedCar.SystemComponents.Enums;
+    using AutomatedCar.Models;
     using ReactiveUI;
 
     /// <summary>
@@ -8,15 +8,16 @@ namespace AutomatedCar.SystemComponents.Packets
     /// </summary>
     public class CameraPacket : ReactiveObject, IReadOnlyCameraPacket
     {
-        private float angle;
-        private float distance;
-        private float relativeSpeed;
-        private WorldObjectRelevance worldObjectType;
+        private double angle;
+        private double distance;
+        private double relativeSpeed;
+        private WorldObjectType objectType;
+        private bool collideable;
 
         /// <summary>
         /// Gets or sets the angle from which the <see cref="AutomatedCar.Models.WorldObject"/> is coming.
         /// </summary>
-        public float Angle
+        public double Angle
         {
             get => this.angle;
             set => this.RaiseAndSetIfChanged(ref this.angle, value);
@@ -25,7 +26,7 @@ namespace AutomatedCar.SystemComponents.Packets
         /// <summary>
         /// Gets or sets the distance of the <see cref="AutomatedCar.Models.WorldObject"/> from the <see cref="AutomatedCar.Models.Camera"/>.
         /// </summary>
-        public float Distance
+        public double Distance
         {
             get => this.distance;
             set => this.RaiseAndSetIfChanged(ref this.distance, value);
@@ -34,7 +35,7 @@ namespace AutomatedCar.SystemComponents.Packets
         /// <summary>
         /// Gets or sets the speed of the <see cref="AutomatedCar.Models.WorldObject"/> relative to the <see cref="AutomatedCar.Models.Camera"/>.
         /// </summary>
-        public float RelativeSpeed
+        public double RelativeSpeed
         {
             get => this.relativeSpeed;
             set => this.RaiseAndSetIfChanged(ref this.relativeSpeed, value);
@@ -43,10 +44,19 @@ namespace AutomatedCar.SystemComponents.Packets
         /// <summary>
         /// Gets or sets the collision relevance of the <see cref="AutomatedCar.Models.WorldObject"/>.
         /// </summary>
-        public WorldObjectRelevance WorldObjectType
+        public WorldObjectType ObjectType
         {
-            get => this.WorldObjectType;
-            set => this.RaiseAndSetIfChanged(ref this.worldObjectType, value);
+            get => this.objectType;
+            set => this.RaiseAndSetIfChanged(ref this.objectType, value);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the <see cref="AutomatedCar.Models.WorldObject"/> is collidable.
+        /// </summary>
+        public bool Collideable
+        {
+            get => this.collideable;
+            set => this.RaiseAndSetIfChanged(ref this.collideable, value);
         }
     }
 }
