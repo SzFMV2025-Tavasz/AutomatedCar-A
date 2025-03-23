@@ -15,6 +15,7 @@ namespace AutomatedCar.Models
         public NpcType Type { get; set; }
 
         public string Filename { get; set; }
+        public string World { get; set; }
 
         public NpcPath(NpcJsonObject pathJson)
         {
@@ -22,6 +23,7 @@ namespace AutomatedCar.Models
             this.Points = pathJson.Points.Select(p => new NpcPathPoint(p)).ToList();
             this.Type = pathJson.Type;
             this.Filename = pathJson.Filename;
+            this.World = pathJson.World;
         }
     }
 }

@@ -13,10 +13,12 @@ namespace AutomatedCar.Models
         private NpcPath Path { get; set; }
 
         private NpcPathPoint CurrentPoint { get; set; }
+        public string WorldName { get; set; }
 
-        public Npc(NpcPath path, string worldFilename, WorldObjectType worldObjectType)
-            : base(path.Points[0].X, path.Points[0].Y, worldFilename, 1, false, worldObjectType)
+        public Npc(NpcPath path, string pictureFilename, WorldObjectType worldObjectType, string worldName)
+            : base(path.Points[0].X, path.Points[0].Y, pictureFilename, 1, false, worldObjectType)
         {
+            this.WorldName = worldName;
             this.Path = path;
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
