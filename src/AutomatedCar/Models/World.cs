@@ -14,7 +14,7 @@
 
     public class World
     {
-        public string WorldName { get; set; }
+        public string WorldName { get; private set; }
         private int controlledCarPointer = 0;
         public List<AutomatedCar> controlledCars = new();
 
