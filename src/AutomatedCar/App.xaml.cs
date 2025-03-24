@@ -108,7 +108,7 @@ namespace AutomatedCar
                 if (npcJsonObject.Type == NpcType.CAR)
                 {
                     NpcCar car = new NpcCar(path);
-                    if ("AutomatedCar.Assets." + car.WorldName + ".json" == world.WorldName)
+                    if ($"AutomatedCar.Assets.{car.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(car);
                     }
@@ -116,7 +116,7 @@ namespace AutomatedCar
                 else
                 {
                     NpcPedestrian pedestrian = new NpcPedestrian(path);
-                    if ("AutomatedCar.Assets." + pedestrian.WorldName + ".json" == world.WorldName)
+                    if ($"AutomatedCar.Assets.{pedestrian.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(pedestrian);
                     }
