@@ -107,11 +107,19 @@ namespace AutomatedCar
                 NpcPath path = new NpcPath(npcJsonObject);
                 if (npcJsonObject.Type == NpcType.CAR)
                 {
-                    world.AddObject(new NpcCar(path));
+                    NpcCar car = new NpcCar(path);
+                    if ($"AutomatedCar.Assets.{car.WorldName}.json" == world.WorldName)
+                    {
+                        world.AddObject(car);
+                    }
                 }
                 else
                 {
-                    world.AddObject(new NpcPedestrian(path));
+                    NpcPedestrian pedestrian = new NpcPedestrian(path);
+                    if ($"AutomatedCar.Assets.{pedestrian.WorldName}.json" == world.WorldName)
+                    {
+                        world.AddObject(pedestrian);
+                    }
                 }
             }
 

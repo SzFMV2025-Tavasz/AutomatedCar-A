@@ -9,7 +9,7 @@ namespace AutomatedCar.Models
     class NpcPedestrian : Npc
     {
         public NpcPedestrian(NpcPath path)
-           : base(path, path.Filename, WorldObjectType.Pedestrian)
+           : base(path, path.Filename, WorldObjectType.Pedestrian, path.World)
         {
 
         }
