@@ -1,9 +1,10 @@
 namespace AutomatedCar
 {
+    using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.IO;
     using System.Reflection;
+    using AutomatedCar.Helpers;
     using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using AutomatedCar.Views;
@@ -39,6 +40,8 @@ namespace AutomatedCar
 
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
+            this.AddNpcsTo(world);
+
             this.AddControlledCarsTo(world);
 
             return world;
@@ -62,7 +65,7 @@ namespace AutomatedCar
         private void AddDummyCircleTo(World world)
         {
             var circle = new Circle(200, 200, "circle.png", 20);
-            
+
             circle.Width = 40;
             circle.Height = 40;
             circle.ZIndex = 20;
@@ -74,7 +77,7 @@ namespace AutomatedCar
         private AutomatedCar CreateControlledCar(int x, int y, int rotation, string filename)
         {
             var controlledCar = new Models.AutomatedCar(x, y, filename);
-            
+
             controlledCar.Geometry = this.GetControlledCarBoundaryBox();
             controlledCar.RawGeometries.Add(controlledCar.Geometry);
             controlledCar.Geometries.Add(controlledCar.Geometry);
@@ -93,6 +96,25 @@ namespace AutomatedCar
 
             world.AddControlledCar(controlledCar);
             world.AddControlledCar(controlledCar2);
+        }
+
+        private void AddNpcsTo(World world)
+        {
+            var npcJsonObjects = NpcLoader.ReadNpcsJson();
+
+            foreach (var npcJsonObject in npcJsonObjects)
+            {
+                NpcPath path = new NpcPath(npcJsonObject);
+                if (npcJsonObject.Type == NpcType.CAR)
+                {
+                    world.AddObject(new NpcCar(path));
+                }
+                else
+                {
+                    world.AddObject(new NpcPedestrian(path));
+                }
+            }
+
         }
     }
 }

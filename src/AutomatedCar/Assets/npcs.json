@@ -1,0 +1,40 @@
+[
+  {
+    "loop": false,
+    "points": [
+      {
+        "rotation": 0,
+        "speed": 50,
+        "x": 325,
+        "y": 1150
+      },
+      {
+        "rotation": 180,
+        "speed": 100,
+        "x": 100,
+        "y": 200
+      }
+    ],
+    "type": "car",
+    "filename": "car_1_red.png"
+  },
+  {
+    "loop": true,
+    "points": [
+      {
+        "rotation": 0,
+        "speed": 3.2,
+        "x": 200,
+        "y": 100
+      },
+      {
+        "rotation": 180,
+        "speed": 3.2,
+        "x": 200,
+        "y": 200
+      }
+    ],
+    "type": "pedestrian",
+    "filename": "man.png"
+  }
+]
