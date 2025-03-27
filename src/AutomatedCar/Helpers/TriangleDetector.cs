@@ -74,8 +74,8 @@
         /// <param name="rightEdge">The calculated right edge.</param>
         private void CalculateEdges((int x, int y) sensorCarrierPosition, double sensorRotation, out (int x, int y) leftEdge, out (int x, int y) rightEdge)
         {
-            leftEdge = this.CalculateEdge(-30, sensorCarrierPosition, sensorRotation);
-            rightEdge = this.CalculateEdge(30, sensorCarrierPosition, sensorRotation);
+            leftEdge = this.CalculateEdge(30, sensorCarrierPosition, sensorRotation);
+            rightEdge = this.CalculateEdge(-30, sensorCarrierPosition, sensorRotation);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@
         {
             var angleInRadian = (angle + sensorRotation) / 180 * Math.PI;
             var x = sensorCarrierPosition.x + (Math.Cos(angleInRadian) * this.visionHypotenuse);
-            var y = sensorCarrierPosition.y + (this.visionHypotenuse * Math.Sin(angleInRadian));
+            var y = sensorCarrierPosition.y + (Math.Sin(angleInRadian) * this.visionHypotenuse);
 
             return ((int)x, (int)y);
         }
@@ -106,10 +106,10 @@
         private bool PreValidateObjects(WorldObject worldObject, (int x, int y) sensorPosition, (int x, int y) leftEdge, (int x, int y) rightEdge, (int x, int y) sensorCarrierPosition)
         {
             // Check if the world object is within the bounding box of the camera's view, slightly inflated by the epsilon value.
-            return worldObject.X > Math.Min(sensorPosition.x, Math.Min(leftEdge.x, rightEdge.x)) + this.preValidationEpsilon
-                && worldObject.X < Math.Max(sensorPosition.x, Math.Max(leftEdge.x, rightEdge.x)) - this.preValidationEpsilon
-                && worldObject.Y > Math.Min(sensorPosition.y, Math.Min(leftEdge.y, rightEdge.y)) + this.preValidationEpsilon
-                && worldObject.Y < Math.Max(sensorPosition.y, Math.Max(leftEdge.y, rightEdge.y)) - this.preValidationEpsilon
+            return worldObject.X > Math.Min(sensorPosition.x, Math.Min(leftEdge.x, rightEdge.x)) - this.preValidationEpsilon
+                && worldObject.X < Math.Max(sensorPosition.x, Math.Max(leftEdge.x, rightEdge.x)) + this.preValidationEpsilon
+                && worldObject.Y > Math.Min(sensorPosition.y, Math.Min(leftEdge.y, rightEdge.y)) - this.preValidationEpsilon
+                && worldObject.Y < Math.Max(sensorPosition.y, Math.Max(leftEdge.y, rightEdge.y)) + this.preValidationEpsilon
                 && worldObject.X == sensorCarrierPosition.x && worldObject.Y == sensorCarrierPosition.y;
         }
     }
