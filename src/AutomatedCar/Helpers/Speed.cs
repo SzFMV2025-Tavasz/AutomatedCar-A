@@ -21,8 +21,9 @@
 
         public static Speed FromMetersPerSecond(double metersPerSecond)
         {
-            // TODO Implement unit conversion
-            return new Speed(metersPerSecond);
+            double pixelsPerSecond = metersPerSecond * MeterToPixels;
+            double pixelsPerTick = pixelsPerSecond * GameBase.TicksPerSecond;
+            return new Speed(pixelsPerTick);
         }
 
         public static Speed FromPixelsPerTick(double pixelsPerTick)
