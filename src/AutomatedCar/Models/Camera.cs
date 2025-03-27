@@ -31,7 +31,6 @@
         private readonly Car controlledCar;
         private readonly TriangleDetector triangleDetector;
         private readonly IEnumerable<WorldObject> worldObjects;
-        private IEnumerable<WorldObject> previusTickWorldObjects;
         private double rotation;
 
         /// <summary>
@@ -146,11 +145,13 @@
 
             foreach (var obj in visibleObjects)
             {
-                var relativeSpeed = this.CalculateRelativeSpeedVector(this.controlledCar.Speed, this.CalculateSpeed(obj), this.rotation, obj.Rotation, out double relativeAngle);
+                double detectedObjectSpeed = GetObjectSpeed(obj);
+                var relativeSpeed = this.CalculateRelativeSpeedVector(detectedObjectSpeed, obj.Rotation, out double relativeAngle);
+                double detectedObjectDistance = this.CalculateClosestPoint(obj);
                 this.functionBus.CameraPackets.Add(
                     new CameraPacket
                     {
-                        Distance = this.CalculateClosestPoint(obj),
+                        Distance = detectedObjectDistance,
                         Angle = relativeAngle,
                         RelativeSpeed = relativeSpeed,
                         ObjectType = obj.WorldObjectType,
@@ -171,6 +172,22 @@
                 });
         }
 
+        private static double GetObjectSpeed(WorldObject obj)
+        {
+            if (obj is Car car)
+            {
+                return car.Speed;
+            }
+            else if (obj is Npc npc)
+            {
+                return npc.Speed;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         private double CalculateClosestPoint(WorldObject obj)
         {
             return obj
@@ -189,21 +206,9 @@
             this.CameraCoordinates = (x, y);
         }
 
-        private double CalculateRelativeSpeedVector(double speed, double obj, double relativeAngle, double rotation, out double relativeAngle1)
+        private double CalculateRelativeSpeedVector(double objectSpeed, double objRotation, out double relativeAngle)
         {
             throw new NotImplementedException();
-        }
-
-        private double CalculateSpeed(WorldObject obj)
-        {
-            if (obj is Car car)
-            {
-                return car.Speed;
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
         }
     }
 }
