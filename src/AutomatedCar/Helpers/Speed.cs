@@ -11,11 +11,13 @@
 
         public static Speed FromKmPerHour(double kmPerHour)
         {
+            // TODO Implement unit conversion
             return new Speed(kmPerHour);
         }
 
         public static Speed FromMetersPerSecond(double metersPerSecond)
         {
+            // TODO Implement unit conversion
             return new Speed(metersPerSecond);
         }
 
@@ -26,11 +28,13 @@
 
         public double InKmPerHour()
         {
+            // TODO Implement unit conversion
             return PixelsPerTick;
         }
 
         public double InMetersPerSecond()
         {
+            // TODO Implement unit conversion
             return PixelsPerTick;
         }
 
