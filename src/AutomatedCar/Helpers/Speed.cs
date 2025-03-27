@@ -2,6 +2,10 @@
 {
     internal class Speed
     {
+        // Calculated by comparing the average road widh in Hungary to the road_2lane_straight.png road width ~= 49.69
+        // Calculated by comparing the Skoda Octavia length to the car_1_white.png height ~= 51.09
+        public const double MeterToPixels = 50;
+
         private double PixelsPerTick { get; set; }
 
         private Speed(double pixelsPerTick)
