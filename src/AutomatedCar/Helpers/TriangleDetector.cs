@@ -35,7 +35,10 @@
         public IEnumerable<WorldObject> ScanVisibleObjects(IEnumerable<WorldObject> worldObjects, (int x, int y) sensorCarrierPosition, (int x, int y) sensorPosition, double sensorRotation)
         {
             this.CalculateEdges(sensorCarrierPosition, sensorRotation, out var leftEdge, out var rightEdge);
-            var validatedObjects = worldObjects.Where(currentObject => this.PreValidateObjects(currentObject, sensorPosition, leftEdge, rightEdge, sensorCarrierPosition));
+            var validatedObjects = worldObjects
+                .Where(currentObject =>
+                    this.PreValidateObjects(currentObject, sensorPosition, leftEdge, rightEdge, sensorCarrierPosition)
+                    && currentObject.Collideable);
 
             foreach (var obj in validatedObjects)
             {
@@ -110,7 +113,7 @@
                 && worldObject.X < Math.Max(sensorPosition.x, Math.Max(leftEdge.x, rightEdge.x)) + this.preValidationEpsilon
                 && worldObject.Y > Math.Min(sensorPosition.y, Math.Min(leftEdge.y, rightEdge.y)) - this.preValidationEpsilon
                 && worldObject.Y < Math.Max(sensorPosition.y, Math.Max(leftEdge.y, rightEdge.y)) + this.preValidationEpsilon
-                && worldObject.X == sensorCarrierPosition.x && worldObject.Y == sensorCarrierPosition.y;
+                && !(worldObject.X == sensorCarrierPosition.x && worldObject.Y == sensorCarrierPosition.y);
         }
     }
 }
