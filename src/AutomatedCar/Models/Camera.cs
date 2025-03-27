@@ -209,7 +209,7 @@
             (double x, double y) carSpeedVectorNegate = (-this.controlledCarSpeedVector.x, -this.controlledCarSpeedVector.y);
             (double x, double y) objectSpeedVector = GetSpeedVector(objectSpeed, objRotation);
             (double x, double y) = (carSpeedVectorNegate.x + objectSpeedVector.x, carSpeedVectorNegate.y + objectSpeedVector.y);
-            relativeAngle = x == 0 && y == 0 ? 0 : Math.Atan(x / y);
+            relativeAngle = x == 0 && y == 0 ? 0 : (Math.Atan2(y, x) / Math.PI) * 180;
             return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
     }
