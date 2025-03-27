@@ -32,6 +32,7 @@
         private readonly TriangleDetector triangleDetector;
         private readonly IEnumerable<WorldObject> worldObjects;
         private double rotation;
+        private (double x, double y) controlledCarSpeedVector;
 
         /// <summary>
         /// The camera's position.
@@ -53,6 +54,7 @@
             this.triangleDetector = new TriangleDetector(VisionLength);
             this.rotation = controlledCar.Rotation + 90;
             this.functionBus = controlledCar.VirtualFunctionBus;
+            this.controlledCarSpeedVector = GetSpeedVector(this.controlledCar.Speed,this.rotation);
 
             this.controlledCar.PropertyChangedEvent += (s, e) =>
             {
@@ -60,9 +62,11 @@
                 {
                     case "X":
                         this.UpdateCoordinates();
+                        this.controlledCarSpeedVector = GetSpeedVector(this.controlledCar.Speed, this.rotation);
                         break;
                     case "Y":
                         this.UpdateCoordinates();
+                        this.controlledCarSpeedVector = GetSpeedVector(this.controlledCar.Speed, this.rotation);
                         break;
                     case "Rotation":
                         this.rotation = this.controlledCar.Rotation + 90;
@@ -71,6 +75,13 @@
                         break;
                 }
             };
+        }
+
+        private static (double x, double y) GetSpeedVector(double speed, double rotation)
+        {
+            var x = speed * Math.Cos(rotation);
+            var y = speed * Math.Sin(rotation);
+            return (x, y);
         }
 
         /// <summary>
@@ -145,7 +156,7 @@
             foreach (var obj in visibleObjects)
             {
                 double detectedObjectSpeed = GetObjectSpeed(obj);
-                var relativeSpeed = this.CalculateRelativeSpeedVector(detectedObjectSpeed, obj.Rotation, out double relativeAngle);
+                var relativeSpeed = this.CalculateRelativeSpeed(detectedObjectSpeed, obj.Rotation, out double relativeAngle);
                 double detectedObjectDistance = this.CalculateClosestPoint(obj);
                 this.functionBus.CameraPackets.Add(
                     new CameraPacket
@@ -193,9 +204,13 @@
             this.CameraCoordinates = (x, y);
         }
 
-        private double CalculateRelativeSpeedVector(double objectSpeed, double objRotation, out double relativeAngle)
+        private double CalculateRelativeSpeed(double objectSpeed, double objRotation, out double relativeAngle)
         {
-            throw new NotImplementedException();
+            (double x, double y) carSpeedVectorNegate = (-this.controlledCarSpeedVector.x, -this.controlledCarSpeedVector.y);
+            (double x, double y) objectSpeedVector = GetSpeedVector(objectSpeed, objRotation);
+            (double x, double y) = (carSpeedVectorNegate.x + objectSpeedVector.x, carSpeedVectorNegate.y + objectSpeedVector.y);
+            relativeAngle = x == 0 && y == 0 ? 0 : Math.Atan(x / y);
+            return Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
         }
     }
 }
