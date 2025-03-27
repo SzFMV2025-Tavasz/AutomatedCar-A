@@ -80,6 +80,7 @@ namespace Tests.Models
             car.Speed = 10;
 
             var testObject = new Circle(0, 10, "object1.png", 1);
+            testObject.Collideable = true;
             testObject.Geometries = new List<PolylineGeometry>();
             testObject.RawGeometries = new List<PolylineGeometry>();
             testObject.Geometries.Add(new PolylineGeometry(new List<Point> { new Point(10, 0) }, true));
