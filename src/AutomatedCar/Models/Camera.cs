@@ -51,7 +51,7 @@
             this.controlledCar = controlledCar;
             this.worldObjects = worldObjects;
             this.triangleDetector = new TriangleDetector(VisionLength);
-            this.rotation = controlledCar.Rotation - 90;
+            this.rotation = controlledCar.Rotation + 90;
             this.functionBus = controlledCar.VirtualFunctionBus;
 
             this.controlledCar.PropertyChangedEvent += (s, e) =>
