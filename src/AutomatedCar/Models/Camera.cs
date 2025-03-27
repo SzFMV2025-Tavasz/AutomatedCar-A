@@ -51,7 +51,6 @@
             this.controlledCar = controlledCar;
             this.worldObjects = worldObjects;
             this.triangleDetector = new TriangleDetector(VisionLength);
-            this.previusTickWorldObjects = worldObjects.ToList();
             this.rotation = controlledCar.Rotation - 90;
             this.functionBus = controlledCar.VirtualFunctionBus;
 
@@ -158,18 +157,6 @@
                         Collideable = obj.Collideable,
                     });
             }
-
-            this.previusTickWorldObjects = this.worldObjects.Select(o =>
-                new WorldObject(o.X, o.Y, o.Filename, o.ZIndex, o.Collideable, o.WorldObjectType)
-                {
-                    Rotation = o.Rotation,
-                    RotationPoint = o.RotationPoint,
-                    RenderTransformOrigin = o.RenderTransformOrigin,
-                    Geometries = new List<PolylineGeometry>(o.Geometries.Select(g =>
-                        new PolylineGeometry(g.Points.Select(p => new Point(p.X, p.Y)), g.IsFilled))),
-                    RawGeometries = new List<PolylineGeometry>(o.RawGeometries.Select(g =>
-                        new PolylineGeometry(g.Points.Select(p => new Point(p.X, p.Y)), g.IsFilled))),
-                });
         }
 
         private static double GetObjectSpeed(WorldObject obj)
