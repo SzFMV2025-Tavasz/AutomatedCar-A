@@ -5,10 +5,12 @@ on:
     branches: 
         - master
         - develop
+        - feature/12-szenzorok-kamera
   pull_request:
     branches: 
         - master
         - develop
+        - feature/12-szenzorok-kamera
 
 jobs:
   build:
