@@ -1,6 +1,6 @@
 ﻿namespace AutomatedCar.Helpers
 {
-    internal class Speed
+    public class Speed
     {
         // Calculated by comparing the average road widh in Hungary to the road_2lane_straight.png road width ~= 49.69
         // Calculated by comparing the Skoda Octavia length to the car_1_white.png height ~= 51.09
@@ -20,9 +20,7 @@
 
         public static Speed FromMetersPerSecond(double metersPerSecond)
         {
-            double pixelsPerSecond = metersPerSecond * MeterToPixels;
-            double pixelsPerTick = pixelsPerSecond / GameBase.TicksPerSecond;
-            return FromPixelsPerTick(pixelsPerTick);
+            return FromPixelsPerTick(metersPerSecond * (MeterToPixels / GameBase.TicksPerSecond));
         }
 
         public static Speed FromPixelsPerTick(double pixelsPerTick)
@@ -32,19 +30,17 @@
 
         public double InKmPerHour()
         {
-            // TODO Implement unit conversion
-            return PixelsPerTick;
+            return this.InMetersPerSecond() * 3.6;
         }
 
         public double InMetersPerSecond()
         {
-            // TODO Implement unit conversion
-            return PixelsPerTick;
+            return this.PixelsPerTick * (GameBase.TicksPerSecond / MeterToPixels);
         }
 
         public double InPixelsPerTick()
         {
-            return PixelsPerTick;
+            return this.PixelsPerTick;
         }
     }
 }
