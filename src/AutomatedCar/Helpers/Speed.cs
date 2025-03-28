@@ -20,9 +20,7 @@
 
         public static Speed FromMetersPerSecond(double metersPerSecond)
         {
-            double pixelsPerSecond = metersPerSecond * MeterToPixels;
-            double pixelsPerTick = pixelsPerSecond / GameBase.TicksPerSecond;
-            return FromPixelsPerTick(pixelsPerTick);
+            return FromPixelsPerTick(metersPerSecond * (MeterToPixels / GameBase.TicksPerSecond));
         }
 
         public static Speed FromPixelsPerTick(double pixelsPerTick)
