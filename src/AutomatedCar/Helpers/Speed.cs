@@ -15,15 +15,14 @@
 
         public static Speed FromKmPerHour(double kmPerHour)
         {
-            // TODO Implement unit conversion
-            return new Speed(kmPerHour);
+            return FromMetersPerSecond(kmPerHour / 3.6);
         }
 
         public static Speed FromMetersPerSecond(double metersPerSecond)
         {
             double pixelsPerSecond = metersPerSecond * MeterToPixels;
             double pixelsPerTick = pixelsPerSecond / GameBase.TicksPerSecond;
-            return new Speed(pixelsPerTick);
+            return FromPixelsPerTick(pixelsPerTick);
         }
 
         public static Speed FromPixelsPerTick(double pixelsPerTick)
