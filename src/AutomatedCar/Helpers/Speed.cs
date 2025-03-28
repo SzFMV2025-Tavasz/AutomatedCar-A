@@ -32,8 +32,7 @@
 
         public double InKmPerHour()
         {
-            // TODO Implement unit conversion
-            return PixelsPerTick;
+            return this.InMetersPerSecond() * 3.6;
         }
 
         public double InMetersPerSecond()
