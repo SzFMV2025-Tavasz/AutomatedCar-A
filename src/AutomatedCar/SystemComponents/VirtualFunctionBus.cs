@@ -7,7 +7,7 @@ namespace AutomatedCar.SystemComponents
     public class VirtualFunctionBus : GameBase
     {
         private List<SystemComponent> components = new List<SystemComponent>();
-        private List<Npc> npcs = new List<Npc>();
+       
 
         public IReadOnlyDummyPacket DummyPacket { get; set; }
 
@@ -22,10 +22,7 @@ namespace AutomatedCar.SystemComponents
             {
                 component.Process();
             }
-            foreach (Npc npc in this.npcs)
-            {
-                npc.Update();
-            }
+           
         }
     }
 }
