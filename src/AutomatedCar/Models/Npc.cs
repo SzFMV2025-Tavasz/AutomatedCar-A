@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomatedCar.SystemComponents;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace AutomatedCar.Models
 {
     class Npc : WorldObject
     {
+        
         public double Speed { get; set; }
 
         private NpcPath Path { get; set; }
@@ -22,7 +24,10 @@ namespace AutomatedCar.Models
             this.Path = path;
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
+            
         }
+       
+        
 
         public NpcPathPoint GetStartingPoint()
         {
@@ -52,6 +57,28 @@ namespace AutomatedCar.Models
             this.Y = point.Y;
             this.Rotation = point.Rotation;
             this.Speed = point.Speed;
+        }
+        public void Update()
+        {
+            
+            //foreach (var point in Path.Points)
+            //{
+            //    var checkPoint = point;
+            //    int i = 0;
+            //    while (CurrentPoint != checkPoint)
+            //    {
+            //        var nextPoint
+            //        ApplyPoint(point);
+            //    }
+
+            //}
+            //Path.Points
+            //NpcPathPoint? nextPoint = this.GetNextPoint();
+            //if (nextPoint != null)
+            //{
+            //    this.CurrentPoint = nextPoint;
+            //    this.ApplyPoint(this.CurrentPoint);
+            //}
         }
     }
 }
