@@ -178,7 +178,7 @@
             }
             else if (obj is Npc npc)
             {
-                return npc.Speed;
+                return Speed.FromKmPerHour(npc.Speed).InPixelsPerTick();
             }
             else
             {
