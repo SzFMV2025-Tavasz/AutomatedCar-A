@@ -5,12 +5,12 @@ on:
     branches: 
         - master
         - develop
-        - 19-radar-konstruktor
+        - feature/12-szenzorok-kamera
   pull_request:
     branches: 
         - master
         - develop
-        - 19-radar-konstruktor
+        - feature/12-szenzorok-kamera
 
 jobs:
   build:
