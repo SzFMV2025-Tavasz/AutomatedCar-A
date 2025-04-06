@@ -2,11 +2,13 @@
 {
     using AutomatedCar.Models;
     using ReactiveUI;
+    using System.Numerics;
+
     public class RadarPacket : ReactiveObject, IReadOnlyRadarPacket
     {
         double angle;
         double distance;
-        double relativeSpeed;
+        Vector2 relativeVelocity;
         WorldObjectType type;
         public double Angle
         {
@@ -18,10 +20,10 @@
             get => this.distance;
             set => this.RaiseAndSetIfChanged(ref this.distance, value);
         }
-        public double RelativeSpeed
+        public Vector2 RelativeVelocity
         {
-            get => this.relativeSpeed;
-            set => this.RaiseAndSetIfChanged(ref this.relativeSpeed, value);
+            get => this.relativeVelocity;
+            set => this.RaiseAndSetIfChanged(ref this.relativeVelocity, value);
         }
         public WorldObjectType Type
         {
