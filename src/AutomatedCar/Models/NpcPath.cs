@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    class NpcPath
+    public class NpcPath
     {
         public bool Loop { get; set; }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    class Npc : WorldObject
+    public class Npc : WorldObject
     {
         
         public double Speed { get; set; }
