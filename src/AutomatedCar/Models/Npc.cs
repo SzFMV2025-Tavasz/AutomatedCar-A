@@ -9,7 +9,8 @@ namespace AutomatedCar.Models
 {
     public class Npc : WorldObject
     {
-        
+        private NpcBus npcBus;
+        public NpcBus NpcBus { get => this.npcBus; }
         public double Speed { get; set; }
 
         private NpcPath Path { get; set; }
@@ -24,10 +25,17 @@ namespace AutomatedCar.Models
             this.Path = path;
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
-            
+            this.npcBus = new NpcBus(this);
         }
        
-        
+        public void Start()
+        {
+            this.npcBus.Start();
+        }
+        public void Stop()
+        {
+            this.npcBus.Stop();
+        }
 
         public NpcPathPoint GetStartingPoint()
         {

@@ -111,6 +111,7 @@ namespace AutomatedCar
                     if ($"AutomatedCar.Assets.{car.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(car);
+                        car.Start();
                     }
                 }
                 else
@@ -119,6 +120,7 @@ namespace AutomatedCar
                     if ($"AutomatedCar.Assets.{pedestrian.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(pedestrian);
+                        pedestrian.Start();
                     }
                 }
             }
