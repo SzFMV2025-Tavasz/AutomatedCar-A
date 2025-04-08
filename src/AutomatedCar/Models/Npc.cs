@@ -9,6 +9,7 @@ namespace AutomatedCar.Models
 {
     public class Npc : WorldObject
     {
+        private int pointIndex = 3;
         private NpcBus npcBus;
         public NpcBus NpcBus { get => this.npcBus; }
         public double Speed { get; set; }
@@ -17,6 +18,9 @@ namespace AutomatedCar.Models
 
         private NpcPathPoint CurrentPoint { get; set; }
         public string WorldName { get; set; }
+        private NpcPathPoint checkpoint;
+        private int delta_X;
+        private int delta_Y;
 
         public Npc(NpcPath path, string pictureFilename, WorldObjectType worldObjectType, string worldName)
             : base(path.Points[0].X, path.Points[0].Y, pictureFilename, 1, false, worldObjectType)
@@ -26,8 +30,11 @@ namespace AutomatedCar.Models
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
             this.npcBus = new NpcBus(this);
+            this.checkpoint = Path.Points[pointIndex];
+            this.delta_X = checkpoint.X - this.X;
+            this.delta_Y = checkpoint.Y - this.Y;
         }
-       
+
         public void Start()
         {
             this.npcBus.Start();
@@ -66,27 +73,34 @@ namespace AutomatedCar.Models
             this.Rotation = point.Rotation;
             this.Speed = point.Speed;
         }
+
         public void Update()
         {
-            
-            //foreach (var point in Path.Points)
-            //{
-            //    var checkPoint = point;
-            //    int i = 0;
-            //    while (CurrentPoint != checkPoint)
-            //    {
-            //        var nextPoint
-            //        ApplyPoint(point);
-            //    }
+            if (pointIndex < Path.Points.Count)
+            {
+                
+                if (delta_X == 0)
+                {
+                    this.Y += (int)(delta_Y/Speed);
+                    //hosszPerTick számítás
+                }
+                else if(delta_Y == 0)
+                {
+                    this.X += (int)(delta_X / Speed);
+                    //hosszPerTick számítás
+                }
+                else
+                {
+                    double meredekseg = (double)delta_Y / delta_X; //Annak az értéke, hogy egy pixel elmozdulás a vízszintes(x) tengelyen hány pixel elmozdulást jelent a függőleges(y) tengelyen
+                    double trueLength = Math.Sqrt(Math.Pow(delta_X, 2) + Math.Pow(delta_Y, 2)); //Jelenlegi és a checkpoint közötti egyenes hosszának kiszámolása
+                    this.X += 1;
+                    this.Y += X * (int)Math.Round(meredekseg);
+                }
+               
+                
 
-            //}
-            //Path.Points
-            //NpcPathPoint? nextPoint = this.GetNextPoint();
-            //if (nextPoint != null)
-            //{
-            //    this.CurrentPoint = nextPoint;
-            //    this.ApplyPoint(this.CurrentPoint);
-            //}
+            }
+ 
         }
     }
 }
