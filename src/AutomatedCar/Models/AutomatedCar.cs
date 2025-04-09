@@ -14,21 +14,19 @@ namespace AutomatedCar.Models
             this.ZIndex = 10;
         }
 
-        public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
+        public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }        //UML: lásd a tantárgy jegyzete.
 
         public int Revolution { get; set; }
 
-        public int Velocity { get; set; }
+        public int Velocity { get; set; }           //akkor különítsük el a következõ fogalmakat: Revolution, Velocity, Speed... ->(?)
 
-        public PolylineGeometry Geometry { get; set; }
+        public PolylineGeometry Geometry { get; set; }      //egy plusz geometria, a Geometries és RawGeometries geometriák mellett. -> MineK?
 
-        /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>
         public void Start()
         {
             this.virtualFunctionBus.Start();
         }
 
-        /// <summary>Stops the automated cor by stopping the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>
         public void Stop()
         {
             this.virtualFunctionBus.Stop();

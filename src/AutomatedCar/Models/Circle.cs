@@ -23,11 +23,11 @@ namespace AutomatedCar.Models
 
         public int Radius { get; set; }
 
-        public int Width { get; set; }
+        public int Width { get; set; }      //mire kell?
 
-        public int Height { get; set; }
+        public int Height { get; set; }     //mire kell?
 
-        public double CalculateArea()
+        public double CalculateArea()       //használaton kívül. (?)
         {
             return Math.PI * this.Radius * this.Radius;
         }
