@@ -7,49 +7,49 @@
     "points": [
       {
         "rotation": 0,
-        "speed": 40,
+        "speed": 120,
         "x": 385,
         "y": 1140
       },
       {
         "rotation": 0,
-        "speed": 30,
+        "speed": 120,
         "x": 385,
         "y": 810
       },
       {
         "rotation": 10,
-        "speed": 20,
+        "speed": 120,
         "x": 385,
         "y": 660
       },
       {
         "rotation": 35,
-        "speed": 20,
+        "speed": 120,
         "x": 445,
         "y": 525
       },
       {
         "rotation": 55,
-        "speed": 20,
+        "speed": 120,
         "x": 515,
         "y": 445
       },
       {
         "rotation": 75,
-        "speed": 20,
+        "speed": 120,
         "x": 580,
         "y": 415
       },
       {
         "rotation": 90,
-        "speed": 30,
+        "speed": 130,
         "x": 675,
         "y": 450
       },
       {
         "rotation": 90,
-        "speed": 50,
+        "speed": 150,
         "x": 780,
         "y": 405
       },
@@ -61,7 +61,7 @@
       },
       {
         "rotation": 105,
-        "speed": 20,
+        "speed": 120,
         "x": 3150,
         "y": 410
       },
@@ -73,13 +73,13 @@
       },
       {
         "rotation": 135,
-        "speed": 30,
+        "speed": 130,
         "x": 3375,
         "y": 565
       },
       {
         "rotation": 135,
-        "speed": 20,
+        "speed": 120,
         "x": 3510,
         "y": 700
       },

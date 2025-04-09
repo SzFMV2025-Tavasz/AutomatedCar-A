@@ -3,6 +3,7 @@ namespace AutomatedCar
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using AutomatedCar.Helpers;
     using AutomatedCar.Models;
@@ -43,6 +44,8 @@ namespace AutomatedCar
             this.AddNpcsTo(world);
 
             this.AddControlledCarsTo(world);
+
+            this.StartNpcs(world);
 
             return world;
         }
@@ -111,7 +114,7 @@ namespace AutomatedCar
                     if ($"AutomatedCar.Assets.{car.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(car);
-                        car.Start();
+                        
                     }
                 }
                 else
@@ -120,11 +123,18 @@ namespace AutomatedCar
                     if ($"AutomatedCar.Assets.{pedestrian.WorldName}.json" == world.WorldName)
                     {
                         world.AddObject(pedestrian);
-                        pedestrian.Start();
+                        
                     }
                 }
             }
 
+        }
+        private void StartNpcs(World world)
+        {
+            foreach (var npc in world.WorldObjects.OfType<Npc>())
+            {
+                npc.Start();
+            }
         }
     }
 }

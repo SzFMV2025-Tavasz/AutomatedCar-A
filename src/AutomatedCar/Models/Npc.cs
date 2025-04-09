@@ -1,4 +1,5 @@
 ﻿using AutomatedCar.SystemComponents;
+using AvaloniaEdit.Editing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace AutomatedCar.Models
 {
     public class Npc : WorldObject
     {
-        private int pointIndex = 3;
+        
         private NpcBus npcBus;
         public NpcBus NpcBus { get => this.npcBus; }
         public double Speed { get; set; }
@@ -21,6 +22,9 @@ namespace AutomatedCar.Models
         private NpcPathPoint checkpoint;
         private int delta_X;
         private int delta_Y;
+        
+        private int ticksPerStint;
+        private int tickCounter = 0;
 
         public Npc(NpcPath path, string pictureFilename, WorldObjectType worldObjectType, string worldName)
             : base(path.Points[0].X, path.Points[0].Y, pictureFilename, 1, false, worldObjectType)
@@ -29,10 +33,19 @@ namespace AutomatedCar.Models
             this.Path = path;
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
-            this.npcBus = new NpcBus(this);
-            this.checkpoint = Path.Points[pointIndex];
+
+            this.checkpoint = GetNextPoint();
             this.delta_X = checkpoint.X - this.X;
             this.delta_Y = checkpoint.Y - this.Y;
+            if (delta_X > delta_Y)
+            {
+                this.ticksPerStint = (int)(delta_X / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
+            }
+            else
+            {
+                this.ticksPerStint = (int)(delta_Y / (Speed / GameBase.TicksPerSecond));
+            }
+            this.npcBus = new NpcBus(this);
         }
 
         public void Start()
@@ -76,31 +89,59 @@ namespace AutomatedCar.Models
 
         public void Update()
         {
-            if (pointIndex < Path.Points.Count)
+            if (tickCounter > ticksPerStint)
             {
-                
-                if (delta_X == 0)
+                tickCounter = 0;
+                ApplyPoint(this.checkpoint);
+                CurrentPoint = this.checkpoint;
+                this.checkpoint = GetNextPoint();
+                if (this.checkpoint != null)
                 {
-                    this.Y += (int)(delta_Y/Speed);
-                    //hosszPerTick számítás
+                    this.delta_X = checkpoint.X - this.X;
+                    this.delta_Y = checkpoint.Y - this.Y;
+                    if (delta_X > delta_Y)
+                    {
+                        ticksPerStint = (int)(delta_X / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
+                    }
+                    else
+                    {
+                        ticksPerStint = (int)(delta_Y / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
+                    }
                 }
-                else if(delta_Y == 0)
+            }
+            else if (delta_X == 0)
+            {
+                this.Y += (int)((Speed / GameBase.TicksPerSecond)) * (delta_Y / Math.Abs(delta_Y));
+                tickCounter++;
+            }
+            else if (delta_Y == 0)
+            {
+                this.X += (int)((Speed / GameBase.TicksPerSecond)) * (delta_X / Math.Abs(delta_X));
+                tickCounter++;
+            }
+            else
+            {
+                int xChange = 0;
+                int yChange = 0;
+                double meredekseg = (double)delta_Y / delta_X; //Annak az értéke, hogy egy pixel elmozdulás a vízszintes(x) tengelyen hány pixel elmozdulást jelent a függőleges(y) tengelyen
+                if (Math.Abs(delta_Y) > Math.Abs(delta_X))
                 {
-                    this.X += (int)(delta_X / Speed);
-                    //hosszPerTick számítás
+
+                    yChange = (int)((Speed / GameBase.TicksPerSecond) * (delta_Y/Math.Abs(delta_Y)));
+                    xChange = (int)(yChange / Math.Round(meredekseg));
                 }
                 else
                 {
-                    double meredekseg = (double)delta_Y / delta_X; //Annak az értéke, hogy egy pixel elmozdulás a vízszintes(x) tengelyen hány pixel elmozdulást jelent a függőleges(y) tengelyen
-                    double trueLength = Math.Sqrt(Math.Pow(delta_X, 2) + Math.Pow(delta_Y, 2)); //Jelenlegi és a checkpoint közötti egyenes hosszának kiszámolása
-                    this.X += 1;
-                    this.Y += X * (int)Math.Round(meredekseg);
+                    xChange = (int)((Speed / GameBase.TicksPerSecond) * (delta_X / Math.Abs(delta_X)));
+                    yChange = (int)(xChange * Math.Round(meredekseg));
                 }
-               
-                
+                //double lengthRatio = Math.Abs(delta_Y / trueLength);
+                this.Y += yChange;
+                this.X += xChange;
+                tickCounter++;
 
             }
- 
+
         }
     }
 }
