@@ -35,7 +35,7 @@
                     World.Instance.WorldObjects,
                     (car.X, car.Y),
                     ((int)Position.X, (int)Position.Y),
-                    car.Rotation)
+                    CorrectRotation(car.Rotation) + 180)
                 .Where(
                     obj => obj.Collideable)
                 .ToList();
@@ -79,7 +79,7 @@
         }
         public Radar(VirtualFunctionBus virtualFunctionBus, AutomatedCar car, int offset) : base(virtualFunctionBus)
         {
-            triangle = new TriangleDetector(200 * (int)Speed.MeterToPixels);
+            triangle = new TriangleDetector(200);
             this.car = car;
             this.bus = virtualFunctionBus;
             this.offsetLength = offset;
