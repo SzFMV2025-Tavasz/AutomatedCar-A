@@ -50,7 +50,7 @@
         /// <param name="worldObjects">The collection of world objects that the camera will process.</param>
         public void AddCamera(AutomatedCar automatedCar, IEnumerable<WorldObject> worldObjects)
         {
-            this.camera = new (automatedCar, worldObjects);
+            this.camera = new Camera(automatedCar, worldObjects);
         }
 
         public void NextControlledCar()
