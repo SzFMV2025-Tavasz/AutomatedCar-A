@@ -79,8 +79,8 @@
 
         private static (double x, double y) GetSpeedVector(double speed, double rotation)
         {
-            var x = speed * Math.Cos(rotation);
-            var y = speed * Math.Sin(rotation);
+            var x = speed * Math.Cos(rotation * Math.PI / 180);
+            var y = speed * Math.Sin(rotation * Math.PI / 180);
             return (x, y);
         }
 
