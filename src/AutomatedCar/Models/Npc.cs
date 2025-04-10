@@ -33,6 +33,7 @@ namespace AutomatedCar.Models
             this.Path = path;
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
+            this.ZIndex = 1000;
 
             this.checkpoint = GetNextPoint();
             this.delta_X = checkpoint.X - this.X;
