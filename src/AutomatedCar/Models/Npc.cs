@@ -1,4 +1,5 @@
 ﻿using AutomatedCar.SystemComponents;
+using Avalonia.Media;
 using AvaloniaEdit.Editing;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace AutomatedCar.Models
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
             this.ZIndex = 1000;
+            
 
             this.checkpoint = GetNextPoint();
             this.delta_X = checkpoint.X - this.X;
@@ -144,5 +146,7 @@ namespace AutomatedCar.Models
             }
 
         }
+
+        public PolylineGeometry Geometry { get; set; }
     }
 }
