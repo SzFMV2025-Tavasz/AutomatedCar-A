@@ -17,7 +17,10 @@
         private int controlledCarPointer = 0;
         public List<AutomatedCar> controlledCars = new();
 
+        private Camera camera;
+
         public static World Instance { get; } = new World();
+
         public List<WorldObject> WorldObjects { get; set; } = new List<WorldObject>();
 
         public AutomatedCar ControlledCar
@@ -38,6 +41,16 @@
         {
             this.controlledCars.Add(controlledCar);
             this.AddObject(controlledCar);
+        }
+
+        /// <summary>
+        /// Adds a camera to the specified automated car, allowing it to detect and process world objects.
+        /// </summary>
+        /// <param name="automatedCar">The automated car to which the camera will be added.</param>
+        /// <param name="worldObjects">The collection of world objects that the camera will process.</param>
+        public void AddCamera(AutomatedCar automatedCar, IEnumerable<WorldObject> worldObjects)
+        {
+            this.camera = new Camera(automatedCar, worldObjects);
         }
 
         public void NextControlledCar()
