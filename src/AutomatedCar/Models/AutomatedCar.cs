@@ -1,5 +1,6 @@
 namespace AutomatedCar.Models
 {
+    using SystemComponents.Sensors;
     using Avalonia.Media;
     using SystemComponents;
 
@@ -11,9 +12,11 @@ namespace AutomatedCar.Models
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
+            this.radar = new Radar(virtualFunctionBus, this, 100);
             this.ZIndex = 10;
         }
 
+        Radar radar;
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
         public int Revolution { get; set; }

@@ -36,7 +36,7 @@ namespace AutomatedCar
         {
             var world = World.Instance;
 
-            // this.AddDummyCircleTo(world);
+            //this.AddDummyCircleTo(world);
 
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
