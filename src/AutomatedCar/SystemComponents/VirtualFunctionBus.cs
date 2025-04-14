@@ -15,6 +15,8 @@ namespace AutomatedCar.SystemComponents
         public IList<IReadOnlyCameraPacket> CameraPackets { get; set; }
         public IList<IReadOnlyRadarPacket> RadarPackets { get; set; }
 
+        public IReadOnlySteeringWheelPacket SteeringWheelPacket { get; set; }
+
         public void RegisterComponent(SystemComponent component)
         {
             this.components.Add(component);
