@@ -3,10 +3,16 @@ namespace AutomatedCar.Models
     using SystemComponents.Sensors;
     using Avalonia.Media;
     using SystemComponents;
+    using global::AutomatedCar.Helpers;
+    using System.Numerics;
+    using Avalonia;
+    using System;
 
     public class AutomatedCar : Car
     {
         private VirtualFunctionBus virtualFunctionBus;
+        private Speed velocity;
+        private Vector2 direction;
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
@@ -17,9 +23,46 @@ namespace AutomatedCar.Models
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
 
+        /// <summary>
+        /// The revolution of the engine in the car.
+        /// </summary>
         public int Revolution { get; set; }
 
-        public int Velocity { get; set; }
+        /// <summary>
+        /// The speed of the car.
+        /// </summary>
+        public Speed Velocity
+        {
+            get
+            {
+                return this.velocity;
+            }
+
+            set
+            {
+                this.velocity = value;
+                this.Speed = (int)value.InPixelsPerSecond();
+            }
+        }
+
+        /// <summary>
+        /// The direction in which the car is facing. Always has the length of 1.
+        /// </summary>
+        public Vector2 Direction
+        {
+            get
+            {
+                return this.direction;
+            }
+
+            set
+            {
+                this.direction = Vector2.Normalize(value);
+
+                float angleRadians = (float)Math.Atan2(value.Y, value.X);
+                this.Rotation = angleRadians * (180 / Math.PI);
+            }
+        }
 
         public PolylineGeometry Geometry { get; set; }
 

@@ -42,5 +42,10 @@
         {
             return this.PixelsPerTick;
         }
+
+        public double InPixelsPerSecond()
+        {
+            return this.PixelsPerTick * GameBase.TicksPerSecond;
+        }
     }
 }
