@@ -4,15 +4,15 @@ namespace AutomatedCar.Visualization
 
     public class DebugStatus : ReactiveObject
     {
-        private bool enabled = false;
+        private bool enabled = true;
 
-        private bool camera = false;
+        private bool camera = true;
 
-        private bool radar = false;
+        private bool radar = true;
 
-        private bool rotate = false;
+        private bool rotate = true;
 
-        private bool ultrasonic = false;
+        private bool ultrasonic = true;
 
         public bool Enabled { get => this.enabled; set => this.RaiseAndSetIfChanged(ref this.enabled, value); }
 

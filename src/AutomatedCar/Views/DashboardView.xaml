@@ -60,11 +60,8 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Filename}"/>
                                 <TextBlock Grid.Row="3" Grid.Column="0">Rotation:</TextBlock>
                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Rotation}"/>
-                                <TextBlock Grid.Row="4" Grid.Column="0">Distance X:</TextBlock>
-                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceX}"/>
-                                <TextBlock Grid.Row="5" Grid.Column="0">Distance Y:</TextBlock>
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceY}"/>
-                            </Grid>
+                                
+							</Grid>
                         </StackPanel>
                     </DataTemplate>
                 </ContentControl.ContentTemplate>

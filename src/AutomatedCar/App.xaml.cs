@@ -35,11 +35,15 @@ namespace AutomatedCar
         {
             var world = World.Instance;
 
-            // this.AddDummyCircleTo(world);
-
             world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
             this.AddControlledCarsTo(world);
+
+            foreach (var worldObject in world.WorldObjects)             //enélkül elcsúszik az xaml.  (elõtte benne volt az eltolás: TranslateTransform, most kihoztam ide.)
+            {
+                worldObject.X -= worldObject.RotationPoint.X;
+                worldObject.Y -= worldObject.RotationPoint.Y;
+            }
 
             return world;
         }
@@ -47,7 +51,7 @@ namespace AutomatedCar
         private PolylineGeometry GetControlledCarBoundaryBox()
         {
             StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
-    .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
+            .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
             string json_text = reader.ReadToEnd();
             dynamic stuff = JObject.Parse(json_text);
             var points = new List<Point>();
@@ -59,17 +63,6 @@ namespace AutomatedCar
             return new PolylineGeometry(points, false);
         }
 
-        private void AddDummyCircleTo(World world)
-        {
-            var circle = new Circle(200, 200, "circle.png", 20);
-            
-            circle.Width = 40;
-            circle.Height = 40;
-            circle.ZIndex = 20;
-            circle.Rotation = 45;
-
-            world.AddObject(circle);
-        }
 
         private AutomatedCar CreateControlledCar(int x, int y, int rotation, string filename)
         {
