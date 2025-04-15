@@ -14,8 +14,7 @@ namespace AutomatedCar.Models
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
-        {   
-            this.Velocity = 0;                 
+        {                  
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(virtualFunctionBus));
             this.ZIndex = 10;
@@ -26,11 +25,10 @@ namespace AutomatedCar.Models
         /// <summary>
         /// The revolution of the engine in the car.
         /// </summary>
-        public int Revolution { get; set; }
 
-        public int Velocity { get; set; }       //in pixel/tick
+        public double Velocity { get; set; } = 0;      //in pixel/tick     //non negative real number
 
-        public int Acceleration { get; set; }   //in pixel/tick
+        public double Acceleration { get; set; }       //in pixel/tick      //real number
         public PolylineGeometry Geometry { get; set; }
 
         /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>
