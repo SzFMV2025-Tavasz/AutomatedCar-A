@@ -19,36 +19,6 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
-            if (Keyboard.IsKeyDown(Key.Up))
-            {
-                viewModel.CourseDisplay.KeyUp();
-            }
-
-            if (Keyboard.IsKeyDown(Key.Down))
-            {
-                viewModel.CourseDisplay.KeyDown();
-            }
-
-            if (Keyboard.IsKeyDown(Key.Left))
-            {
-                viewModel.CourseDisplay.KeyLeft();
-            }
-
-            if (Keyboard.IsKeyDown(Key.Right))
-            {
-                viewModel.CourseDisplay.KeyRight();
-            }
-
-            if (Keyboard.IsKeyDown(Key.PageUp))
-            {
-                viewModel.CourseDisplay.PageUp();
-            }
-
-            if (Keyboard.IsKeyDown(Key.PageDown))
-            {
-                viewModel.CourseDisplay.PageDown();
-            }
-
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
