@@ -19,6 +19,17 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
+            if (Keyboard.IsKeyDown(Key.Left))
+            {
+                viewModel.CourseDisplay.KeyLeft();
+            }
+
+            if (Keyboard.IsKeyDown(Key.Right))
+            {
+                viewModel.CourseDisplay.KeyRight();
+            }
+
+
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
