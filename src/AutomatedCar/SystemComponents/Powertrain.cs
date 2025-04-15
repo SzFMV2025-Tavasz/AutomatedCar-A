@@ -1,4 +1,5 @@
-﻿using AutomatedCar.Models;
+﻿using AutomatedCar.Helpers;
+using AutomatedCar.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.SystemComponents
 {
-    class Powertrain : ReactiveObject
+    public class Powertrain : ReactiveObject
     {
         //Datas:
         
@@ -16,9 +17,9 @@ namespace AutomatedCar.SystemComponents
 
         private double acceleration_throttle = 0;  //in pixel/tick   //non negative real number
 
-        private const double delta_acceleration = 0.1; //in pixel/tick   //non negative real number     //acceleration increment during one tick
+        private const double delta_acceleration = 0.035; //in pixel/tick   //non negative real number     //acceleration increment during one tick
 
-        private const double acceleration_friction = -1;        //súrlódás //in pixel/tick  
+        private const double acceleration_friction = -2;        //in pixel/tick  
 
         //Buttons:
         public bool Reverse_ON { get; set; } = false;
@@ -69,42 +70,45 @@ namespace AutomatedCar.SystemComponents
             v = Math.Max(0,  v + a);
             World.Instance.ControlledCar.Velocity = v;
 
-            if(!Reverse_ON)
+            if(!this.Reverse_ON)
             {
-                World.Instance.ControlledCar.X += (int)(v * Math.Cos(World.Instance.ControlledCar.Rotation));
-                World.Instance.ControlledCar.Y += (int)(v * Math.Sin(World.Instance.ControlledCar.Rotation));
+                World.Instance.ControlledCar.X += (int)(v * Math.Cos( World.Instance.ControlledCar.Rotation));  //car_1_red-et használom
+                World.Instance.ControlledCar.Y += (int)(v * Math.Sin( World.Instance.ControlledCar.Rotation));
             }
             else
             {
                 World.Instance.ControlledCar.X -= (int)(v * Math.Cos(World.Instance.ControlledCar.Rotation));
                 World.Instance.ControlledCar.Y -= (int)(v * Math.Sin(World.Instance.ControlledCar.Rotation));
             }
+
+            this.Acceleration_Dashboard = a * GameBase.TicksPerSecond / 50;   //MeterToPixels = 50
+            this.Velocity_Dashboard = v * GameBase.TicksPerSecond / 50;
         }
 
-        private void Update_Accelerations() 
+        private void Update_Accelerations()
         {
-            if (Throttle_ON && Throttle_Dashboard < 100)
+            if (this.Throttle_ON && this.Throttle_Dashboard < 100)
             {
-                ++Throttle_Dashboard;
-                acceleration_throttle += delta_acceleration;    
+                ++this.Throttle_Dashboard;
+                this.acceleration_throttle += delta_acceleration;
             }
 
-            if (!Throttle_ON && Throttle_Dashboard > 0)
+            if (!this.Throttle_ON && this.Throttle_Dashboard > 0)
             {
-                --Throttle_Dashboard;
-                acceleration_throttle -= delta_acceleration;
+                --this.Throttle_Dashboard;
+                this.acceleration_throttle -= delta_acceleration;
             }
 
-            if (Brake_ON && Brake_Dashboard > -100)
+            if (this.Brake_ON && this.Brake_Dashboard > -100)
             {
-                --Brake_Dashboard;
-                acceleration_brake -= delta_acceleration;
+                --this.Brake_Dashboard;
+                this.acceleration_brake -= delta_acceleration;
             }
 
-            if (!Brake_ON && Brake_Dashboard < 0)
+            if (!this.Brake_ON && this.Brake_Dashboard < 0)
             {
-                ++Brake_Dashboard;
-                acceleration_brake += delta_acceleration;
+                ++this.Brake_Dashboard;
+                this.acceleration_brake += delta_acceleration;
             }
         }
 
