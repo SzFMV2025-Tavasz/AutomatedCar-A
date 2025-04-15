@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    class NpcPathPoint
+    public class NpcPathPoint
     {
         public int X { get; set; }
 
