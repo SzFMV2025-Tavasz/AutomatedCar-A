@@ -169,10 +169,9 @@ namespace AutomatedCar.Models
 
         public void Update()
         {
-            if (tickCounter == ticksPerStint - 1)
+            if (tickCounter == ticksPerStint)
             {
-                //tickCounter = 0;
-                ApplyCheckpoint(this.checkpoint);
+               ApplyCheckpoint(this.checkpoint);
             }
             else
             {
