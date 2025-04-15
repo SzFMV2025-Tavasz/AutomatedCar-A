@@ -1,12 +1,6 @@
 ﻿namespace AutomatedCar.SystemComponents.Packets
 {
     using ReactiveUI;
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
 
     internal class SteeringWheelPacket : ReactiveObject, IReadOnlySteeringWheelPacket
     {
@@ -19,7 +13,6 @@
             set
             {
                 this.FrontWheelState = (int)this.ScaleNumber((double)value, -450.0, 450.0, -60.0, 60.0);
-                Trace.WriteLine($"FrontWheelState: {this.FrontWheelState}");
                 this.RaiseAndSetIfChanged(ref this.steeringWheelState, value);
             }
         }
