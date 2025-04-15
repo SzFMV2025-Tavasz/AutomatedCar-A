@@ -42,6 +42,25 @@ namespace AutomatedCar.ViewModels
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
 
+        public void Throttle_ON()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Throttle_ON = true;
+        }
+
+        public void Throttle_OFF()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Throttle_ON = false;
+        }
+
+        public void Brake_ON()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Brake_ON = true;
+        }
+
+        public void Brake_OFF()
+        {
+            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Brake_ON = false;
+        }
         public void KeyLeft()
         {
             World.Instance.ControlledCar.Rotation -= 5;
