@@ -59,23 +59,26 @@ namespace AutomatedCar.Models
             this.deltaX = this.checkpoint.X - this.trueX;
             this.deltaY = this.checkpoint.Y - this.trueY;
             this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
-            double pixelPerTick = Speed; //TODO: Calculate this with the Speed class. Speed is in km/h
-            this.ticksPerStint = (int)(stintLength / pixelPerTick);
+
+            SpeedHelper helper = SpeedHelper.FromKmPerHour(Speed);
+            double pixelsPerTick = helper.InPixelsPerTick();
+
+            this.ticksPerStint = (int)(stintLength / pixelsPerTick);
             if (deltaX == 0)
             {
-                changeY = pixelPerTick * (deltaY / Math.Abs(deltaY));
+                changeY = pixelsPerTick * (deltaY / Math.Abs(deltaY));
                 changeX = 0;
             }
             else if (deltaY == 0)
             {
                 changeY = 0;
-                changeX = pixelPerTick * (deltaX / Math.Abs(deltaX));
+                changeX = pixelsPerTick * (deltaX / Math.Abs(deltaX));
             }
             else
             {
                 double YtoXRatio = deltaY / deltaX;
                 double LengthRatio = Math.Abs(deltaY / stintLength);
-                changeY = (pixelPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
+                changeY = (pixelsPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
                 changeX = changeY / YtoXRatio;
             }
 
@@ -138,23 +141,26 @@ namespace AutomatedCar.Models
             this.deltaX = this.checkpoint.X - this.trueX;
             this.deltaY = this.checkpoint.Y - this.trueY;
             this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
-            double pixelPerTick = Speed; //TODO: Calculate this with the Speed class. Speed is in km/h
-            this.ticksPerStint = (int)(stintLength / pixelPerTick);
+
+            SpeedHelper helper = SpeedHelper.FromKmPerHour(Speed);
+            double pixelsPerTick = helper.InPixelsPerTick();
+
+            this.ticksPerStint = (int)(stintLength / pixelsPerTick);
             if (deltaX == 0)
             {
-                changeY = pixelPerTick * (deltaY / Math.Abs(deltaY));
+                changeY = pixelsPerTick * (deltaY / Math.Abs(deltaY));
                 changeX = 0;
             }
             else if (deltaY == 0)
             {
                 changeY = 0;
-                changeX = pixelPerTick * (deltaX / Math.Abs(deltaX));
+                changeX = pixelsPerTick * (deltaX / Math.Abs(deltaX));
             }
             else
             {
                 double YtoXRatio = deltaY / deltaX;
                 double LengthRatio = Math.Abs(deltaY / stintLength);
-                changeY = (pixelPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
+                changeY = (pixelsPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
                 changeX = changeY / YtoXRatio;
             }
         }
