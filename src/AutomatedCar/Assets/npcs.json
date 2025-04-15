@@ -7,103 +7,103 @@
     "points": [
       {
         "rotation": 0,
-        "speed": 120,
+        "speed": 20,
         "x": 385,
         "y": 1140
       },
       {
         "rotation": 0,
-        "speed": 120,
+        "speed": 20,
         "x": 385,
         "y": 810
       },
       {
         "rotation": 10,
-        "speed": 120,
+        "speed": 20,
         "x": 385,
         "y": 660
       },
       {
         "rotation": 35,
-        "speed": 120,
+        "speed": 15,
         "x": 445,
         "y": 525
       },
       {
         "rotation": 55,
-        "speed": 120,
+        "speed": 20,
         "x": 515,
         "y": 445
       },
       {
         "rotation": 75,
-        "speed": 120,
+        "speed": 20,
         "x": 580,
         "y": 415
       },
       {
         "rotation": 90,
-        "speed": 130,
+        "speed": 30,
         "x": 675,
         "y": 450
       },
       {
         "rotation": 90,
-        "speed": 150,
+        "speed": 40,
         "x": 780,
         "y": 405
       },
       {
         "rotation": 90,
-        "speed": 30,
+        "speed": 40,
         "x": 2935,
         "y": 405
       },
       {
         "rotation": 105,
-        "speed": 120,
+        "speed": 40,
         "x": 3150,
         "y": 410
       },
       {
         "rotation": 115,
-        "speed": 20,
+        "speed": 30,
         "x": 3245,
         "y": 455
       },
       {
         "rotation": 135,
-        "speed": 130,
+        "speed": 20,
         "x": 3375,
         "y": 565
       },
       {
         "rotation": 135,
-        "speed": 120,
+        "speed": 15,
         "x": 3510,
         "y": 700
       },
       {
         "rotation": 160,
-        "speed": 30,
+        "speed": 15,
         "x": 3595,
         "y": 830
       },
       {
         "rotation": 180,
-        "speed": 50,
+        "speed": 20,
         "x": 3615,
         "y": 975
       },
       {
         "rotation": 180,
-        "speed": 30,
+        "speed": 25,
         "x": 3615,
         "y": 2185
       },
       {
         "rotation": 200,
-        "speed": 20,
+        "speed": 30,
         "x": 3605,
         "y": 2365
       },
@@ -115,25 +115,25 @@
       },
       {
         "rotation": 250,
-        "speed": 30,
+        "speed": 15,
         "x": 3465,
         "y": 2550
       },
       {
         "rotation": 270,
-        "speed": 40,
+        "speed": 15,
         "x": 3260,
         "y": 2575
       },
       {
         "rotation": 270,
-        "speed": 60,
+        "speed": 20,
         "x": 3095,
         "y": 2575
       },
       {
         "rotation": 270,
-        "speed": 50,
+        "speed": 30,
         "x": 1630,
         "y": 2575
       },
@@ -145,25 +145,25 @@
       },
       {
         "rotation": 270,
-        "speed": 30,
+        "speed": 50,
         "x": 1010,
         "y": 2575
       },
       {
         "rotation": 285,
-        "speed": 20,
+        "speed": 40,
         "x": 825,
         "y": 2555
       },
       {
         "rotation": 300,
-        "speed": 20,
+        "speed": 30,
         "x": 730,
         "y": 2515
       },
       {
         "rotation": 315,
-        "speed": 30,
+        "speed": 20,
         "x": 635,
         "y": 2430
       },
@@ -175,19 +175,19 @@
       },
       {
         "rotation": 335,
-        "speed": 20,
+        "speed": 15,
         "x": 415,
         "y": 2185
       },
       {
         "rotation": 0,
-        "speed": 30,
+        "speed": 15,
         "x": 385,
         "y": 2010
       },
       {
         "rotation": 0,
-        "speed": 40,
+        "speed": 20,
         "x": 385,
         "y": 1835
       }
@@ -197,7 +197,7 @@
     "loop": true,
     "type": "pedestrian",
     "filename": "man.png",
-    "world": "test_world",
+    "world": "oval",
     "points": [
       {
         "rotation": 0,

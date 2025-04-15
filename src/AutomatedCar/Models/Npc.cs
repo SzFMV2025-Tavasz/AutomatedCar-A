@@ -1,4 +1,5 @@
-﻿using AutomatedCar.SystemComponents;
+﻿using AutomatedCar.Helpers;
+using AutomatedCar.SystemComponents;
 using AvaloniaEdit.Editing;
 using System;
 using System.Collections.Generic;
@@ -8,24 +9,40 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
+#pragma warning disable SA1101 // Prefix local calls with this
+#pragma warning disable SA1600 // Elements should be documented
     public class Npc : WorldObject
     {
-        
-        private NpcBus npcBus;
+        public string WorldName { get; set; }
+
         public NpcBus NpcBus { get => this.npcBus; }
+
         public double Speed { get; set; }
+
+        private NpcBus npcBus;
 
         private NpcPath Path { get; set; }
 
         private NpcPathPoint CurrentPoint { get; set; }
-        public string WorldName { get; set; }
-        private NpcPathPoint checkpoint;
-        private int delta_X;
-        private int delta_Y;
-        
-        private int ticksPerStint;
-        private int tickCounter = 0;
 
+        // Fields used for movement
+        private NpcPathPoint checkpoint;
+        private double trueX;
+        private double trueY;
+
+        private double deltaX;
+        private double deltaY;
+
+        private double stintLength;
+        private double trueSpeed;
+
+        private double changeX;
+        private double changeY;
+
+        private int ticksPerStint;
+        private int tickCounter = 1;
+
+        // Until here
         public Npc(NpcPath path, string pictureFilename, WorldObjectType worldObjectType, string worldName)
             : base(path.Points[0].X, path.Points[0].Y, pictureFilename, 1, false, worldObjectType)
         {
@@ -34,18 +51,35 @@ namespace AutomatedCar.Models
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
             this.ZIndex = 1000;
-
+            
+            // First stint calculation
             this.checkpoint = GetNextPoint();
-            this.delta_X = checkpoint.X - this.X;
-            this.delta_Y = checkpoint.Y - this.Y;
-            if (delta_X > delta_Y)
+            this.trueX = this.X;
+            this.trueY = this.Y;
+            this.deltaX = this.checkpoint.X - this.trueX;
+            this.deltaY = this.checkpoint.Y - this.trueY;
+            this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
+            double pixelPerTick = Speed; //TODO: Calculate this with the Speed class. Speed is in km/h
+            this.ticksPerStint = (int)(stintLength / pixelPerTick);
+            if (deltaX == 0)
             {
-                this.ticksPerStint = (int)(delta_X / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
+                changeY = pixelPerTick * (deltaY / Math.Abs(deltaY));
+                changeX = 0;
+            }
+            else if (deltaY == 0)
+            {
+                changeY = 0;
+                changeX = pixelPerTick * (deltaX / Math.Abs(deltaX));
             }
             else
             {
-                this.ticksPerStint = (int)(delta_Y / (Speed / GameBase.TicksPerSecond));
+                double YtoXRatio = deltaY / deltaX;
+                double LengthRatio = Math.Abs(deltaY / stintLength);
+                changeY = (pixelPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
+                changeX = Math.Abs(changeY) / YtoXRatio;
             }
+
+            // Until here
             this.npcBus = new NpcBus(this);
         }
 
@@ -53,6 +87,7 @@ namespace AutomatedCar.Models
         {
             this.npcBus.Start();
         }
+
         public void Stop()
         {
             this.npcBus.Stop();
@@ -88,61 +123,59 @@ namespace AutomatedCar.Models
             this.Speed = point.Speed;
         }
 
-        public void Update()
+        public void ApplyCheckpoint(NpcPathPoint point)
         {
-            if (tickCounter > ticksPerStint)
+            this.X = point.X;
+            this.Y = point.Y;
+            this.Rotation = point.Rotation;
+            this.Speed = point.Speed;
+            CurrentPoint = point;
+            this.checkpoint = GetNextPoint();
+
+            this.tickCounter = 1;
+            this.trueX = this.X;
+            this.trueY = this.Y;
+            this.deltaX = this.checkpoint.X - this.trueX;
+            this.deltaY = this.checkpoint.Y - this.trueY;
+            this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
+            double pixelPerTick = Speed; //TODO: Calculate this with the Speed class. Speed is in km/h
+            this.ticksPerStint = (int)(stintLength / pixelPerTick);
+            if (deltaX == 0)
             {
-                tickCounter = 0;
-                ApplyPoint(this.checkpoint);
-                CurrentPoint = this.checkpoint;
-                this.checkpoint = GetNextPoint();
-                if (this.checkpoint != null)
-                {
-                    this.delta_X = checkpoint.X - this.X;
-                    this.delta_Y = checkpoint.Y - this.Y;
-                    if (delta_X > delta_Y)
-                    {
-                        ticksPerStint = (int)(delta_X / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
-                    }
-                    else
-                    {
-                        ticksPerStint = (int)(delta_Y / (Speed / GameBase.TicksPerSecond)); //Hány tick alatt érjük el a checkpointot
-                    }
-                }
+                changeY = pixelPerTick * (deltaY / Math.Abs(deltaY));
+                changeX = 0;
             }
-            else if (delta_X == 0)
+            else if (deltaY == 0)
             {
-                this.Y += (int)((Speed / GameBase.TicksPerSecond)) * (delta_Y / Math.Abs(delta_Y));
-                tickCounter++;
-            }
-            else if (delta_Y == 0)
-            {
-                this.X += (int)((Speed / GameBase.TicksPerSecond)) * (delta_X / Math.Abs(delta_X));
-                tickCounter++;
+                changeY = 0;
+                changeX = pixelPerTick * (deltaX / Math.Abs(deltaX));
             }
             else
             {
-                int xChange = 0;
-                int yChange = 0;
-                double meredekseg = (double)delta_Y / delta_X; //Annak az értéke, hogy egy pixel elmozdulás a vízszintes(x) tengelyen hány pixel elmozdulást jelent a függőleges(y) tengelyen
-                if (Math.Abs(delta_Y) > Math.Abs(delta_X))
-                {
-
-                    yChange = (int)((Speed / GameBase.TicksPerSecond) * (delta_Y/Math.Abs(delta_Y)));
-                    xChange = (int)(yChange / Math.Round(meredekseg));
-                }
-                else
-                {
-                    xChange = (int)((Speed / GameBase.TicksPerSecond) * (delta_X / Math.Abs(delta_X)));
-                    yChange = (int)(xChange * Math.Round(meredekseg));
-                }
-                //double lengthRatio = Math.Abs(delta_Y / trueLength);
-                this.Y += yChange;
-                this.X += xChange;
-                tickCounter++;
-
+                double YtoXRatio = deltaY / deltaX;
+                double LengthRatio = Math.Abs(deltaY / stintLength);
+                changeY = (pixelPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
+                changeX = changeY / YtoXRatio;
             }
+        }
 
+        public void Update()
+        {
+            if (tickCounter == ticksPerStint - 1)
+            {
+                //tickCounter = 0;
+                ApplyCheckpoint(this.checkpoint);
+            }
+            else
+            {
+                trueX += changeX;
+                trueY += changeY;
+                this.X = (int)(Math.Round(trueX));
+                this.Y = (int)(Math.Round(trueY));
+                tickCounter++;
+            }
+#pragma warning restore SA1101 // Prefix local calls with this
+#pragma warning restore SA1600 // Elements should be documented
         }
     }
 }
