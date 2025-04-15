@@ -11,12 +11,11 @@ namespace AutomatedCar.Models
     public class AutomatedCar : Car
     {
         private VirtualFunctionBus virtualFunctionBus;
-        private Speed velocity;
-        private Vector2 direction;
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
-        {
+        {   
+            this.Velocity = 0;                 
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(virtualFunctionBus));
             this.ZIndex = 10;
@@ -29,42 +28,9 @@ namespace AutomatedCar.Models
         /// </summary>
         public int Revolution { get; set; }
 
-        /// <summary>
-        /// The speed of the car.
-        /// </summary>
-        public Speed Velocity
-        {
-            get
-            {
-                return this.velocity;
-            }
+        public int Velocity { get; set; }       //in pixel/tick
 
-            set
-            {
-                this.velocity = value;
-                this.Speed = (int)value.InPixelsPerSecond();
-            }
-        }
-
-        /// <summary>
-        /// The direction in which the car is facing. Always has the length of 1.
-        /// </summary>
-        public Vector2 Direction
-        {
-            get
-            {
-                return this.direction;
-            }
-
-            set
-            {
-                this.direction = Vector2.Normalize(value);
-
-                float angleRadians = (float)Math.Atan2(value.Y, value.X);
-                this.Rotation = angleRadians * (180 / Math.PI);
-            }
-        }
-
+        public int Acceleration { get; set; }   //in pixel/tick
         public PolylineGeometry Geometry { get; set; }
 
         /// <summary>Starts the automated cor by starting the ticker in the Virtual Function Bus, that cyclically calls the system components.</summary>
