@@ -93,6 +93,7 @@ namespace AutomatedCar.Models
 
         public void Stop()
         {
+            Speed = 0;
             this.npcBus.Stop();
         }
 
@@ -114,7 +115,8 @@ namespace AutomatedCar.Models
             }
             else
             {
-                return null;
+                this.Stop();
+                return CurrentPoint;
             }
         }
 
