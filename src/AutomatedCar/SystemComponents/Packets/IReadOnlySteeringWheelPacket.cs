@@ -11,6 +11,11 @@
         /// <summary>
         /// The state of the steering wheel. A number between -450 and 450, where 0 is the straight state.
         /// </summary>
-        int State { get; }
+        int SteeringWheelState { get; }
+
+        /// <summary>
+        /// The angle of the front wheels of the car in degrees. A number between -60 and 60, where 0 is the straight state.
+        /// </summary>
+        int FrontWheelState { get; }
     }
 }

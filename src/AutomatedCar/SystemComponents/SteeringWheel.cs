@@ -19,12 +19,12 @@
         {
             if (Keyboard.IsKeyDown(Avalonia.Input.Key.Left))
             {
-                this.SteeringWheelPacket.State = Math.Max(-450, this.SteeringWheelPacket.State - 1);
+                this.SteeringWheelPacket.SteeringWheelState = Math.Max(-450, this.SteeringWheelPacket.SteeringWheelState - 1);
             }
 
             if (Keyboard.IsKeyDown(Avalonia.Input.Key.Right))
             {
-                this.SteeringWheelPacket.State = Math.Min(450, this.SteeringWheelPacket.State + 1);
+                this.SteeringWheelPacket.SteeringWheelState = Math.Min(450, this.SteeringWheelPacket.SteeringWheelState + 1);
             }
         }
     }
