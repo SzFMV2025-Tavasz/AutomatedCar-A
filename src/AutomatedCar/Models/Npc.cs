@@ -1,5 +1,6 @@
 ﻿using AutomatedCar.Helpers;
 using AutomatedCar.SystemComponents;
+using Avalonia.Media;
 using AvaloniaEdit.Editing;
 using System;
 using System.Collections.Generic;
@@ -51,8 +52,7 @@ namespace AutomatedCar.Models
             this.CurrentPoint = this.GetStartingPoint();
             this.ApplyPoint(this.CurrentPoint);
             this.ZIndex = 1000;
-            
-            // First stint calculation
+
             this.checkpoint = GetNextPoint();
             this.trueX = this.X;
             this.trueY = this.Y;
@@ -177,5 +177,7 @@ namespace AutomatedCar.Models
 #pragma warning restore SA1101 // Prefix local calls with this
 #pragma warning restore SA1600 // Elements should be documented
         }
+
+        public PolylineGeometry Geometry { get; set; }
     }
 }
