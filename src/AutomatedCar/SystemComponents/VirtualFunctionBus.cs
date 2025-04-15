@@ -5,6 +5,8 @@ namespace AutomatedCar.SystemComponents
 
     public class VirtualFunctionBus : GameBase
     {
+        public Powertrain Powertrain { get; set; } = new Powertrain();
+
         private List<SystemComponent> components = new List<SystemComponent>();
 
         public IReadOnlyDummyPacket DummyPacket { get; set; }
@@ -24,6 +26,7 @@ namespace AutomatedCar.SystemComponents
 
         protected override void Tick()
         {
+            Powertrain.Process();
             foreach (SystemComponent component in this.components)
             {
                 component.Process();
