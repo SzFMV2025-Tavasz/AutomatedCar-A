@@ -47,10 +47,10 @@
                             <ProgressBar Value="50"></ProgressBar>
                             <Separator Height="12"></Separator>
                             <Image
-                  Width="90" Height="90"
-                  Source="resm:AutomatedCar.Assets.steering-wheel.png?assembly=AutomatedCar">
+                                Width="90" Height="90"
+                                Source="resm:AutomatedCar.Assets.steering-wheel.png?assembly=AutomatedCar">
                                 <Image.RenderTransform>
-                                  <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.State}"/>
+                                  <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.SteeringWheelState}"/>
                                 </Image.RenderTransform>
                             </Image>
                             <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
@@ -62,10 +62,8 @@
                                 <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Filename}"/>
                                 <TextBlock Grid.Row="3" Grid.Column="0">Rotation:</TextBlock>
                                 <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Rotation}"/>
-                                <TextBlock Grid.Row="4" Grid.Column="0">Distance X:</TextBlock>
-                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceX}"/>
-                                <TextBlock Grid.Row="5" Grid.Column="0">Distance Y:</TextBlock>
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.DummyPacket.DistanceY}"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0">Front wheels rotation:</TextBlock>
+                                <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.FrontWheelState}"/>
                             </Grid>
                         </StackPanel>
                     </DataTemplate>

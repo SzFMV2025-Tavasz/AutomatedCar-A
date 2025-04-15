@@ -42,36 +42,6 @@ namespace AutomatedCar.ViewModels
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
 
-        public void KeyUp()
-        {
-            World.Instance.ControlledCar.Y -= 5;
-        }
-
-        public void KeyDown()
-        {
-            World.Instance.ControlledCar.Y += 5;
-        }
-
-        public void KeyLeft()
-        {
-            World.Instance.ControlledCar.X -= 5;
-        }
-
-        public void KeyRight()
-        {
-            World.Instance.ControlledCar.X += 5;
-        }
-
-        public void PageUp()
-        {
-            World.Instance.ControlledCar.Rotation += 5;
-        }
-
-        public void PageDown()
-        {
-            World.Instance.ControlledCar.Rotation -= 5;
-        }
-
         public void ToggleDebug()
         {
             this.debugStatus.Enabled = !this.debugStatus.Enabled;
