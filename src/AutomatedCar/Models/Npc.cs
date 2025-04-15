@@ -76,7 +76,7 @@ namespace AutomatedCar.Models
                 double YtoXRatio = deltaY / deltaX;
                 double LengthRatio = Math.Abs(deltaY / stintLength);
                 changeY = (pixelPerTick * LengthRatio) * (deltaY / Math.Abs(deltaY));
-                changeX = Math.Abs(changeY) / YtoXRatio;
+                changeX = changeY / YtoXRatio;
             }
 
             // Until here
