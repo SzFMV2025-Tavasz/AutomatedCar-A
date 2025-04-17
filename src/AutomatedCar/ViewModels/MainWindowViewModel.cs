@@ -29,6 +29,7 @@
         public void NextControlledCar()
         {
             World.Instance.NextControlledCar();
+            this.CourseDisplay.UpdateControlledCarEvents();
             this.Dashboard = new DashboardViewModel(World.Instance.ControlledCar);
         }
 
