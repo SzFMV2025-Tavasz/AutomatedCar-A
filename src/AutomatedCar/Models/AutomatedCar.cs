@@ -18,7 +18,8 @@ namespace AutomatedCar.Models
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
-            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new SteeringPowertrainDraft(this.virtualFunctionBus, this));
             this.ZIndex = 10;
         }
 
