@@ -17,9 +17,7 @@ namespace AutomatedCar.SystemComponents
 
         private double acceleration_throttle = 0;  //in pixel/tick   //non negative real number
 
-        private const double delta_acceleration = 0.035; //in pixel/tick   //non negative real number     //acceleration increment during one tick
-
-        private const double acceleration_friction = 0;        //in pixel/tick  
+        private const double acceleration_friction = 0;        //in pixel/tick      //Egyelőre.
 
         private int tick_counter = 0; //in ticks        //for smoother appereance
 
@@ -63,7 +61,7 @@ namespace AutomatedCar.SystemComponents
         //Functions:
         public void Process()
         {
-            this.Update_Accelerations_debug();
+            this.Update_Accelerations();
             this.tick_counter++;
 
             var a = this.acceleration_throttle + this.acceleration_brake + acceleration_friction;
@@ -95,56 +93,50 @@ namespace AutomatedCar.SystemComponents
             this.Velocity_Dashboard = v * GameBase.TicksPerSecond / 50;
         }
 
+        //constants: 
+        //60 = GameBase.TicksPerSecond,  
+        //0,2 = max acceleration for throttle and brake, 
+        //0.001 = epsilon
         private void Update_Accelerations()
         {
-            if (this.Throttle_ON && this.Throttle_Dashboard < 100)
-            {
-                ++this.Throttle_Dashboard;
-            }
-
-            if (!this.Throttle_ON && this.Throttle_Dashboard > 0)
-            {
-                --this.Throttle_Dashboard;
-            }
-
-            if (this.Brake_ON && this.Brake_Dashboard > -100)
-            {
-                --this.Brake_Dashboard;
-            }
-
-            if (!this.Brake_ON && this.Brake_Dashboard < 0)
-            {
-                ++this.Brake_Dashboard;
-            }
-
-            this.acceleration_throttle = this.Throttle_Dashboard * delta_acceleration; //10 pixel/tick max
-            this.acceleration_brake = this.Brake_Dashboard * delta_acceleration; //10 pixel/tick max
-        }
-
-        private void Update_Accelerations_debug()
-        {
-            const double a_debug = 0.2;
             if (this.Throttle_ON)
             {
-                this.Throttle_Dashboard = 1;
-                this.acceleration_throttle = a_debug;
-                ;
+                this.acceleration_throttle += 0.003;                         // 0.003 = 0.2 / 60
+                if (this.acceleration_throttle >= 0.2 - 0.0001)
+                {
+                    this.acceleration_throttle = 0.2;
+                }
             }
+
             if (!this.Throttle_ON)
             {
-                this.Throttle_Dashboard = 0;
-                this.acceleration_throttle = 0;
+                this.acceleration_throttle -= 0.003;
+                if (this.acceleration_throttle <= 0 + 0.0001)
+                {
+                    this.acceleration_throttle = 0;
+                }
             }
+
             if (this.Brake_ON)
             {
-                this.Brake_Dashboard = 1;
-                this.acceleration_brake = (-1) * a_debug;
+                this.acceleration_brake -= 0.003;
+                if (this.acceleration_brake <= -0.2 + 0.0001)
+                {
+                    this.acceleration_brake = -0.2;
+                }
             }
+
             if (!this.Brake_ON)
             {
-                this.Brake_Dashboard = 0;
-                this.acceleration_brake = 0;
+                this.acceleration_brake += 0.003;
+                if (this.acceleration_brake >= 0 - 0.0001)
+                {
+                    this.acceleration_brake = 0;
+                }
             }
+
+            this.Throttle_Dashboard = (int)(this.acceleration_throttle / 0.002);    // 0.002 = 0.2 / 100
+            this.Brake_Dashboard = -1 * (int)(this.acceleration_brake / 0.002);
         }
     }
 }
