@@ -28,18 +28,12 @@ namespace AutomatedCar.SystemComponents
         //public bool Reverse_ON { get; set; } = false;
 
         //Notifcations:
-        private double acceleration_dashboard = 0; //in km/h
 
         private double velocity_dashboard = 0;     //in km/h
 
         private int throttle_dashboard = 0;        //an integer on [0,100] interval
 
         private int brake_dashboard = 0;           //an integer on [-100,0] interval
-        public double Acceleration_Dashboard
-        {
-            get => this.acceleration_dashboard;
-            set => this.RaiseAndSetIfChanged(ref this.acceleration_dashboard, value);
-        }
 
         public double Velocity_Dashboard
         {
@@ -75,14 +69,12 @@ namespace AutomatedCar.SystemComponents
             if(this.tick_counter == 10)
             {
                 double radian = (World.Instance.ControlledCar.Rotation * Math.PI / 180) - (Math.PI / 2);   //90 fokkal kompenzáljuk a kezdeti elforgatást
-                int incx = (int)( 10 * v * Math.Cos(radian));
+                int incx = (int)( 10 * v * Math.Cos(radian));       //irányvektor = i=(cos(fi-90),sin(fi-90)).  (Ebbe az irányba néz az autó.)
                 int incy = (int)( 10 * v * Math.Sin(radian));
                 World.Instance.ControlledCar.X += incx;
                 World.Instance.ControlledCar.Y += incy;
                 this.tick_counter = 0;
             }
-
-            this.Acceleration_Dashboard = 3.6 * a * GameBase.TicksPerSecond / 50;   //MeterToPixels = 50
             this.Velocity_Dashboard = 3.6 * v * GameBase.TicksPerSecond / 50;
         }
 
