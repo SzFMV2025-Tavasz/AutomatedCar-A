@@ -77,7 +77,7 @@ namespace Tests.Models
         {
             //Arrange
             car.Geometries.Add(new PolylineGeometry(new List<Point> { new Point(0, 0)}, true));
-            car.Speed = 10;
+            car.Velocity = 10;
 
             var testObject = new Circle(0, 10, "object1.png", 1);
             testObject.Collideable = true;

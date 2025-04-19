@@ -10,6 +10,12 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            this.Loaded += (sender, e) =>
+            {
+                var viewModel = (MainWindowViewModel)this.DataContext;
+                var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
+                viewModel.CourseDisplay.ScrollViewer = scrollViewer;
+            };
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -18,6 +24,27 @@ namespace AutomatedCar.Views
             base.OnKeyDown(e);
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+
+            if (Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.Throttle_ON();
+            }
+
+            if (Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.Brake_ON();
+            }
+
+            if (Keyboard.IsKeyDown(Key.Left))
+            {
+                viewModel.CourseDisplay.KeyLeft();
+            }
+
+            if (Keyboard.IsKeyDown(Key.Right))
+            {
+                viewModel.CourseDisplay.KeyRight();
+            }
 
             if (Keyboard.IsKeyDown(Key.D1))
             {
@@ -59,17 +86,28 @@ namespace AutomatedCar.Views
             if (Keyboard.IsKeyDown(Key.F6))
             {
                 viewModel.PrevControlledCar();
-                Keyboard.Keys.Remove(Key.F5);
+                Keyboard.Keys.Remove(Key.F6);
             }
 
-            var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
-            viewModel.CourseDisplay.FocusCar(scrollViewer);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
+
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (e.Key == Key.Up)
+            {
+                viewModel.CourseDisplay.Throttle_OFF();
+            }
+
+            if (e.Key == Key.Down)
+            {
+                viewModel.CourseDisplay.Brake_OFF();
+            }
+
         }
 
         private void InitializeComponent()

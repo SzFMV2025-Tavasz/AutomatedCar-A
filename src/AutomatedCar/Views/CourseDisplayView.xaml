@@ -19,7 +19,7 @@
     </Style>
   </UserControl.Styles>
 
-  <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Offset="{Binding Offset, Mode=OneWay}" >
+  <ScrollViewer HorizontalAlignment="Left" VerticalAlignment="Top" Name="scrollViewer" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Offset="{Binding Offset, Mode=OneWay}">
     <ItemsControl Name="CourseDisplay" ItemsSource="{Binding WorldObjects, Mode=OneWay}" Width="{Binding Width, Mode=OneWay}" Height="{Binding Height, Mode=OneWay}" HorizontalAlignment="Left" VerticalAlignment="Top">
 
       <ItemsControl.ItemsPanel>
