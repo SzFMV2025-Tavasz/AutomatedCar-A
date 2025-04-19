@@ -46,7 +46,6 @@ namespace AutomatedCar.Views
                 viewModel.CourseDisplay.KeyRight();
             }
 
-
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
@@ -108,6 +107,7 @@ namespace AutomatedCar.Views
             {
                 viewModel.CourseDisplay.Brake_OFF();
             }
+
         }
 
         private void InitializeComponent()

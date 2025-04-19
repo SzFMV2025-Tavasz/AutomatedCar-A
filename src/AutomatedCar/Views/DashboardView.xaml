@@ -69,10 +69,10 @@
                                 <TextBlock Grid.Row="4" Grid.Column="0">Front wheels rotation:</TextBlock>
                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.FrontWheelState}"/>
 
-								<TextBlock Grid.Row="5" Grid.Column="0">V(m/sec): </TextBlock>
+								<TextBlock Grid.Row="5" Grid.Column="0">V(km/h): </TextBlock>
                                 <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Velocity_Dashboard}"/>
 
-                                <TextBlock Grid.Row="6" Grid.Column="0">A(m/sec^2): </TextBlock>
+                                <TextBlock Grid.Row="6" Grid.Column="0">A(km/h^2): </TextBlock>
                                 <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Acceleration_Dashboard}"/>
 
                                 <TextBlock Grid.Row="7" Grid.Column="0">Throttle: </TextBlock>

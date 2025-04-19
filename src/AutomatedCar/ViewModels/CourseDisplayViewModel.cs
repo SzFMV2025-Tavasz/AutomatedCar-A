@@ -75,6 +75,7 @@ namespace AutomatedCar.ViewModels
         {
             World.Instance.ControlledCar.Rotation += 5;
         }
+
         public void ToggleDebug()
         {
             this.debugStatus.Enabled = !this.debugStatus.Enabled;

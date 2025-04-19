@@ -17,19 +17,20 @@ namespace AutomatedCar.SystemComponents
 
         private double acceleration_throttle = 0;  //in pixel/tick   //non negative real number
 
-        private const double acceleration_friction = 0;        //in pixel/tick      //Egyelőre.
+        private const double acceleration_friction = 0;        //in pixel/tick      //Can be set.
 
         private int tick_counter = 0; //in ticks        //for smoother appereance
 
         //Buttons:
-        public bool Reverse_ON { get; set; } = false;
         public bool Throttle_ON { get; set; } = false;
         public bool Brake_ON { get; set; } = false;
 
-        //Notifcations:
-        private double acceleration_dashboard = 0; //in meter/second
+        //public bool Reverse_ON { get; set; } = false;
 
-        private double velocity_dashboard = 0;     //in meter/second
+        //Notifcations:
+        private double acceleration_dashboard = 0; //in km/h
+
+        private double velocity_dashboard = 0;     //in km/h
 
         private int throttle_dashboard = 0;        //an integer on [0,100] interval
 
@@ -76,21 +77,13 @@ namespace AutomatedCar.SystemComponents
                 double radian = (World.Instance.ControlledCar.Rotation * Math.PI / 180) - (Math.PI / 2);   //90 fokkal kompenzáljuk a kezdeti elforgatást
                 int incx = (int)( 10 * v * Math.Cos(radian));
                 int incy = (int)( 10 * v * Math.Sin(radian));
-                if(!this.Reverse_ON)
-                {
-                    World.Instance.ControlledCar.X += incx;
-                    World.Instance.ControlledCar.Y += incy;
-                }
-                else
-                {
-                    World.Instance.ControlledCar.X -= incx;
-                    World.Instance.ControlledCar.Y -= incy;
-                }
+                World.Instance.ControlledCar.X += incx;
+                World.Instance.ControlledCar.Y += incy;
                 this.tick_counter = 0;
             }
 
-            this.Acceleration_Dashboard = a * GameBase.TicksPerSecond / 50;   //MeterToPixels = 50
-            this.Velocity_Dashboard = v * GameBase.TicksPerSecond / 50;
+            this.Acceleration_Dashboard = 3.6 * a * GameBase.TicksPerSecond / 50;   //MeterToPixels = 50
+            this.Velocity_Dashboard = 3.6 * v * GameBase.TicksPerSecond / 50;
         }
 
         //constants: 
