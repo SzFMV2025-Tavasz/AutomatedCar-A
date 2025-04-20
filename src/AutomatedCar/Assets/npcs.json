@@ -13,19 +13,19 @@
       },
       {
         "rotation": 0,
-        "speed": 30,
+        "speed": 40,
         "x": 385,
         "y": 810
       },
       {
         "rotation": 10,
-        "speed": 20,
+        "speed": 30,
         "x": 385,
         "y": 660
       },
       {
         "rotation": 35,
-        "speed": 20,
+        "speed": 25,
         "x": 445,
         "y": 525
       },
@@ -37,15 +37,21 @@
       },
       {
         "rotation": 75,
-        "speed": 20,
+        "speed": 30,
         "x": 580,
+        "y": 425
+      },
+      {
+        "rotation": 85,
+        "speed": 35,
+        "x": 640,
         "y": 415
       },
       {
         "rotation": 90,
-        "speed": 30,
+        "speed": 40,
         "x": 675,
-        "y": 450
+        "y": 405
       },
       {
         "rotation": 90,
@@ -55,73 +61,73 @@
       },
       {
         "rotation": 90,
-        "speed": 30,
+        "speed": 40,
         "x": 2935,
         "y": 405
       },
       {
         "rotation": 105,
-        "speed": 20,
+        "speed": 30,
         "x": 3150,
         "y": 410
       },
       {
         "rotation": 115,
-        "speed": 20,
+        "speed": 25,
         "x": 3245,
         "y": 455
       },
       {
         "rotation": 135,
-        "speed": 30,
+        "speed": 20,
         "x": 3375,
         "y": 565
       },
       {
-        "rotation": 135,
-        "speed": 20,
+        "rotation": 145,
+        "speed": 30,
         "x": 3510,
         "y": 700
       },
       {
         "rotation": 160,
-        "speed": 30,
+        "speed": 40,
         "x": 3595,
         "y": 830
       },
       {
         "rotation": 180,
-        "speed": 50,
+        "speed": 45,
         "x": 3615,
         "y": 975
       },
       {
         "rotation": 180,
-        "speed": 30,
+        "speed": 50,
         "x": 3615,
         "y": 2185
       },
       {
         "rotation": 200,
-        "speed": 20,
+        "speed": 40,
         "x": 3605,
         "y": 2365
       },
       {
         "rotation": 230,
-        "speed": 20,
+        "speed": 30,
         "x": 3550,
         "y": 2480
       },
       {
         "rotation": 250,
-        "speed": 30,
+        "speed": 40,
         "x": 3465,
         "y": 2550
       },
       {
         "rotation": 270,
-        "speed": 40,
+        "speed": 50,
         "x": 3260,
         "y": 2575
       },
@@ -133,55 +139,55 @@
       },
       {
         "rotation": 270,
-        "speed": 50,
+        "speed": 60,
         "x": 1630,
         "y": 2575
       },
       {
         "rotation": 270,
-        "speed": 40,
+        "speed": 60,
         "x": 1375,
         "y": 2575
       },
       {
         "rotation": 270,
-        "speed": 30,
+        "speed": 50,
         "x": 1010,
         "y": 2575
       },
       {
         "rotation": 285,
-        "speed": 20,
+        "speed": 35,
         "x": 825,
         "y": 2555
       },
       {
         "rotation": 300,
-        "speed": 20,
+        "speed": 25,
         "x": 730,
         "y": 2515
       },
       {
         "rotation": 315,
-        "speed": 30,
+        "speed": 25,
         "x": 635,
         "y": 2430
       },
       {
-        "rotation": 315,
-        "speed": 20,
+        "rotation": 325,
+        "speed": 35,
         "x": 495,
         "y": 2285
       },
       {
-        "rotation": 335,
-        "speed": 20,
+        "rotation": 345,
+        "speed": 40,
         "x": 415,
         "y": 2185
       },
       {
         "rotation": 0,
-        "speed": 30,
+        "speed": 40,
         "x": 385,
         "y": 2010
       },
@@ -201,49 +207,49 @@
     "points": [
       {
         "rotation": 0,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1645,
         "y": 550
       },
       {
         "rotation": 270,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1645,
         "y": 70
       },
       {
         "rotation": 180,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1240,
         "y": 70
       },
       {
         "rotation": 90,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1240,
         "y": 110
       },
       {
         "rotation": 180,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1550,
         "y": 110
       },
       {
         "rotation": 90,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 1550,
         "y": 635
       },
       {
         "rotation": 0,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 2030,
         "y": 635
       },
       {
         "rotation": 270,
-        "speed": 3.2,
+        "speed": 6.4,
         "x": 2030,
         "y": 550
       }
