@@ -25,25 +25,34 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
+            if (Keyboard.IsKeyDown(Key.F3))
+{
+                viewModel.CourseDisplay.ToggleReverse();
+                Keyboard.Keys.Remove(Key.F3);
+            }
 
             if (Keyboard.IsKeyDown(Key.Up))
             {
                 viewModel.CourseDisplay.Throttle_ON();
+                Keyboard.Keys.Remove(Key.Up);
             }
 
             if (Keyboard.IsKeyDown(Key.Down))
             {
                 viewModel.CourseDisplay.Brake_ON();
+                Keyboard.Keys.Remove(Key.Down);
             }
 
             if (Keyboard.IsKeyDown(Key.Left))
             {
                 viewModel.CourseDisplay.KeyLeft();
+                Keyboard.Keys.Remove(Key.Left);
             }
 
             if (Keyboard.IsKeyDown(Key.Right))
             {
                 viewModel.CourseDisplay.KeyRight();
+                Keyboard.Keys.Remove(Key.Right);
             }
 
             if (Keyboard.IsKeyDown(Key.D1))

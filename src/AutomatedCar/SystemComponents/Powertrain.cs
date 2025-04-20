@@ -22,10 +22,10 @@ namespace AutomatedCar.SystemComponents
         private int tick_counter = 0; //in ticks        //for smoother appereance
 
         //Buttons:
-        public bool Throttle_ON { get; set; } = false;
-        public bool Brake_ON { get; set; } = false;
+        public static bool Throttle_ON { get; set; } = false;
+        public static bool Brake_ON { get; set; } = false;
 
-        //public bool Reverse_ON { get; set; } = false;
+        public static bool Reverse_ON { get; set; } = false;
 
         //Notifcations:
 
@@ -58,6 +58,7 @@ namespace AutomatedCar.SystemComponents
         {
             this.Update_Accelerations();
             this.tick_counter++;
+            Console.WriteLine($"Throttle: {this.acceleration_throttle}, Brake: {this.acceleration_brake} , Tick: {this.tick_counter}");
 
             var a = this.acceleration_throttle + this.acceleration_brake + acceleration_friction;
             World.Instance.ControlledCar.Acceleration = a;
@@ -71,8 +72,14 @@ namespace AutomatedCar.SystemComponents
                 double radian = (World.Instance.ControlledCar.Rotation * Math.PI / 180) - (Math.PI / 2);   //90 fokkal kompenzáljuk a kezdeti elforgatást
                 int incx = (int)( 10 * v * Math.Cos(radian));       //irányvektor = i=(cos(fi-90),sin(fi-90)).  (Ebbe az irányba néz az autó.)
                 int incy = (int)( 10 * v * Math.Sin(radian));
+                if (Reverse_ON)
+                {
+                    incx = -incx;
+                    incy = -incy;
+                }
                 World.Instance.ControlledCar.X += incx;
                 World.Instance.ControlledCar.Y += incy;
+                Console.WriteLine($"Car position - X: {World.Instance.ControlledCar.X}, Y: {World.Instance.ControlledCar.Y}, Reverse: {Reverse_ON}, Throttle_ON: {Throttle_ON}, Brake_ON: {Brake_ON}, Velocity: {v}, Acceleration: {a}");
                 this.tick_counter = 0;
             }
             this.Velocity_Dashboard = 3.6 * v * GameBase.TicksPerSecond / 50;
@@ -81,10 +88,10 @@ namespace AutomatedCar.SystemComponents
         //constants: 
         //60 = GameBase.TicksPerSecond,  
         //0,2 = max acceleration for throttle and brake, 
-        //0.001 = epsilon
+        //0.0001 = epsilon
         private void Update_Accelerations()
         {
-            if (this.Throttle_ON)
+            if (Throttle_ON)
             {
                 this.acceleration_throttle += 0.003;                         // 0.003 = 0.2 / 60
                 if (this.acceleration_throttle >= 0.2 - 0.0001)
@@ -93,7 +100,7 @@ namespace AutomatedCar.SystemComponents
                 }
             }
 
-            if (!this.Throttle_ON)
+            if (!Throttle_ON)
             {
                 this.acceleration_throttle -= 0.003;
                 if (this.acceleration_throttle <= 0 + 0.0001)
@@ -102,7 +109,7 @@ namespace AutomatedCar.SystemComponents
                 }
             }
 
-            if (this.Brake_ON)
+            if (Brake_ON)
             {
                 this.acceleration_brake -= 0.003;
                 if (this.acceleration_brake <= -0.2 + 0.0001)
@@ -111,7 +118,7 @@ namespace AutomatedCar.SystemComponents
                 }
             }
 
-            if (!this.Brake_ON)
+            if (!Brake_ON)
             {
                 this.acceleration_brake += 0.003;
                 if (this.acceleration_brake >= 0 - 0.0001)

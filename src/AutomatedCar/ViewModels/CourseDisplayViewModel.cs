@@ -6,6 +6,7 @@ using ReactiveUI;
 
 namespace AutomatedCar.ViewModels
 {
+    using AutomatedCar.SystemComponents;
     using Avalonia.Controls;
     using Models;
     using System;
@@ -46,25 +47,33 @@ namespace AutomatedCar.ViewModels
             get => this.debugStatus;
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
-
+        public void ToggleReverse()
+        {
+            Powertrain.Reverse_ON = !Powertrain.Reverse_ON;
+            Console.WriteLine($"### ToggleReverse called");
+        }
         public void Throttle_ON()
         {
-            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Throttle_ON = true;
+            Powertrain.Throttle_ON = true; 
+            Console.WriteLine($"### Throttle_On() called");
         }
 
         public void Throttle_OFF()
         {
-            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Throttle_ON = false;
+            Powertrain.Throttle_ON = false; 
+            Console.WriteLine($"### Throttle_OFF() called");
         }
 
         public void Brake_ON()
         {
-            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Brake_ON = true;
+            Powertrain.Brake_ON = true; 
+            Console.WriteLine($"### Brake_On() called");
         }
 
         public void Brake_OFF()
         {
-            World.Instance.ControlledCar.VirtualFunctionBus.Powertrain.Brake_ON = false;
+            Powertrain.Brake_ON = false; 
+            Console.WriteLine($"### Brake_OFF() called");
         }
         public void KeyLeft()
         {
