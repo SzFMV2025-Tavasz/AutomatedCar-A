@@ -14,6 +14,9 @@ namespace AutomatedCar.Models
         private Speed velocity;
         private Vector2 direction;
 
+        private double xD;
+        private double yD;
+
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
@@ -21,6 +24,8 @@ namespace AutomatedCar.Models
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus));
             this.virtualFunctionBus.RegisterComponent(new SteeringPowertrainDraft(this.virtualFunctionBus, this));
             this.ZIndex = 10;
+            this.XD = x;
+            this.YD = y;
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
@@ -63,6 +68,26 @@ namespace AutomatedCar.Models
 
                 float angleRadians = (float)Math.Atan2(value.Y, value.X);
                 this.Rotation = angleRadians * (180 / Math.PI);
+            }
+        }
+
+        public double XD
+        {
+            get => this.xD;
+            set
+            {
+                this.X = (int)value;
+                this.xD = value;
+            }
+        }
+
+        public double YD
+        {
+            get => this.yD;
+            set
+            {
+                this.Y = (int)value;
+                this.yD = value;
             }
         }
 
