@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using System.Numerics;
     using System.Text;
     using System.Threading.Tasks;
     using AutomatedCar.Helpers;
@@ -35,26 +36,31 @@
         public override void Process()
         {
             int frontWheelRotation = this.virtualFunctionBus.SteeringWheelPacket.FrontWheelState;
-            if (frontWheelRotation == 0) return;
-            frontWheelRotation = -60;
+            if (frontWheelRotation == 0)
+            {
+                return;
+            }
 
-            int offset = this.CalculateRotationOffsetToRearWheels(FrontRearWheelsDistance, Math.Abs(frontWheelRotation));
-            offset = frontWheelRotation < 0 ? -offset : offset;
+            var rotationOffset = this.CalculateRotationOffsetToRearWheels(FrontRearWheelsDistance, frontWheelRotation);
+            var angularVelocity = this.CalculateAngularVelocity(frontWheelRotation);
 
-            var angularVelocity = 0.1;
-            angularVelocity = frontWheelRotation < 0 ? -angularVelocity : angularVelocity;
+            // Rotate car
             this.car.Rotation += angularVelocity;
 
-            // TODO recalculate X,Y
-            Point rp = new Point(54 + offset, CarFrontRearWheelsDistance);
-            PointF newCarCoordinates = this.RotatePoint(
+            //Recalculate rotation point
+            Point originalRp = this.car.RotationPoint;
+            Point rp = new Point(54 + rotationOffset, CarFrontRearWheelsDistance);
+            this.car.RotationPoint = rp;
+
+            // Move car
+            var moveVector = this.CalculateMoveVector(
                 new PointF((float)this.car.XD, (float)this.car.YD),
-                rp,
+                this.car.RotationPoint,
                 (float)angularVelocity);
-            this.car.XD = newCarCoordinates.X;
-            this.car.YD = newCarCoordinates.Y;
-            
-            // TODO calculate direction
+            this.car.XD += moveVector.X;
+            this.car.YD += moveVector.Y;
+
+            this.car.RotationPoint = originalRp;
         }
 
         /// <summary>
@@ -70,29 +76,33 @@
                 return 0;
             }
 
-            var wheelRotationRad = wheelRotation * (float)(Math.PI / 180);
-            var resultRad = carLength / Math.Tan(wheelRotationRad);
+            double wheelRotationAbs = Math.Abs(wheelRotation);
+            var wheelRotationRad = wheelRotationAbs * (float)(Math.PI / 180);
+            var offset = (int)(carLength / Math.Tan(wheelRotationRad));
 
-            return (int)resultRad;
+            return wheelRotation < 0 ? -offset : offset;
         }
 
-        private PointF CalculateNewCoordinates(PointF carPosition, int offset, float rotation)
+        private double CalculateAngularVelocity(int frontWheelRotation)
         {
-            var offsetVector = new PointF(offset, 0);
-
-            return new PointF(carPosition.X - offsetVector.X, carPosition.Y - offsetVector.Y);
+            var angularVelocity = 0.1;
+            return frontWheelRotation < 0 ? -angularVelocity : angularVelocity;
         }
 
-        private PointF RotatePoint(PointF A, PointF O, float angleDegrees)
+        private Vector2 CalculateMoveVector(PointF carPosition, PointF rotationPoint, float angularVelocity)
         {
-            float angleRadians = angleDegrees * (float)(Math.PI / 180); // Convert degrees to radians
-            float cosTheta = (float)Math.Cos(angleRadians);
-            float sinTheta = (float)Math.Sin(angleRadians);
+            float angularVelocityRad = (float)(angularVelocity * (Math.PI / 180));
 
-            float Bx = O.X + (A.X - O.X) * cosTheta - (A.Y - O.Y) * sinTheta;
-            float By = O.Y + (A.X - O.X) * sinTheta + (A.Y - O.Y) * cosTheta;
+            var absoluteRotationPoint = this.AbsoluteRotationPoint(carPosition, rotationPoint);
+            var carOldPositionToRotationPoint = new Vector2(absoluteRotationPoint.X - carPosition.X, absoluteRotationPoint.Y - carPosition.Y);
+            var rotationPointToCarNewPosition = new Vector2(carPosition.X - absoluteRotationPoint.X, carPosition.Y - absoluteRotationPoint.Y).Rotate(angularVelocityRad);
 
-            return new PointF(Bx, By);
+            return new Vector2(carOldPositionToRotationPoint.X + rotationPointToCarNewPosition.X, carOldPositionToRotationPoint.Y + rotationPointToCarNewPosition.Y);
+        }
+
+        private PointF AbsoluteRotationPoint(PointF carPosition, PointF rotationPoint)
+        {
+            return new PointF(carPosition.X + rotationPoint.X, carPosition.Y + rotationPoint.Y);
         }
     }
 }
