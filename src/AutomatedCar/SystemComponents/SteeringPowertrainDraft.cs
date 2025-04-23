@@ -50,7 +50,7 @@
 
             // Recalculate rotation point
             Point originalRp = this.car.RotationPoint;
-            this.car.RotationPoint = this.CalculateNewRotationPoint(rotationOffset, this.car.Rotation);
+            this.car.RotationPoint = this.CalculateNewRotationPoint(originalRp, rotationOffset, this.car.Rotation);
 
             // Move car
             var moveVector = this.CalculateMoveVector(
@@ -72,7 +72,6 @@
         /// <returns>The offset of the rotation point from the rear wheels.</returns>
         private int CalculateRotationOffsetToRearWheels(double carLength, double wheelRotation)
         {
-            // TODO: something feels off with the offset. Rotating to the left feels like a sharper angle than to the right.
             if (wheelRotation == 0)
             {
                 return 0;
@@ -131,10 +130,10 @@
         /// <param name="rotationOffset">The offset of the rotation point relative to the rear wheels.</param>
         /// <param name="carRotation">The current rotation of the car.</param>
         /// <returns>The new rotation point is relative to the car.</returns>
-        private Point CalculateNewRotationPoint(int rotationOffset, double carRotation)
+        private Point CalculateNewRotationPoint(Point oldRotationPoint, int rotationOffset, double carRotation)
         {
             var rotatedRotationPoint =
-                new Vector2(54 + rotationOffset, FrontRearWheelsDistance)
+                new Vector2(rotationOffset + 54 - oldRotationPoint.X, CarFrontRearWheelsDistance - oldRotationPoint.Y)
                 .Rotate((float)carRotation.ToRadian());
             return new Point((int)rotatedRotationPoint.X, (int)rotatedRotationPoint.Y);
         }
