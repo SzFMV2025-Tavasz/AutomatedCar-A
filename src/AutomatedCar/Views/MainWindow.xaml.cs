@@ -25,10 +25,18 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
-            if (Keyboard.IsKeyDown(Key.F3))
-{
-                viewModel.CourseDisplay.ToggleReverse();
-                Keyboard.Keys.Remove(Key.F3);
+            // Q billentyű: váltás felfelé
+            if (Keyboard.IsKeyDown(Key.Q))
+            {
+                viewModel.CourseDisplay.ShiftGearUp();
+                Keyboard.Keys.Remove(Key.Q);
+            }
+            
+            // A billentyű: váltás lefelé
+            if (Keyboard.IsKeyDown(Key.A))
+            {
+                viewModel.CourseDisplay.ShiftGearDown();
+                Keyboard.Keys.Remove(Key.A);
             }
 
             if (Keyboard.IsKeyDown(Key.Up))
@@ -115,6 +123,16 @@ namespace AutomatedCar.Views
             if (e.Key == Key.Down)
             {
                 viewModel.CourseDisplay.Brake_OFF();
+            }
+
+            if (e.Key == Key.A)
+            {
+                viewModel.CourseDisplay.ShiftGearDown_Off();
+            }
+
+            if (e.Key == Key.Q)
+            {
+                viewModel.CourseDisplay.ShiftGearUp_Off();
             }
 
         }

@@ -27,7 +27,6 @@ namespace AutomatedCar.Models
         /// </summary>
 
         public double Velocity { get; set; } = 0;      //in pixel/tick     //non negative real number
-
         public double Acceleration { get; set; }       //in pixel/tick      //real number
         public PolylineGeometry Geometry { get; set; }
 

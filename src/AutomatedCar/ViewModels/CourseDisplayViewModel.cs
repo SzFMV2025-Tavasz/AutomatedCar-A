@@ -47,33 +47,46 @@ namespace AutomatedCar.ViewModels
             get => this.debugStatus;
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
-        public void ToggleReverse()
+
+        // Q billentyű: váltás felfelé
+        public void ShiftGearUp()
         {
-            Powertrain.Reverse_ON = !Powertrain.Reverse_ON;
-            Console.WriteLine($"### ToggleReverse called");
+            Transmission.ShiftGearUp = true;
         }
+        
+        // A billentyű: váltás lefelé
+        public void ShiftGearDown()
+        {
+            Transmission.ShiftGearDown = true;
+        }
+        
+        public void ShiftGearUp_Off()
+        {
+           Transmission.ShiftGearUp = false;
+        }
+        public void ShiftGearDown_Off()
+        {
+            Transmission.ShiftGearDown = false;
+        }
+
         public void Throttle_ON()
         {
-            Powertrain.Throttle_ON = true; 
-            Console.WriteLine($"### Throttle_On() called");
+            Powertrain.Throttle_ON = true;
         }
 
         public void Throttle_OFF()
         {
             Powertrain.Throttle_ON = false; 
-            Console.WriteLine($"### Throttle_OFF() called");
         }
 
         public void Brake_ON()
         {
             Powertrain.Brake_ON = true; 
-            Console.WriteLine($"### Brake_On() called");
         }
 
         public void Brake_OFF()
         {
             Powertrain.Brake_ON = false; 
-            Console.WriteLine($"### Brake_OFF() called");
         }
         public void KeyLeft()
         {

@@ -53,7 +53,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.SteeringWheelState}"/>
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
 								
@@ -77,6 +77,15 @@
 
                                 <TextBlock Grid.Row="7" Grid.Column="0">Brake:  </TextBlock>
                                 <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Brake_Dashboard}"/>
+
+                                <TextBlock Grid.Row="8" Grid.Column="0">Gear:  </TextBlock>
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.Gear}"/>
+
+								<TextBlock Grid.Row="9" Grid.Column="0">D[1:5]:  </TextBlock>
+								<TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.DState}"/>
+
+								<TextBlock Grid.Row="10" Grid.Column="0">state:  </TextBlock>
+								<TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.State}"/>
 
                             </Grid>
                         </StackPanel>
