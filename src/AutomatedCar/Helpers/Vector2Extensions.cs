@@ -14,6 +14,7 @@
         /// </summary>
         /// <param name="vector">The vector to rotate.</param>
         /// <param name="angle">The rotation angle in radians.</param>
+        /// <returns>A rotated vector.</returns>
         public static Vector2 Rotate(this Vector2 vector, float angle)
         {
             float x = vector.X;

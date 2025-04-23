@@ -35,6 +35,7 @@
 
         public override void Process()
         {
+            // Counting with edge cases
             int frontWheelRotation = this.virtualFunctionBus.SteeringWheelPacket.FrontWheelState;
             if (frontWheelRotation == 0)
             {
@@ -47,10 +48,9 @@
             // Rotate car
             this.car.Rotation += angularVelocity;
 
-            //Recalculate rotation point
+            // Recalculate rotation point
             Point originalRp = this.car.RotationPoint;
-            Point rp = new Point(54 + rotationOffset, CarFrontRearWheelsDistance);
-            this.car.RotationPoint = rp;
+            this.car.RotationPoint = this.CalculateNewRotationPoint(rotationOffset, this.car.Rotation);
 
             // Move car
             var moveVector = this.CalculateMoveVector(
@@ -60,6 +60,7 @@
             this.car.XD += moveVector.X;
             this.car.YD += moveVector.Y;
 
+            // Reset rotation point
             this.car.RotationPoint = originalRp;
         }
 
@@ -71,27 +72,40 @@
         /// <returns>The offset of the rotation point from the rear wheels.</returns>
         private int CalculateRotationOffsetToRearWheels(double carLength, double wheelRotation)
         {
+            // TODO: something feels off with the offset. Rotating to the left feels like a sharper angle than to the right.
             if (wheelRotation == 0)
             {
                 return 0;
             }
 
             double wheelRotationAbs = Math.Abs(wheelRotation);
-            var wheelRotationRad = wheelRotationAbs * (float)(Math.PI / 180);
-            var offset = (int)(carLength / Math.Tan(wheelRotationRad));
+            var offset = (int)(carLength / Math.Tan(wheelRotationAbs.ToRadian()));
 
             return wheelRotation < 0 ? -offset : offset;
         }
 
+        /// <summary>
+        /// Calculates the angular velocity of the car.
+        /// </summary>
+        /// <param name="frontWheelRotation">The rotation of the front wheels in degrees.</param>
+        /// <returns>The angular velocity.</returns>
         private double CalculateAngularVelocity(int frontWheelRotation)
         {
+            // TODO: calculate angular velocity
             var angularVelocity = 0.1;
             return frontWheelRotation < 0 ? -angularVelocity : angularVelocity;
         }
 
+        /// <summary>
+        /// Calculates the movement of the car.
+        /// </summary>
+        /// <param name="carPosition">The current position of the car.</param>
+        /// <param name="rotationPoint">The point which the car rotates around.</param>
+        /// <param name="angularVelocity">The angular velocity of the car.</param>
+        /// <returns>The movement vector of the car.</returns>
         private Vector2 CalculateMoveVector(PointF carPosition, PointF rotationPoint, float angularVelocity)
         {
-            float angularVelocityRad = (float)(angularVelocity * (Math.PI / 180));
+            float angularVelocityRad = (float)((double)angularVelocity).ToRadian();
 
             var absoluteRotationPoint = this.AbsoluteRotationPoint(carPosition, rotationPoint);
             var carOldPositionToRotationPoint = new Vector2(absoluteRotationPoint.X - carPosition.X, absoluteRotationPoint.Y - carPosition.Y);
@@ -100,9 +114,29 @@
             return new Vector2(carOldPositionToRotationPoint.X + rotationPointToCarNewPosition.X, carOldPositionToRotationPoint.Y + rotationPointToCarNewPosition.Y);
         }
 
+        /// <summary>
+        /// Calculates the absolute coordinates of the rotation point of the car (since it is relative to the position of the car).
+        /// </summary>
+        /// <param name="carPosition">The position of the car.</param>
+        /// <param name="rotationPoint">The relative rotation point of the car.</param>
+        /// <returns>The absolut coordinates of the rotation point.</returns>
         private PointF AbsoluteRotationPoint(PointF carPosition, PointF rotationPoint)
         {
             return new PointF(carPosition.X + rotationPoint.X, carPosition.Y + rotationPoint.Y);
+        }
+
+        /// <summary>
+        /// Calculates where the new rotation point is relative to the car.
+        /// </summary>
+        /// <param name="rotationOffset">The offset of the rotation point relative to the rear wheels.</param>
+        /// <param name="carRotation">The current rotation of the car.</param>
+        /// <returns>The new rotation point is relative to the car.</returns>
+        private Point CalculateNewRotationPoint(int rotationOffset, double carRotation)
+        {
+            var rotatedRotationPoint =
+                new Vector2(54 + rotationOffset, FrontRearWheelsDistance)
+                .Rotate((float)carRotation.ToRadian());
+            return new Point((int)rotatedRotationPoint.X, (int)rotatedRotationPoint.Y);
         }
     }
 }
