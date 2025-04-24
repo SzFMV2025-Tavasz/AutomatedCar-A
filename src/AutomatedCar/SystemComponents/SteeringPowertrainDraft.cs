@@ -43,7 +43,9 @@
             }
 
             var rotationOffset = this.CalculateRotationOffsetToRearWheels(FrontRearWheelsDistance, frontWheelRotation);
-            var angularVelocity = this.CalculateAngularVelocity(frontWheelRotation);
+
+            // var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(this.car.Speed));
+            var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(180));
 
             // Rotate car
             this.car.Rotation += angularVelocity;
@@ -87,12 +89,11 @@
         /// Calculates the angular velocity of the car.
         /// </summary>
         /// <param name="frontWheelRotation">The rotation of the front wheels in degrees.</param>
-        /// <returns>The angular velocity.</returns>
-        private double CalculateAngularVelocity(int frontWheelRotation)
+        /// <returns>The angular velocity in degrees.</returns>
+        private double CalculateAngularVelocity(int radius, Speed speed)
         {
-            // TODO: calculate angular velocity
-            var angularVelocity = 0.1;
-            return frontWheelRotation < 0 ? -angularVelocity : angularVelocity;
+            var angularVelocity = (speed.InPixelsPerTick() / radius).ToDegree();
+            return angularVelocity;
         }
 
         /// <summary>
