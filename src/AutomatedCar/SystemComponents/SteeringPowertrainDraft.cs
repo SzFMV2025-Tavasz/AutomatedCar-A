@@ -46,24 +46,18 @@
 
             // var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(this.car.Speed));
             var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(180));
+            var turningRotationPoint = this.CalculateNewRotationPoint(this.car.RotationPoint, rotationOffset, this.car.Rotation);
 
             // Rotate car
             this.car.Rotation += angularVelocity;
 
-            // Recalculate rotation point
-            Point originalRp = this.car.RotationPoint;
-            this.car.RotationPoint = this.CalculateNewRotationPoint(originalRp, rotationOffset, this.car.Rotation);
-
             // Move car
             var moveVector = this.CalculateMoveVector(
                 new PointF((float)this.car.XD, (float)this.car.YD),
-                this.car.RotationPoint,
+                turningRotationPoint,
                 (float)angularVelocity);
             this.car.XD += moveVector.X;
             this.car.YD += moveVector.Y;
-
-            // Reset rotation point
-            this.car.RotationPoint = originalRp;
         }
 
         /// <summary>
