@@ -25,7 +25,7 @@
         /// </summary>
         private const int CarFrontRearWheelsDistance = 180;
 
-        private AutomatedCar car;
+        private readonly AutomatedCar car;
 
         public SteeringPowertrainDraft(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
             : base(virtualFunctionBus)
@@ -35,7 +35,7 @@
 
         public override void Process()
         {
-            // Counting with edge cases
+            // Calculating with edge cases
             int frontWheelRotation = this.virtualFunctionBus.SteeringWheelPacket.FrontWheelState;
             if (frontWheelRotation == 0)
             {
@@ -88,7 +88,8 @@
         /// <summary>
         /// Calculates the angular velocity of the car.
         /// </summary>
-        /// <param name="frontWheelRotation">The rotation of the front wheels in degrees.</param>
+        /// <param name="radius">The turning radius in pixels.</param>
+        /// <param name="speed">The speed of the car.</param>
         /// <returns>The angular velocity in degrees.</returns>
         private double CalculateAngularVelocity(int radius, Speed speed)
         {
@@ -128,6 +129,7 @@
         /// <summary>
         /// Calculates where the new rotation point is relative to the car.
         /// </summary>
+        /// <param name="oldRotationPoint">The original rotation point of the car.</param>
         /// <param name="rotationOffset">The offset of the rotation point relative to the rear wheels.</param>
         /// <param name="carRotation">The current rotation of the car.</param>
         /// <returns>The new rotation point is relative to the car.</returns>
