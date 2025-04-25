@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -18,6 +19,16 @@ namespace AutomatedCar.Views
             base.OnKeyDown(e);
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (Keyboard.IsKeyDown(Key.Left))
+            {
+                World.Instance.ControlledCar.SteeringLeft = true;
+            }
+
+            if (Keyboard.IsKeyDown(Key.Right))
+            {
+                World.Instance.ControlledCar.SteeringRight = true;
+            }
 
             if (Keyboard.IsKeyDown(Key.D1))
             {
@@ -70,6 +81,16 @@ namespace AutomatedCar.Views
         {
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
+
+            if (!Keyboard.IsKeyDown(Key.Left))
+            {
+                World.Instance.ControlledCar.SteeringLeft = false;
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Right))
+            {
+                World.Instance.ControlledCar.SteeringRight = false;
+            }
         }
 
         private void InitializeComponent()

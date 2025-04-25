@@ -21,7 +21,7 @@ namespace AutomatedCar.Models
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
-            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new SteeringPowertrainDraft(this.virtualFunctionBus, this));
             this.ZIndex = 10;
             this.XD = x;
@@ -90,6 +90,10 @@ namespace AutomatedCar.Models
                 this.yD = value;
             }
         }
+
+        public bool SteeringLeft { get; set; }
+
+        public bool SteeringRight { get; set; }
 
         public PolylineGeometry Geometry { get; set; }
 
