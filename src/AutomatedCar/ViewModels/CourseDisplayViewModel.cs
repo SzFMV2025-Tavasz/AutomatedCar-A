@@ -54,8 +54,10 @@ namespace AutomatedCar.ViewModels
         }
         public void Throttle_ON()
         {
-            Powertrain.Throttle_ON = true; 
-            Console.WriteLine($"### Throttle_On() called");
+            if(Powertrain.Throttle_ON == false){
+                Console.WriteLine($"### Throttle_ON() called");
+                Powertrain.Throttle_ON = true; 
+            }
         }
 
         public void Throttle_OFF()
@@ -66,8 +68,10 @@ namespace AutomatedCar.ViewModels
 
         public void Brake_ON()
         {
-            Powertrain.Brake_ON = true; 
-            Console.WriteLine($"### Brake_On() called");
+            if(Powertrain.Brake_ON == false){
+                Console.WriteLine($"### Brake_ON() called");
+                Powertrain.Brake_ON = true;
+            }
         }
 
         public void Brake_OFF()

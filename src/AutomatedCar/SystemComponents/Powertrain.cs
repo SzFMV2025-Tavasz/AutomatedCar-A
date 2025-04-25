@@ -58,14 +58,17 @@ namespace AutomatedCar.SystemComponents
         {
             this.Update_Accelerations();
             this.tick_counter++;
-            Console.WriteLine($"Throttle: {this.acceleration_throttle}, Brake: {this.acceleration_brake} , Tick: {this.tick_counter}");
-
             var a = this.acceleration_throttle + this.acceleration_brake + acceleration_friction;
             World.Instance.ControlledCar.Acceleration = a;
 
             var v = World.Instance.ControlledCar.Velocity;
             v = Math.Max(0,  v + a);
             World.Instance.ControlledCar.Velocity = v;
+
+            Console.WriteLine("CurrentTick: " + World.Instance.ControlledCar.VirtualFunctionBus.CurrentTick + " tick_counter: " + this.tick_counter + " a: " + a);
+            Console.WriteLine($"a_t: {this.acceleration_throttle}, a_b: {this.acceleration_brake}");
+            Console.WriteLine($"X: {World.Instance.ControlledCar.X}, Y: {World.Instance.ControlledCar.Y}, Reverse: {Reverse_ON}, Throttle_ON: {Throttle_ON}, Brake_ON: {Brake_ON}, Velocity: {v}");
+            Console.WriteLine(); 
 
             if(this.tick_counter == 10)
             {
@@ -79,7 +82,6 @@ namespace AutomatedCar.SystemComponents
                 }
                 World.Instance.ControlledCar.X += incx;
                 World.Instance.ControlledCar.Y += incy;
-                Console.WriteLine($"Car position - X: {World.Instance.ControlledCar.X}, Y: {World.Instance.ControlledCar.Y}, Reverse: {Reverse_ON}, Throttle_ON: {Throttle_ON}, Brake_ON: {Brake_ON}, Velocity: {v}, Acceleration: {a}");
                 this.tick_counter = 0;
             }
             this.Velocity_Dashboard = 3.6 * v * GameBase.TicksPerSecond / 50;

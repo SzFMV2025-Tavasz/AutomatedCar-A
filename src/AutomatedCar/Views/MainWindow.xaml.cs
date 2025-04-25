@@ -34,13 +34,11 @@ namespace AutomatedCar.Views
             if (Keyboard.IsKeyDown(Key.Up))
             {
                 viewModel.CourseDisplay.Throttle_ON();
-                Keyboard.Keys.Remove(Key.Up);
             }
 
             if (Keyboard.IsKeyDown(Key.Down))
             {
                 viewModel.CourseDisplay.Brake_ON();
-                Keyboard.Keys.Remove(Key.Down);
             }
 
             if (Keyboard.IsKeyDown(Key.Left))
