@@ -48,46 +48,25 @@ namespace AutomatedCar.ViewModels
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
 
-        // Q billentyű: váltás felfelé
-        public void ShiftGearUp()
+        //váltó:
+        public void ShiftGearRequestSet(bool up, bool down)
         {
-            Transmission.ShiftGearUp = true;
-        }
-        
-        // A billentyű: váltás lefelé
-        public void ShiftGearDown()
-        {
-            Transmission.ShiftGearDown = true;
-        }
-        
-        public void ShiftGearUp_Off()
-        {
-           Transmission.ShiftGearUp = false;
-        }
-        public void ShiftGearDown_Off()
-        {
-            Transmission.ShiftGearDown = false;
+            Transmission.ShiftGearUpRequest = up;
+            Transmission.ShiftGearDownRequest = down;
         }
 
-        public void Throttle_ON()
+        //gáz és fék:
+        public void ThrottleOnSet(bool value)
         {
-            Powertrain.Throttle_ON = true;
+                Powertrain.ThrottleOn = value;
         }
 
-        public void Throttle_OFF()
+        public void BrakeOnSet(bool value)
         {
-            Powertrain.Throttle_ON = false; 
+                Powertrain.BrakeOn = value;
         }
 
-        public void Brake_ON()
-        {
-            Powertrain.Brake_ON = true; 
-        }
-
-        public void Brake_OFF()
-        {
-            Powertrain.Brake_ON = false; 
-        }
+        //forgatás:
         public void KeyLeft()
         {
             World.Instance.ControlledCar.Rotation -= 5;
@@ -98,6 +77,7 @@ namespace AutomatedCar.ViewModels
             World.Instance.ControlledCar.Rotation += 5;
         }
 
+        //egyéb:
         public void ToggleDebug()
         {
             this.debugStatus.Enabled = !this.debugStatus.Enabled;

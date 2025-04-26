@@ -25,32 +25,31 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
-            // Q billentyű: váltás felfelé
+            // váltó:
             if (Keyboard.IsKeyDown(Key.Q))
             {
-                viewModel.CourseDisplay.ShiftGearUp();
+                viewModel.CourseDisplay.ShiftGearRequestSet(true, false);
                 Keyboard.Keys.Remove(Key.Q);
             }
             
-            // A billentyű: váltás lefelé
             if (Keyboard.IsKeyDown(Key.A))
             {
-                viewModel.CourseDisplay.ShiftGearDown();
+                viewModel.CourseDisplay.ShiftGearRequestSet(false, true);
                 Keyboard.Keys.Remove(Key.A);
             }
 
+            // gáz és fék:
             if (Keyboard.IsKeyDown(Key.Up))
             {
-                viewModel.CourseDisplay.Throttle_ON();
-                Keyboard.Keys.Remove(Key.Up);
+                viewModel.CourseDisplay.ThrottleOnSet(true);
             }
 
             if (Keyboard.IsKeyDown(Key.Down))
             {
-                viewModel.CourseDisplay.Brake_ON();
-                Keyboard.Keys.Remove(Key.Down);
+                viewModel.CourseDisplay.BrakeOnSet(true);
             }
 
+            //forgatás:
             if (Keyboard.IsKeyDown(Key.Left))
             {
                 viewModel.CourseDisplay.KeyLeft();
@@ -63,6 +62,7 @@ namespace AutomatedCar.Views
                 Keyboard.Keys.Remove(Key.Right);
             }
 
+            //egyéb:
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
@@ -115,26 +115,16 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
+            //gáz és fék:
             if (e.Key == Key.Up)
             {
-                viewModel.CourseDisplay.Throttle_OFF();
+                viewModel.CourseDisplay.ThrottleOnSet(false);
             }
 
             if (e.Key == Key.Down)
             {
-                viewModel.CourseDisplay.Brake_OFF();
+                viewModel.CourseDisplay.BrakeOnSet(false);
             }
-
-            if (e.Key == Key.A)
-            {
-                viewModel.CourseDisplay.ShiftGearDown_Off();
-            }
-
-            if (e.Key == Key.Q)
-            {
-                viewModel.CourseDisplay.ShiftGearUp_Off();
-            }
-
         }
 
         private void InitializeComponent()

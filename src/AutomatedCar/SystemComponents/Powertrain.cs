@@ -12,164 +12,162 @@ namespace AutomatedCar.SystemComponents
 {
     public class Powertrain : ReactiveObject
     {
-        //Datas:
-        
-        private double acceleration_brake = 0;     //in pixel/tick   //negative real number
-
-        private double acceleration_throttle = 0;  //in pixel/tick   //non negative real number
-
-        private const double acceleration_friction = 0;        //in pixel/tick      //Can be set.
-        private int tick_counter = 0; //in ticks        //for smoother appereance
+        //Datas:-------------------------------------------------------------------------------
         public Transmission Transmission { get; set; } = new Transmission();
+        private double accelerationBrake = 0;                 //in pixel/tick   //negative real number
+        private double accelerationThrottle = 0;              //in pixel/tick   //non negative real number
+        private int tickCounter = 0;                          //for smoother appereance
+        private int tickCounterMax = 20;
 
-        public const double MaxVelocityForward = 130 * 50 / (GameBase.TicksPerSecond * 3.6); //in pixel/tick   //max sebesség előremenetben: 130 km/h
+        //used constants:
+        private const double epsilon = 0.00001;                  //for floating point comparison
+        private const double maxAcceleration = 0.2;              //in pixel/tick   //max acceleration for throttle and brake: 0.2 pixel/tick
+        private const double accelerationFriction = 0;           //in pixel/tick     //negative real number  //Can be set.
+        private const double maxVelocityForwardInKmPerHour = 130;
+        private const double maxVelocityBackwardInKmPerHour = 20;
+        private const int ticksPerSecond = GameBase.TicksPerSecond;     //currently 60  
+        private const double meterToPixels = Speed.MeterToPixels;       //currently 50  //this means that 1 meter = 50 pixels.    
+        private const double deltaAcceleration = maxAcceleration / ticksPerSecond; //in pixel/tick
+        private const double maxVelocityForwardInPixelPerTick = maxVelocityForwardInKmPerHour * meterToPixels / (GameBase.TicksPerSecond * 3.6); //in pixel/tick   //max sebesség előremenetben: 130 km/h
+        private const double maxVelocityBackwardInPixelPerTick = maxVelocityBackwardInKmPerHour * meterToPixels / (GameBase.TicksPerSecond * 3.6); //in pixel/tick   //max sebesség tolatáskor: 20 km/h
+        
+        //Buttons:--------------------------------------------------------------------------------------
+        public static bool ThrottleOn { get; set; } = false;
+        public static bool BrakeOn { get; set; } = false;
+        public static bool ReverseOn { get; set; } = false;
 
-        public const double MaxVelocityBackward = 20 * 50 / (GameBase.TicksPerSecond * 3.6); //in pixel/tick   //max sebesség tolatáskor: 20 km/h
+        //Notifcations for the Dashboard: -----------------------------------------------------------------------------------
 
-        //Buttons:
-        public static bool Throttle_ON { get; set; } = false;
-        public static bool Brake_ON { get; set; } = false;
+        private double velocityDashboard = 0;     //in km/h
 
-        public static bool Reverse_ON { get; set; } = false;
+        private int throttleDashboard = 0;        //an integer on [0,100] interval
 
-        //Notifcations:
+        private int brakeDashboard = 0;           //an integer on [0,100] interval
 
-        private double velocity_dashboard = 0;     //in km/h
-
-        private int throttle_dashboard = 0;        //an integer on [0,100] interval
-
-        private int brake_dashboard = 0;           //an integer on [-100,0] interval
-
-        public double Velocity_Dashboard
+        public double VelocityDashboard
         {
-            get => this.velocity_dashboard;
-            set => this.RaiseAndSetIfChanged(ref this.velocity_dashboard, value);
+            get => this.velocityDashboard;
+            set => this.RaiseAndSetIfChanged(ref this.velocityDashboard, value);
         }
 
-        public int Throttle_Dashboard
+        public int ThrottleDashboard
         {
-            get => this.throttle_dashboard;
-            set => this.RaiseAndSetIfChanged(ref this.throttle_dashboard, value);
+            get => this.throttleDashboard;
+            set => this.RaiseAndSetIfChanged(ref this.throttleDashboard, value);
         }
 
-        public int Brake_Dashboard
+        public int BrakeDashboard
         {
-            get => this.brake_dashboard;
-            set => this.RaiseAndSetIfChanged(ref this.brake_dashboard, value);
+            get => this.brakeDashboard;
+            set => this.RaiseAndSetIfChanged(ref this.brakeDashboard, value);
         }
 
-        //Functions:
+        //Functions:---------------------------------------------------------------------------------------------
         public void Process()
         {   
-            this.tick_counter++;
+            this.tickCounter++;
             this.Transmission.UpdateStateAndGear();
-            this.Update_Acceleration_Throttle();
-            this.Update_Acceleration_Brake();
-            this.Update_Car_Acceleration();
-            this.Update_Car_Velocity();
-            this.Update_Reverse_On();
+            this.UpdateAccelerationThrottle();
+            this.UpdateAccelerationBrake();
+            this.UpdateCarAcceleration();
+            this.UpdateCarVelocity();
+            this.UpdateReverseOn();
+            this.UpdateDashboard();
 
-            if(this.tick_counter == 10)
+            Vector velocity = this.CalculateVelocityVector();   //in pixel/tick
+            this.UpdateTickCounterMax();
+
+            if(this.tickCounter >= this.tickCounterMax)
             {
-                Console.WriteLine($"Car position - X: {World.Instance.ControlledCar.X}, Y: {World.Instance.ControlledCar.Y}, Reverse: {Reverse_ON}, Throttle_ON: {Throttle_ON}, Brake_ON: {Brake_ON}, Velocity: {World.Instance.ControlledCar.Velocity}, Acceleration: {World.Instance.ControlledCar.Acceleration}");
-                Console.WriteLine("State: "+ this.Transmission.State +" Gear: " + this.Transmission.Gear );
-                Vector V = this.Calculate_Velocity_Vector();
-                World.Instance.ControlledCar.X += (int)( 10 * V.X);
-                World.Instance.ControlledCar.Y += (int)( 10 * V.Y);
-                this.tick_counter = 0;
+                World.Instance.ControlledCar.X += (int)( this.tickCounterMax * velocity.X);
+                World.Instance.ControlledCar.Y += (int)( this.tickCounterMax * velocity.Y);
+                this.tickCounter = 0;
             }
-            this.Velocity_Dashboard = 3.6 * World.Instance.ControlledCar.Velocity * GameBase.TicksPerSecond / 50;
         }
 
-        //constants: 
-        //60 = GameBase.TicksPerSecond,  
-        //0,2 = max acceleration for throttle and brake, 
-        //0.0001 = epsilon
-        private void Update_Acceleration_Throttle()
+        private void UpdateAccelerationThrottle()
         {
-            if (Throttle_ON)
+            if (ThrottleOn)
             {
-                this.acceleration_throttle += 0.003;                         // 0.003 = 0.2 / 60
-                if (this.acceleration_throttle >= 0.2 - 0.0001)
+                this.accelerationThrottle += deltaAcceleration;
+                if (this.accelerationThrottle >= maxAcceleration - epsilon)
                 {
-                    this.acceleration_throttle = 0.2;
+                    this.accelerationThrottle = maxAcceleration;
                 }
             }
             else
             {
-                this.acceleration_throttle -= 0.003;
-                if (this.acceleration_throttle <= 0 + 0.0001)
+                this.accelerationThrottle -= deltaAcceleration;
+                if (this.accelerationThrottle <= 0 + epsilon)
                 {
-                    this.acceleration_throttle = 0;
+                    this.accelerationThrottle = 0;
                 }
             }
-            this.Throttle_Dashboard = (int)(this.acceleration_throttle / 0.002);    // 0.002 = 0.2 / 100
         }
 
-        private void Update_Acceleration_Brake()
+        private void UpdateAccelerationBrake()
         {
-            if (Brake_ON)
+            if (BrakeOn)
             {
-                this.acceleration_brake -= 0.003;
-                if (this.acceleration_brake <= -0.2 + 0.0001)
+                this.accelerationBrake -= deltaAcceleration;
+                if (this.accelerationBrake <= -maxAcceleration + epsilon)
                 {
-                    this.acceleration_brake = -0.2;
+                    this.accelerationBrake = -maxAcceleration;
                 }
             }
             else
             {
-                this.acceleration_brake += 0.003;
-                if (this.acceleration_brake >= 0 - 0.0001)
+                this.accelerationBrake += deltaAcceleration;
+                if (this.accelerationBrake >= 0 - epsilon)
                 {
-                    this.acceleration_brake = 0;
+                    this.accelerationBrake = 0;
                 }
             }
-            this.Brake_Dashboard = -1 * (int)(this.acceleration_brake / 0.002);
         }
 
-        private void Update_Car_Acceleration()
+        private void UpdateCarAcceleration()
         {
-            if(this.Transmission.Gear == "N")
+            if(this.Transmission.GearState == GearState.N)
             {
-                World.Instance.ControlledCar.Acceleration = acceleration_friction;
+                World.Instance.ControlledCar.Acceleration = accelerationFriction;
             }
             else{
-                World.Instance.ControlledCar.Acceleration = acceleration_friction + this.acceleration_throttle + this.acceleration_brake;
+                World.Instance.ControlledCar.Acceleration = accelerationFriction + this.accelerationThrottle + this.accelerationBrake;
             }
         }
 
-        private void Update_Car_Velocity()
+        private void UpdateCarVelocity()
         {
-            if(this.Transmission.State == "Stay"){
+            if(this.Transmission.MovingState == MovingState.Stay){
                 World.Instance.ControlledCar.Velocity = 0;
             }
             else{
                 double v = Math.Max(0, World.Instance.ControlledCar.Velocity + World.Instance.ControlledCar.Acceleration);
-                if(!Reverse_ON && v > MaxVelocityForward)
+                if(!ReverseOn && v > maxVelocityForwardInPixelPerTick)
                 {
-                    v = MaxVelocityForward;
+                    v = maxVelocityForwardInPixelPerTick;
                 }
-                else if (Reverse_ON && v > MaxVelocityBackward)
+                else if (ReverseOn && v > maxVelocityBackwardInPixelPerTick)
                 {
-                    v = MaxVelocityBackward;
+                    v = maxVelocityBackwardInPixelPerTick;
                 }
                 World.Instance.ControlledCar.Velocity = v;
             }
         }
 
-        private void Update_Reverse_On()
+        private void UpdateReverseOn()
         {
-            if (this.Transmission.State == "Move_Backward" || this.Transmission.State == "Neutral_Backward")
+            if (this.Transmission.MovingState == MovingState.MoveBackward || this.Transmission.MovingState == MovingState.NeutralBackward)
             {
-                Reverse_ON = true;
+                ReverseOn = true;
             }
             else
             {
-                Reverse_ON = false;
+                ReverseOn = false;
             }
         }
 
-        private Vector Calculate_Velocity_Vector()
+        private Vector CalculateVelocityVector()
         {
             //előremenet esetén:
             //a sebességvektor irányvektora = i=(cos(Rotation - 90°), sin(Rotation - 90°)). Ebbe az irányba néz az autó. (pl. ha i=(1,0) akkor kelet felé néz.)
@@ -177,10 +175,47 @@ namespace AutomatedCar.SystemComponents
             // és sebességvektor = World.Instance.ControlledCar.Velocity * i
             double x = World.Instance.ControlledCar.Velocity * Math.Cos((World.Instance.ControlledCar.Rotation * Math.PI / 180) - (Math.PI / 2));
             double y = World.Instance.ControlledCar.Velocity * Math.Sin((World.Instance.ControlledCar.Rotation * Math.PI / 180) - (Math.PI / 2));
-            if(!Reverse_ON) return new Vector(x, y);
+            if(!ReverseOn) return new Vector(x, y);
 
             //Ha tolatunk akkor viszont megfordítjuk a sebességvektort:
             return new Vector(-x, -y);
+        }
+
+        private void UpdateTickCounterMax()
+        {
+            switch(World.Instance.ControlledCar.Velocity)
+            {
+                case <= 1:
+                    this.tickCounterMax = 20;
+                    break;
+                case <= 2:
+                    this.tickCounterMax = 15;
+                    break;
+                case <= 3:
+                    this.tickCounterMax = 7;
+                    break;
+                case <= 4:
+                    this.tickCounterMax = 5;
+                    break;
+                case <= 5:
+                    this.tickCounterMax = 3;
+                    break;
+                case <= 6:
+                    this.tickCounterMax = 2;
+                    break;
+                case <= 8:
+                    this.tickCounterMax = 2;
+                    break;
+                case > 8:
+                    this.tickCounterMax = 1;
+                    break;
+            }
+        }
+        private void UpdateDashboard()
+        {
+            this.VelocityDashboard = 3.6 * World.Instance.ControlledCar.Velocity * GameBase.TicksPerSecond / meterToPixels; //in km/h
+            this.ThrottleDashboard = (int)(this.accelerationThrottle / (maxAcceleration / 100));
+            this.BrakeDashboard = -1 * (int)(this.accelerationBrake / (maxAcceleration / 100));
         }
     }
 }
