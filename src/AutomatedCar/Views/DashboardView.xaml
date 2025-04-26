@@ -53,7 +53,7 @@
                                   <RotateTransform Angle="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.SteeringWheelState}"/>
                                 </Image.RenderTransform>
                             </Image>
-                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
+                            <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto">
                                 <TextBlock Grid.Row="0" Grid.Column="0">X:</TextBlock>
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding X}"/>
 								
@@ -70,13 +70,22 @@
                                 <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.SteeringWheelPacket.FrontWheelState}"/>
 
 								<TextBlock Grid.Row="5" Grid.Column="0">V(km/h): </TextBlock>
-                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Velocity_Dashboard}"/>
+                                <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.VelocityDashboard}"/>
 
                                 <TextBlock Grid.Row="6" Grid.Column="0">Throttle: </TextBlock>
-                                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Throttle_Dashboard}"/>
+                                <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.ThrottleDashboard}"/>
 
                                 <TextBlock Grid.Row="7" Grid.Column="0">Brake:  </TextBlock>
-                                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Brake_Dashboard}"/>
+                                <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.BrakeDashboard}"/>
+
+                                <TextBlock Grid.Row="8" Grid.Column="0">Gear:  </TextBlock>
+                                <TextBlock Grid.Row="8" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.GearStateString}"/>
+
+								<TextBlock Grid.Row="9" Grid.Column="0">D[1:5]:  </TextBlock>
+								<TextBlock Grid.Row="9" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.DriveGearStateString}"/>
+
+								<TextBlock Grid.Row="10" Grid.Column="0">state:  </TextBlock>
+								<TextBlock Grid.Row="10" Grid.Column="1" Text="{Binding Car.VirtualFunctionBus.Powertrain.Transmission.MovingStateString}"/>
 
                             </Grid>
                         </StackPanel>

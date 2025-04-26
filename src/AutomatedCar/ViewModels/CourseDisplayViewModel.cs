@@ -47,38 +47,26 @@ namespace AutomatedCar.ViewModels
             get => this.debugStatus;
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
-        public void ToggleReverse()
+
+        //váltó:
+        public void ShiftGearRequestSet(bool up, bool down)
         {
-            Powertrain.Reverse_ON = !Powertrain.Reverse_ON;
-            Console.WriteLine($"### ToggleReverse called");
-        }
-        public void Throttle_ON()
-        {
-            if(Powertrain.Throttle_ON == false){
-                Console.WriteLine($"### Throttle_ON() called");
-                Powertrain.Throttle_ON = true; 
-            }
+            Transmission.ShiftGearUpRequest = up;
+            Transmission.ShiftGearDownRequest = down;
         }
 
-        public void Throttle_OFF()
+        //gáz és fék:
+        public void ThrottleOnSet(bool value)
         {
-            Powertrain.Throttle_ON = false; 
-            Console.WriteLine($"### Throttle_OFF() called");
+                Powertrain.ThrottleOn = value;
         }
 
-        public void Brake_ON()
+        public void BrakeOnSet(bool value)
         {
-            if(Powertrain.Brake_ON == false){
-                Console.WriteLine($"### Brake_ON() called");
-                Powertrain.Brake_ON = true;
-            }
+                Powertrain.BrakeOn = value;
         }
 
-        public void Brake_OFF()
-        {
-            Powertrain.Brake_ON = false; 
-            Console.WriteLine($"### Brake_OFF() called");
-        }
+        //forgatás:
         public void KeyLeft()
         {
             World.Instance.ControlledCar.Rotation -= 5;
@@ -89,6 +77,7 @@ namespace AutomatedCar.ViewModels
             World.Instance.ControlledCar.Rotation += 5;
         }
 
+        //egyéb:
         public void ToggleDebug()
         {
             this.debugStatus.Enabled = !this.debugStatus.Enabled;

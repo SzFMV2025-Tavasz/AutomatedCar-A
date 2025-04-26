@@ -8,7 +8,7 @@ namespace AutomatedCar.SystemComponents
     public class VirtualFunctionBus : GameBase
     {
         public Powertrain Powertrain { get; set; } = new Powertrain();
-
+    
         private List<SystemComponent> components = new List<SystemComponent>();
 
         public IReadOnlyDummyPacket DummyPacket { get; set; }
