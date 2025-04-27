@@ -17,6 +17,7 @@ namespace AutomatedCar.SystemComponents
 
         public IReadOnlySteeringWheelPacket SteeringWheelPacket { get; set; }
 
+        public IReadOnlyPedalsPacket PedalsPacket { get; set; }
         public void RegisterComponent(SystemComponent component)
         {
             this.components.Add(component);

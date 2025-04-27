@@ -19,6 +19,16 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
+            if (Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.ThrottleOnSet(true);
+            }
+
+            if (Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.BrakeOnSet(true);
+            }
+
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
@@ -68,8 +78,19 @@ namespace AutomatedCar.Views
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
+
+            if(!Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.ThrottleOnSet(false);
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.BrakeOnSet(false);
+            }
         }
 
         private void InitializeComponent()

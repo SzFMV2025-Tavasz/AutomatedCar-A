@@ -13,7 +13,8 @@ namespace AutomatedCar.Models
         private VirtualFunctionBus virtualFunctionBus;
         private Speed velocity;
         private Vector2 direction;
-
+        public bool ThrotleOn { get; set; } = false;
+        public bool BrakeOn { get; set; } = false;
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
