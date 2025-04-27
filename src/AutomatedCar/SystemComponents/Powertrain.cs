@@ -13,7 +13,7 @@
     /// <summary>
     /// Code for correct way of steering. Should NOT be in the final product. Should be merged into Powertrain.
     /// </summary>
-    internal class SteeringPowertrainDraft : SystemComponent
+    internal class Powertrain : SystemComponent
     {
         /// <summary>
         /// The distance between the front and rear wheels in pixels.
@@ -27,7 +27,7 @@
 
         private readonly AutomatedCar car;
 
-        public SteeringPowertrainDraft(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
+        public Powertrain(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
             : base(virtualFunctionBus)
         {
             this.car = car;
@@ -37,25 +37,30 @@
         {
             // Calculating with edge cases
             int frontWheelRotation = this.virtualFunctionBus.SteeringWheelPacket.FrontWheelState;
-            if (frontWheelRotation == 0)
-            {
-                return;
-            }
 
             var rotationOffset = this.CalculateRotationOffsetToRearWheels(FrontRearWheelsDistance, frontWheelRotation);
 
             // var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(this.car.Speed));
-            var angularVelocity = this.CalculateAngularVelocity(rotationOffset, Speed.FromPixelsPerSecond(180));
+            var angularVelocity = this.CalculateAngularVelocity(rotationOffset, this.car.Velocity);
             var turningRotationPoint = this.CalculateNewRotationPoint(this.car.RotationPoint, rotationOffset, this.car.Rotation);
 
             // Rotate car
             this.car.Rotation += angularVelocity;
 
             // Move car
-            var moveVector = this.CalculateMoveVector(
-                new PointF((float)this.car.XD, (float)this.car.YD),
-                turningRotationPoint,
-                (float)angularVelocity);
+            Vector2 moveVector;
+            if (frontWheelRotation == 0)
+            {
+                moveVector = this.CalculateMoveVectorStraight(this.car.Velocity, this.car.Rotation);
+            }
+            else
+            {
+                moveVector = this.CalculateMoveVectorTurning(
+                    new PointF((float)this.car.XD, (float)this.car.YD),
+                    turningRotationPoint,
+                    (float)angularVelocity);
+            }
+
             this.car.XD += moveVector.X;
             this.car.YD += moveVector.Y;
         }
@@ -87,18 +92,23 @@
         /// <returns>The angular velocity in degrees.</returns>
         private double CalculateAngularVelocity(int radius, Speed speed)
         {
+            if (radius == 0)
+            {
+                return 0;
+            }
+
             var angularVelocity = (speed.InPixelsPerTick() / radius).ToDegree();
             return angularVelocity;
         }
 
         /// <summary>
-        /// Calculates the movement of the car.
+        /// Calculates the movement of the car when going straight.
         /// </summary>
         /// <param name="carPosition">The current position of the car.</param>
         /// <param name="rotationPoint">The point which the car rotates around.</param>
         /// <param name="angularVelocity">The angular velocity of the car.</param>
         /// <returns>The movement vector of the car.</returns>
-        private Vector2 CalculateMoveVector(PointF carPosition, PointF rotationPoint, float angularVelocity)
+        private Vector2 CalculateMoveVectorTurning(PointF carPosition, PointF rotationPoint, float angularVelocity)
         {
             float angularVelocityRad = (float)((double)angularVelocity).ToRadian();
 
@@ -107,6 +117,18 @@
             var rotationPointToCarNewPosition = new Vector2(carPosition.X - absoluteRotationPoint.X, carPosition.Y - absoluteRotationPoint.Y).Rotate(angularVelocityRad);
 
             return new Vector2(carOldPositionToRotationPoint.X + rotationPointToCarNewPosition.X, carOldPositionToRotationPoint.Y + rotationPointToCarNewPosition.Y);
+        }
+
+        /// <summary>
+        /// Calculates the movement vector of the car when going straight.
+        /// </summary>
+        /// <param name="velocity">The velocity of the car.</param>
+        /// <param name="rotation">The current rotation of the car in degrees.</param>
+        /// <returns>The movement vector of the car.</returns>
+        private Vector2 CalculateMoveVectorStraight(Speed velocity, double rotation)
+        {
+            var moveVector = new Vector2(0, -(float)velocity.InPixelsPerTick());
+            return moveVector.Rotate((float)rotation.ToRadian());
         }
 
         /// <summary>
