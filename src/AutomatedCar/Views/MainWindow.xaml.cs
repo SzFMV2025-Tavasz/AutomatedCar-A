@@ -22,12 +22,12 @@ namespace AutomatedCar.Views
 
             if (Keyboard.IsKeyDown(Key.Left))
             {
-                World.Instance.ControlledCar.SteeringLeft = true;
+                viewModel.CourseDisplay.SetSteeringLeft(true);
             }
 
             if (Keyboard.IsKeyDown(Key.Right))
             {
-                World.Instance.ControlledCar.SteeringRight = true;
+                viewModel.CourseDisplay.SetSteeringRight(true);
             }
 
             if (Keyboard.IsKeyDown(Key.D1))
@@ -82,14 +82,16 @@ namespace AutomatedCar.Views
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
 
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
             if (!Keyboard.IsKeyDown(Key.Left))
             {
-                World.Instance.ControlledCar.SteeringLeft = false;
+                viewModel.CourseDisplay.SetSteeringLeft(false);
             }
 
             if (!Keyboard.IsKeyDown(Key.Right))
             {
-                World.Instance.ControlledCar.SteeringRight = false;
+                viewModel.CourseDisplay.SetSteeringRight(false);
             }
         }
 

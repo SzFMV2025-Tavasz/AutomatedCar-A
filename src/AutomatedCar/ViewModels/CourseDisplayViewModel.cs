@@ -14,7 +14,7 @@ namespace AutomatedCar.ViewModels
     public class CourseDisplayViewModel : ViewModelBase
     {
         public ObservableCollection<WorldObjectViewModel> WorldObjects { get; } = new ObservableCollection<WorldObjectViewModel>();
-      
+
         private Avalonia.Vector offset;
 
         public CourseDisplayViewModel(World world)
@@ -72,6 +72,16 @@ namespace AutomatedCar.ViewModels
             var offsetX = World.Instance.ControlledCar.X - (scrollViewer.Viewport.Width / 2);
             var offsetY = World.Instance.ControlledCar.Y - (scrollViewer.Viewport.Height / 2);
             this.Offset = new Avalonia.Vector(offsetX, offsetY);
+        }
+
+        internal void SetSteeringLeft(bool v)
+        {
+            World.Instance.ControlledCar.SteeringLeft = v;
+        }
+
+        internal void SetSteeringRight(bool v)
+        {
+            World.Instance.ControlledCar.SteeringRight = v;
         }
     }
 }
