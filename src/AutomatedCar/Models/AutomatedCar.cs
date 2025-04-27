@@ -12,7 +12,6 @@ namespace AutomatedCar.Models
     {
         private VirtualFunctionBus virtualFunctionBus;
         private Speed velocity;
-        private Vector2 direction;
 
         private double xD;
         private double yD;
@@ -49,25 +48,6 @@ namespace AutomatedCar.Models
             {
                 this.velocity = value;
                 this.Speed = (int)value.InPixelsPerSecond();
-            }
-        }
-
-        /// <summary>
-        /// The direction in which the car is facing. Always has the length of 1.
-        /// </summary>
-        public Vector2 Direction
-        {
-            get
-            {
-                return this.direction;
-            }
-
-            set
-            {
-                this.direction = Vector2.Normalize(value);
-
-                float angleRadians = (float)Math.Atan2(value.Y, value.X);
-                this.Rotation = angleRadians * (180 / Math.PI);
             }
         }
 
