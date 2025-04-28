@@ -16,6 +16,7 @@ namespace AutomatedCar.SystemComponents
             virtualFunctionBus.PedalsPacket = this.PedalsPacket;
         }
 
+
         public override void Process()
         {
             throw new NotImplementedException();
