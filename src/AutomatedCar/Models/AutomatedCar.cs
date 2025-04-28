@@ -12,14 +12,19 @@ namespace AutomatedCar.Models
     {
         private VirtualFunctionBus virtualFunctionBus;
         private Speed velocity;
-        private Vector2 direction;
+
+        private double xD;
+        private double yD;
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
-            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
+            this.virtualFunctionBus.RegisterComponent(new Powertrain(this.virtualFunctionBus, this));
             this.ZIndex = 10;
+            this.XD = x;
+            this.YD = y;
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
@@ -46,24 +51,29 @@ namespace AutomatedCar.Models
             }
         }
 
-        /// <summary>
-        /// The direction in which the car is facing. Always has the length of 1.
-        /// </summary>
-        public Vector2 Direction
+        public double XD
         {
-            get
-            {
-                return this.direction;
-            }
-
+            get => this.xD;
             set
             {
-                this.direction = Vector2.Normalize(value);
-
-                float angleRadians = (float)Math.Atan2(value.Y, value.X);
-                this.Rotation = angleRadians * (180 / Math.PI);
+                this.X = (int)value;
+                this.xD = value;
             }
         }
+
+        public double YD
+        {
+            get => this.yD;
+            set
+            {
+                this.Y = (int)value;
+                this.yD = value;
+            }
+        }
+
+        public bool SteeringLeft { get; set; }
+
+        public bool SteeringRight { get; set; }
 
         public PolylineGeometry Geometry { get; set; }
 
