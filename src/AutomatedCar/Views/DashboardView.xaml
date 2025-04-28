@@ -42,7 +42,7 @@
                             </Grid>
                             <Separator Height="15"></Separator>
                             <TextBlock Text="Throttle"/>
-                            <ProgressBar Value="50"></ProgressBar>
+                            <ProgressBar Value="{Binding Car.VirtualFunctionBus.Powertrain.ThrottleDashboard}"></ProgressBar>
                             <TextBlock Text="Brake"/>
                             <ProgressBar Value="50"></ProgressBar>
                             <Separator Height="12"></Separator>
