@@ -12,7 +12,7 @@ namespace AutomatedCar.Models
     {
         private VirtualFunctionBus virtualFunctionBus;
 
-        private Speed velocity;  //0 kezdőértéket szeretnék beállítani
+        private Speed velocity;
 
         private double xD;
         private double yD;
@@ -37,6 +37,7 @@ namespace AutomatedCar.Models
             this.ZIndex = 10;
             this.XD = x;
             this.YD = y;
+            this.Velocity = Helpers.Speed.FromPixelsPerTick(0);
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
