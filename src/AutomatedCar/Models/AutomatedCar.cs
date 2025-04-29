@@ -11,6 +11,7 @@ namespace AutomatedCar.Models
     public class AutomatedCar : Car
     {
         private VirtualFunctionBus virtualFunctionBus;
+
         private Speed velocity;  //0 kezdőértéket szeretnék beállítani
 
         private double xD;
@@ -26,11 +27,13 @@ namespace AutomatedCar.Models
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new Powertrain(this.virtualFunctionBus, this));
+
             //sorrend fontos. Amilyen sorrendben vannak hozzáadva a VFB-hez, olyan sorrendben hívódnak meg az egyes Process() függvények.
             //ctor-okat meg kell oldani h működjenek:
             this.virtualFunctionBus.RegisterComponent(new AccelerationCalculator(virtualFunctionBus));
             this.virtualFunctionBus.RegisterComponent(new VelocityVectorCalculator(virtualFunctionBus));
             this.virtualFunctionBus.RegisterComponent(new PedalsCalculator(virtualFunctionBus));
+
             this.ZIndex = 10;
             this.XD = x;
             this.YD = y;

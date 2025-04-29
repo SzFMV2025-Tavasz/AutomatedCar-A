@@ -17,6 +17,7 @@ namespace AutomatedCar.SystemComponents
         /// Gets or sets the collection of read-only packets containing information from the camera.
         /// </summary>
         public IList<IReadOnlyCameraPacket> CameraPackets { get; set; }
+
         public IList<IReadOnlyRadarPacket> RadarPackets { get; set; }
 
         public IReadOnlySteeringWheelPacket SteeringWheelPacket { get; set; }

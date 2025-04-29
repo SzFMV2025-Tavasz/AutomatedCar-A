@@ -39,7 +39,7 @@ namespace AutomatedCar.Views
             {
                 viewModel.CourseDisplay.BrakeOnSet(true);
             }
-
+            
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
@@ -104,6 +104,7 @@ namespace AutomatedCar.Views
                 viewModel.CourseDisplay.SetSteeringRight(false);
             }
 
+
             if (!Keyboard.IsKeyDown(Key.Up))
             {
                 viewModel.CourseDisplay.ThrottleOnSet(false);
@@ -113,6 +114,7 @@ namespace AutomatedCar.Views
             {
                 viewModel.CourseDisplay.BrakeOnSet(false);
             }
+
         }
 
         private void InitializeComponent()

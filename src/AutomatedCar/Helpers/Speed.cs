@@ -28,6 +28,11 @@
             return new Speed(pixelsPerTick);
         }
 
+        public static Speed FromPixelsPerSecond(double pixelsPerSecond)
+        {
+            return FromPixelsPerTick(pixelsPerSecond / GameBase.TicksPerSecond);
+        }
+
         public double InKmPerHour()
         {
             return this.InMetersPerSecond() * 3.6;
