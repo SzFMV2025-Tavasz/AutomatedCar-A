@@ -8,14 +8,13 @@ namespace AutomatedCar.ViewModels
 {
     using Avalonia.Controls;
     using Models;
-    using Newtonsoft.Json.Linq;
     using System;
     using Visualization;
 
     public class CourseDisplayViewModel : ViewModelBase
     {
         public ObservableCollection<WorldObjectViewModel> WorldObjects { get; } = new ObservableCollection<WorldObjectViewModel>();
-      
+
         private Avalonia.Vector offset;
 
         public CourseDisplayViewModel(World world)
@@ -43,6 +42,15 @@ namespace AutomatedCar.ViewModels
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
 
+        internal void ThrottleOnSet(bool value)
+        {
+            World.Instance.ControlledCar.ThrottleOn = value;
+        }
+
+        internal void BrakeOnSet(bool value)
+        {
+            World.Instance.ControlledCar.BrakeOn = value;
+        }
 
         public void ToggleDebug()
         {
@@ -76,14 +84,14 @@ namespace AutomatedCar.ViewModels
             this.Offset = new Avalonia.Vector(offsetX, offsetY);
         }
 
-        internal void ThrottleOnSet(bool value)
+        internal void SetSteeringLeft(bool v)
         {
-            World.Instance.ControlledCar.ThrottleOn = value;
+            World.Instance.ControlledCar.SteeringLeft = v;
         }
 
-        internal void BrakeOnSet(bool value)
+        internal void SetSteeringRight(bool v)
         {
-            World.Instance.ControlledCar.BrakeOn = value;
+            World.Instance.ControlledCar.SteeringRight = v;
         }
     }
 }

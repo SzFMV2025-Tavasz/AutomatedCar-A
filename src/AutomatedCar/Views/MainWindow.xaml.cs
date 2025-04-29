@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -18,6 +19,16 @@ namespace AutomatedCar.Views
             base.OnKeyDown(e);
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (Keyboard.IsKeyDown(Key.Left))
+            {
+                viewModel.CourseDisplay.SetSteeringLeft(true);
+            }
+
+            if (Keyboard.IsKeyDown(Key.Right))
+            {
+                viewModel.CourseDisplay.SetSteeringRight(true);
+            }
 
             if (Keyboard.IsKeyDown(Key.Up))
             {
@@ -78,11 +89,22 @@ namespace AutomatedCar.Views
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
 
-            if(!Keyboard.IsKeyDown(Key.Up))
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (!Keyboard.IsKeyDown(Key.Left))
+            {
+                viewModel.CourseDisplay.SetSteeringLeft(false);
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Right))
+            {
+                viewModel.CourseDisplay.SetSteeringRight(false);
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Up))
             {
                 viewModel.CourseDisplay.ThrottleOnSet(false);
             }
