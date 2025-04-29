@@ -12,23 +12,24 @@ namespace AutomatedCar.Models
     {
         private VirtualFunctionBus virtualFunctionBus;
         private Speed velocity;
-        private Vector2 direction;
-        public bool ThrotleOn { get; set; } = false;
+        public bool ThrottleOn { get; set; } = false;
         public bool BrakeOn { get; set; } = false;
+        public bool ReverseOn { get; set; } = false;
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
             this.virtualFunctionBus = new VirtualFunctionBus();
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(virtualFunctionBus));
+
+            //sorrend fontos. Amilyen sorrendben vannak hozzáadva a VFB-hez, olyan sorrendben hívódnak meg az egyes Process() függvények:
+            this.virtualFunctionBus.RegisterComponent(new AccelerationCalculator(virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new VelocityVectorCalculator(virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new PedalsCalculator(virtualFunctionBus));
+
             this.ZIndex = 10;
         }
 
         public VirtualFunctionBus VirtualFunctionBus { get => this.virtualFunctionBus; }
-
-        /// <summary>
-        /// The revolution of the engine in the car.
-        /// </summary>
-        public int Revolution { get; set; }
 
         /// <summary>
         /// The speed of the car.
@@ -44,25 +45,6 @@ namespace AutomatedCar.Models
             {
                 this.velocity = value;
                 this.Speed = (int)value.InPixelsPerSecond();
-            }
-        }
-
-        /// <summary>
-        /// The direction in which the car is facing. Always has the length of 1.
-        /// </summary>
-        public Vector2 Direction
-        {
-            get
-            {
-                return this.direction;
-            }
-
-            set
-            {
-                this.direction = Vector2.Normalize(value);
-
-                float angleRadians = (float)Math.Atan2(value.Y, value.X);
-                this.Rotation = angleRadians * (180 / Math.PI);
             }
         }
 

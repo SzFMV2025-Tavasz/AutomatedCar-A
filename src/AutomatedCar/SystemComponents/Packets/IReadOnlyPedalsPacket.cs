@@ -8,8 +8,8 @@ namespace AutomatedCar.SystemComponents.Packets
 
     public interface IReadOnlyPedalsPacket
     {
-        int Throttle { get; }
+        int Throttle { get; }   // an integer on [0, 100]
 
-        int Brake { get; }
+        int Brake { get; }     // an integer on [0, 100]
     }
 }

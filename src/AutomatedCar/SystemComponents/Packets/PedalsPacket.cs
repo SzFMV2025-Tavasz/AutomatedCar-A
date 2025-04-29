@@ -2,10 +2,12 @@ namespace AutomatedCar.SystemComponents.Packets
 {
     using ReactiveUI;
 
-    internal class PedalsPacket : ReactiveObject, IReadOnlyPedalsPacket
+    public class PedalsPacket : ReactiveObject, IReadOnlyPedalsPacket
     {
-        private int throttle = 0;
-        private int brake = 0;
+        //Set-tel bővítjük az interfészt, követjük a DummyPacket mintát. 
+        //Értesítést küldünk, mert a Dashboard-on szeretnénk megjeleníteni az adatokat.
+        private int throttle = 0;   // an integer on [0, 100]
+        private int brake = 0;      // an integer on [0, 100]
 
         public int Throttle
         {

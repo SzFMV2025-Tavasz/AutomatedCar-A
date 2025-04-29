@@ -78,7 +78,7 @@ namespace AutomatedCar.ViewModels
 
         internal void ThrottleOnSet(bool value)
         {
-            World.Instance.ControlledCar.ThrotleOn = value;
+            World.Instance.ControlledCar.ThrottleOn = value;
         }
 
         internal void BrakeOnSet(bool value)

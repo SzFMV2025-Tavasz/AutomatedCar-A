@@ -8,6 +8,6 @@ namespace AutomatedCar.Models
         }
 
         /// <summary>Gets or sets Speed in px/s.</summary>
-        public int Speed { get; protected set; }
+        public int Speed { get; set; }
     }
 }

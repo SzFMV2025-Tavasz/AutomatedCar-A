@@ -9,6 +9,10 @@ namespace AutomatedCar.SystemComponents
 
         public IReadOnlyDummyPacket DummyPacket { get; set; }
 
+        public IReadOnlyAccelerationPacket AccelerationPacket { get; set; }
+        public IReadOnlyVelocityVectorPacket VelocityVectorPacket { get; set; }
+
+        public IReadOnlyPedalsPacket PedalsPacket { get; set; }
         /// <summary>
         /// Gets or sets the collection of read-only packets containing information from the camera.
         /// </summary>
@@ -17,7 +21,6 @@ namespace AutomatedCar.SystemComponents
 
         public IReadOnlySteeringWheelPacket SteeringWheelPacket { get; set; }
 
-        public IReadOnlyPedalsPacket PedalsPacket { get; set; }
         public void RegisterComponent(SystemComponent component)
         {
             this.components.Add(component);
