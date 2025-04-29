@@ -11,7 +11,7 @@ namespace AutomatedCar.Models
     public class AutomatedCar : Car
     {
         private VirtualFunctionBus virtualFunctionBus;
-        private Speed velocity;
+        private Speed velocity = new Speed(0); //0 kezdőértéket szeretnék beállítani
         public bool ThrottleOn { get; set; } = false;
         public bool BrakeOn { get; set; } = false;
         public bool ReverseOn { get; set; } = false;

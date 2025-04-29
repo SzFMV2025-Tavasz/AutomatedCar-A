@@ -30,7 +30,6 @@ namespace AutomatedCar.SystemComponents
             this.UpdateRadianAngleOfMove();
             this.UpdateUnitVector();
             this.UpdateVelocityAbs();
-            World.Instance.ControlledCar.Velocity = Speed.FromPixelsPerTick(this.velocityVectorPacket.VelocityAbs); //a sebesség abszolút értékét a ControlledCar.Velocity értékébe is beállítjuk.
             this.UpdateVelocityVector();
             this.virtualFunctionBus.VelocityVectorPacket = this.velocityVectorPacket;   //we need this?
         }
@@ -74,21 +73,27 @@ namespace AutomatedCar.SystemComponents
         {
             double updatedAcceleration = World.Instance.ControlledCar.VirtualFunctionBus.AccelerationPacket.Acceleration;  //(AccelerationCalculator's Process() function already called!)
             
-            double velocityabs = this.velocityVectorPacket.VelocityAbs;
-            velocityabs = Math.Max(0, velocityabs + updatedAcceleration);
+            //lekérdezem a sebességet:
+            double velocityAbs = World.Instance.ControlledCar.Velocity.InPixelsPerTick();
+
+            //módosítom a gyorsulás szerint:
+            velocityAbs = Math.Max(0, velocityAbs + updatedAcceleration);
 
             bool reverseOn = World.Instance.ControlledCar.ReverseOn;
 
-            if(!reverseOn && velocityabs > maxVelocityForward.InPixelsPerTick())    //sebességet behatároljuk.
+            if(!reverseOn && velocityAbs > maxVelocityForward.InPixelsPerTick())    //sebességet behatároljuk.
             {
-                velocityabs = maxVelocityForward.InPixelsPerTick();
+                velocityAbs = maxVelocityForward.InPixelsPerTick();
             }
-            else if (reverseOn && velocityabs > maxVelocityBackward.InPixelsPerTick())
+            else if (reverseOn && velocityAbs > maxVelocityBackward.InPixelsPerTick())
             {
-                velocityabs = maxVelocityBackward.InPixelsPerTick();
+                velocityAbs = maxVelocityBackward.InPixelsPerTick();
             }
 
-            this.velocityVectorPacket.VelocityAbs = velocityabs;        //frissítjük a sebesség abszolút értékét.
+            //beírom a változást a változókba:
+            this.velocityVectorPacket.VelocityAbs = velocityAbs;
+            World.Instance.ControlledCar.Velocity = Speed.FromPixelsPerTick(velocityAbs); //a sebesség abszolút értékét a ControlledCar.Velocity értékébe
+                                                                                                                    //is beállítjuk.
         }
 
         private void UpdateVelocityVector()
