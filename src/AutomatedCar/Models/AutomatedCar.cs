@@ -1,5 +1,6 @@
 namespace AutomatedCar.Models
 {
+    using SystemComponents.Sensors;
     using Avalonia.Media;
     using SystemComponents;
 

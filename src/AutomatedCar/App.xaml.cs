@@ -5,6 +5,7 @@ namespace AutomatedCar
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using System.Runtime.ConstrainedExecution;
     using AutomatedCar.Helpers;
     using AutomatedCar.Models;
@@ -38,9 +39,11 @@ namespace AutomatedCar
         {
             var world = World.Instance;
 
-            // this.AddDummyCircleTo(world);
+            //this.AddDummyCircleTo(world);
 
             world.PopulateFromJSON($"AutomatedCar.Assets.oval.json");
+
+            this.AddNpcsTo(world);
 
             this.AddNpcsTo(world);
 
@@ -174,5 +177,6 @@ namespace AutomatedCar
                 npc.Start();
             }
         }
+
     }
 }

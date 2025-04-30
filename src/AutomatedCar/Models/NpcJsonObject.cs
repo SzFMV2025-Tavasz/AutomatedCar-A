@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
+
     public class NpcJsonObject
     {
         public bool Loop { get; set; }
@@ -18,6 +19,5 @@ namespace AutomatedCar.Models
 
         public string Filename { get; set; }
 
-       
     }
 }

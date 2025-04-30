@@ -11,6 +11,7 @@
     using Helpers;
     using Visualization;
     using Avalonia.Media;
+    using global::AutomatedCar.SystemComponents.Sensors;
 
     public class World
     {
@@ -18,7 +19,11 @@
         private int controlledCarPointer = 0;
         public List<AutomatedCar> controlledCars = new();
 
+        private Camera camera;
+        private Radar radar;
+
         public static World Instance { get; } = new World();
+
         public List<WorldObject> WorldObjects { get; set; } = new List<WorldObject>();
 
         public AutomatedCar ControlledCar
@@ -39,6 +44,23 @@
         {
             this.controlledCars.Add(controlledCar);
             this.AddObject(controlledCar);
+            AddRadar();
+            AddCamera();
+        }
+
+        /// <summary>
+        /// Adds a camera to the specified automated car, allowing it to detect and process world objects.
+        /// </summary>
+        /// <param name="automatedCar">The automated car to which the camera will be added.</param>
+        /// <param name="worldObjects">The collection of world objects that the camera will process.</param>
+        public void AddCamera()
+        {
+            this.camera = new Camera(ControlledCar, WorldObjects);
+        }
+
+        public void AddRadar()
+        {
+            this.radar = new Radar(ControlledCar.VirtualFunctionBus, ControlledCar, 100);
         }
 
         public void NextControlledCar()
@@ -51,6 +73,8 @@
             {
                 this.ControlledCarPointer = 0;
             }
+            AddRadar();
+            AddCamera();
         }
 
         public void PrevControlledCar()
@@ -63,6 +87,8 @@
             {
                 this.ControlledCarPointer = this.controlledCars.Count - 1;
             }
+            AddRadar();
+            AddCamera();
         }
 
         public int Width { get; set; }

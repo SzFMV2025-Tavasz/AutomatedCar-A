@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
+
     public class NpcCar : Npc
     {
         public NpcCar(NpcPath path) 

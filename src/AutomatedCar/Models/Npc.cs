@@ -1,3 +1,4 @@
+
 ﻿using AutomatedCar.Helpers;
 using AutomatedCar.SystemComponents;
 using Avalonia.Media;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
+
 #pragma warning disable SA1101 // Prefix local calls with this
 #pragma warning disable SA1600 // Elements should be documented
     public class Npc : WorldObject
@@ -25,6 +27,7 @@ namespace AutomatedCar.Models
         private NpcPath Path { get; set; }
 
         private NpcPathPoint CurrentPoint { get; set; }
+
 
         // Fields used for movement
         private NpcPathPoint checkpoint;
@@ -128,6 +131,7 @@ namespace AutomatedCar.Models
             this.Speed = point.Speed;
         }
 
+
         public void ApplyCheckpoint(NpcPathPoint point)
         {
             this.X = point.X;
@@ -186,5 +190,6 @@ namespace AutomatedCar.Models
         }
 
         public PolylineGeometry Geometry { get; set; }
+
     }
 }

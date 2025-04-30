@@ -1,5 +1,6 @@
 [
   {
+
     "loop": true,
     "type": "car",
     "filename": "car_1_red.png",
@@ -784,5 +785,6 @@
         "Speed": 0.0
       }
     ]
+
   }
 ]

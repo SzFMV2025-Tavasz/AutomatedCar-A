@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace AutomatedCar.Models
 {
     public class NpcPath
+
     {
         public bool Loop { get; set; }
 
@@ -15,7 +16,9 @@ namespace AutomatedCar.Models
         public NpcType Type { get; set; }
 
         public string Filename { get; set; }
+
         public string World { get; set; }
+
 
         public NpcPath(NpcJsonObject pathJson)
         {
@@ -24,6 +27,7 @@ namespace AutomatedCar.Models
             this.Type = pathJson.Type;
             this.Filename = pathJson.Filename;
             this.World = pathJson.World;
+
         }
     }
 }
