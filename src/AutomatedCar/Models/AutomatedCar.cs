@@ -31,7 +31,7 @@ namespace AutomatedCar.Models
             //sorrend fontos. Amilyen sorrendben vannak hozzáadva a VFB-hez, olyan sorrendben hívódnak meg az egyes Process() függvények.
             //ctor-okat meg kell oldani h működjenek:
             this.virtualFunctionBus.RegisterComponent(new AccelerationCalculator(virtualFunctionBus));
-            this.virtualFunctionBus.RegisterComponent(new VelocityVectorCalculator(virtualFunctionBus));
+            this.virtualFunctionBus.RegisterComponent(new VelocityCalculator(virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new PedalsCalculator(virtualFunctionBus));
 
             this.ZIndex = 10;

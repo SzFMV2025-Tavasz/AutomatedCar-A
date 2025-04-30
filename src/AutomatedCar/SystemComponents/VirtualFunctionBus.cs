@@ -10,7 +10,6 @@ namespace AutomatedCar.SystemComponents
         public IReadOnlyDummyPacket DummyPacket { get; set; }
 
         public IReadOnlyAccelerationPacket AccelerationPacket { get; set; }
-        public IReadOnlyVelocityVectorPacket VelocityVectorPacket { get; set; }
 
         public IReadOnlyPedalsPacket PedalsPacket { get; set; }
         /// <summary>
