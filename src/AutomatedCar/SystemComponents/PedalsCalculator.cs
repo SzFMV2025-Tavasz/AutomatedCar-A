@@ -1,19 +1,21 @@
-﻿using AutomatedCar.SystemComponents.Packets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutomatedCar.SystemComponents
+﻿namespace AutomatedCar.SystemComponents
 {
+    using AutomatedCar.SystemComponents.Packets;
+    using AutomatedCar.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
     class PedalsCalculator : SystemComponent        //Process() függvényét azután hívjuk miután a gyorsulások update-elve vannak, azaz az AccelerationCalculator process() függvénye már lefutott.
     {
+        private readonly AutomatedCar car;
         public PedalsPacket PedalsPacket { get; }
-        public PedalsCalculator(VirtualFunctionBus virtualFunctionBus) : base(virtualFunctionBus)
+        public PedalsCalculator(VirtualFunctionBus virtualFunctionBus, AutomatedCar car) : base(virtualFunctionBus)
         {
+            this.car = car;
             this.PedalsPacket = new PedalsPacket();
-            virtualFunctionBus.PedalsPacket = this.PedalsPacket;
+            this.virtualFunctionBus.PedalsPacket = this.PedalsPacket;
         }
 
 
@@ -21,7 +23,7 @@ namespace AutomatedCar.SystemComponents
         {
             this.UpdateThrottle();
             this.UpdateBrake();
-            this.virtualFunctionBus.PedalsPacket = this.PedalsPacket;   //we need this?
+            this.virtualFunctionBus.PedalsPacket = this.PedalsPacket;
         }
 
         private void UpdateThrottle()
@@ -34,7 +36,7 @@ namespace AutomatedCar.SystemComponents
         {
             double accelerationBrake = this.virtualFunctionBus.AccelerationPacket.AccelerationBrake;
             double maxAccelerationAbs = AccelerationCalculator.maxAccelerationAbs;
-            this.PedalsPacket.Throttle = (int)( (-accelerationBrake / maxAccelerationAbs ) * 100);  //-accelerationBrake hány százaléka maxAccelerationAbs-nak. //negatív előjel kell mert az accelerationBrake negatív vagy 0.
+            this.PedalsPacket.Brake = (int)( (-accelerationBrake / maxAccelerationAbs ) * 100);  //-accelerationBrake hány százaléka maxAccelerationAbs-nak. //negatív előjel kell mert az accelerationBrake negatív vagy 0.
         }
     }
 }

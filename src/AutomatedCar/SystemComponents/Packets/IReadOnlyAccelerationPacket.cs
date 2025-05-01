@@ -8,7 +8,7 @@ namespace AutomatedCar.SystemComponents.Packets
 
         public double AccelerationBrake { get; }        //0 or negative real number
 
-        public const double AccelerationFriction = -0.015;   //0 or negative real number // can be set to other value. For easy debugging set to 0.  
+        public const double AccelerationFriction = -0.0001;   //0 or negative real number // can be set to other value. For easy debugging set to 0.  
 
         //eredő gyorsulás: az előző három összege:
         public double Acceleration { get; }

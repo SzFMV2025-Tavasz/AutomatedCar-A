@@ -14,12 +14,12 @@ namespace AutomatedCar.SystemComponents
         //Constants: //Velocity Limits based on the car's capabilities:
 
         /// <summary>
-        /// max sebesség előremenetben: 130 km/h.
+        /// max sebesség előremenetben: max 130 km/h.
         /// </summary>
         private static readonly Speed maxVelocityForward = Speed.FromKmPerHour(130);
 
         /// <summary>
-        /// max sebesség tolatáskor: 20 km/h.
+        /// max sebesség tolatáskor: max 20 km/h.
         /// </summary>
         private static readonly Speed maxVelocityBackward = Speed.FromKmPerHour(20);
 
@@ -32,11 +32,17 @@ namespace AutomatedCar.SystemComponents
         public override void Process()
         {
             var acceleration = this.virtualFunctionBus.AccelerationPacket.Acceleration;
-            var currentSpeed = World.Instance.ControlledCar.Velocity.InPixelsPerTick();
+            var currentSpeed = this.car.Velocity.InPixelsPerTick();
+            var newVelocity = Math.Max(0, currentSpeed + acceleration);     //velocity cannot be negative
 
-            var newVelocity = currentSpeed + acceleration;
-            newVelocity = Math.Max(0.0, newVelocity);
-            newVelocity = Math.Min(newVelocity, maxVelocityForward.InPixelsPerTick());
+            if(this.car.ReverseOn)
+            {
+                newVelocity = Math.Min(newVelocity, maxVelocityBackward.InPixelsPerTick());
+            }
+            else
+            {
+                newVelocity = Math.Min(newVelocity, maxVelocityForward.InPixelsPerTick());
+            }
 
             this.car.Velocity = Speed.FromPixelsPerTick(newVelocity);
         }
