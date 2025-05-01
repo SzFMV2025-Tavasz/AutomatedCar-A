@@ -11,6 +11,12 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            this.Loaded += (sender, e) =>
+            {
+                var viewModel = (MainWindowViewModel)this.DataContext;
+                var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
+                viewModel.CourseDisplay.ScrollViewer = scrollViewer;
+            };
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -82,9 +88,6 @@ namespace AutomatedCar.Views
                 viewModel.PrevControlledCar();
                 Keyboard.Keys.Remove(Key.F5);
             }
-
-            var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
-            viewModel.CourseDisplay.FocusCar(scrollViewer);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)

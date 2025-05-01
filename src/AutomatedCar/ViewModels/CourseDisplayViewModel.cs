@@ -17,11 +17,16 @@ namespace AutomatedCar.ViewModels
 
         private Avalonia.Vector offset;
 
+        public ScrollViewer ScrollViewer { get; set; }
+
         public CourseDisplayViewModel(World world)
         {
             this.WorldObjects = new ObservableCollection<WorldObjectViewModel>(world.WorldObjects.Select(wo => new WorldObjectViewModel(wo)));
             this.Width = world.Width;
             this.Height = world.Height;
+
+            // Feliratkozás a ControlledCar pozícióváltozásaira
+            World.Instance.ControlledCar.PropertyChangedEvent += this.OnControlledCarPositionChanged;
         }
 
         public int Width { get; set; }
@@ -77,13 +82,6 @@ namespace AutomatedCar.ViewModels
             //World.Instance.DebugStatus.Rotate = !World.Instance.DebugStatus.Rotate;
         }
 
-        public void FocusCar(ScrollViewer scrollViewer)
-        {
-            var offsetX = World.Instance.ControlledCar.X - (scrollViewer.Viewport.Width / 2);
-            var offsetY = World.Instance.ControlledCar.Y - (scrollViewer.Viewport.Height / 2);
-            this.Offset = new Avalonia.Vector(offsetX, offsetY);
-        }
-
         internal void SetSteeringLeft(bool v)
         {
             World.Instance.ControlledCar.SteeringLeft = v;
@@ -92,6 +90,40 @@ namespace AutomatedCar.ViewModels
         internal void SetSteeringRight(bool v)
         {
             World.Instance.ControlledCar.SteeringRight = v;
+        }
+        private void OnControlledCarPositionChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(WorldObject.X) || e.PropertyName == nameof(WorldObject.Y))
+            {
+                // Hívjuk meg a FocusCar metódust, amikor az X vagy Y változik
+                this.FocusCar();
+            }
+        }
+
+        public void UpdateControlledCarEvents()
+        {
+            // Távolítsuk el az eseménykezelõt a jelenlegi autóról (ha van)
+            // Ez biztosítja, hogy ne legyen duplikált feliratkozás
+            //if (World.Instance.ControlledCar != null)
+
+            World.Instance.ControlledCar.PropertyChangedEvent -= this.OnControlledCarPositionChanged;
+
+
+            // Ha történt autóváltás, akkor iratkozzunk fel az új autóra
+            //if (World.Instance.ControlledCar != null)
+
+
+            World.Instance.ControlledCar.PropertyChangedEvent += this.OnControlledCarPositionChanged;
+
+            // Azonnali fókusz az új autóra
+            this.FocusCar();
+
+        }
+        public void FocusCar()
+        {
+            var offsetX = World.Instance.ControlledCar.X - (this.ScrollViewer.Viewport.Width / 2);
+            var offsetY = World.Instance.ControlledCar.Y - (this.ScrollViewer.Viewport.Height / 2);
+            this.Offset = new Avalonia.Vector(offsetX, offsetY);
         }
     }
 }
