@@ -100,7 +100,6 @@ namespace AutomatedCar.Models
             {
                 Geometries[i].Transform = tg;
                 TransformGlobalPoints(i, tg);
-                //TransformXY(tg);
             }
         }
         void TransformGlobalPoints(int n, TransformGroup t)
@@ -126,16 +125,6 @@ namespace AutomatedCar.Models
                     ps[j] = ps[j].Transform(t.Children[k].Value);
                 }
             }
-        }
-        void TransformXY(TransformGroup t)
-        {
-            var pt = new Avalonia.Point(RotationPoint.X, RotationPoint.Y);
-            for (int k = 0; k < t.Children.Count; k++)
-            {
-                pt = pt.Transform(t.Children[k].Value);
-            }
-            x = (int)pt.X;
-            y = (int)pt.Y;
         }
     }
 }

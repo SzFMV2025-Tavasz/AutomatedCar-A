@@ -92,10 +92,14 @@ namespace AutomatedCar
         private void AddControlledCarsTo(World world)
         {
             var controlledCar = this.CreateControlledCar(480, 1425, 0, "car_1_white.png");
-            var controlledCar2 = this.CreateControlledCar(4250, 1420, -90, "car_1_red.png");
+            var controlledCar3 = this.CreateControlledCar(360, 1025, 0, "car_1_red.png");
+            //var controlledCar2 = this.CreateControlledCar(4250, 1420, -90, "car_1_red.png");
+
+            controlledCar3.Collideable = true;
 
             world.AddControlledCar(controlledCar);
-            world.AddControlledCar(controlledCar2);
+            world.AddControlledCar(controlledCar3);
+            //world.AddControlledCar(controlledCar2);
         }
 
         private void AddNpcsTo(World world)
