@@ -44,6 +44,7 @@
                     obj => obj.Collideable)
                 .ToList();
 
+            var sameLaneObjects = new List<WorldObject>();
             collidableObjects.ForEach(obj =>
             {
                 var vecToObj = new Vector2(obj.X, obj.Y) - Position;
@@ -59,13 +60,12 @@
 
                 if (IsInTheSameLane(obj))
                 {
-                    Debug.WriteLine("spotted an object in the same lane");
-                }
-                else
-                {
-                    Debug.WriteLine("spotted an object in another lane");
+                    sameLaneObjects.Add(obj);
                 }
             });
+            var closestObj = sameLaneObjects?.MinBy(obj => (new Vector2(car.X, car.Y) - new Vector2(obj.X, obj.Y)).Length());
+            if (closestObj != null)
+                Debug.WriteLine($"Object at ({closestObj.X}, {closestObj.Y}) is closest.");
             //CarLaneDebug();
         }
 
