@@ -56,7 +56,7 @@
                     Type = obj.WorldObjectType,
                     Angle = Math.Atan2(vecToObj.Y, vecToObj.X),
                     Distance = vecToObj.Length(),
-                    WillCollideInTicks = TrajectoriesCollide(Position, Position + (dir * car.Speed), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 10*(MathF.PI/180)),
+                    WillCollideInTicks = TrajectoriesCollide(Position, Position + (dir * car.Speed), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 10*(MathF.PI/180), 5),
                     IsInSameLane = IsInTheSameLane(obj)
                 });
 
@@ -78,10 +78,10 @@
         /// <param name="a2">Next position of object A (A + Velocity)</param>
         /// <param name="b1">Current position of object B</param>
         /// <param name="b2">Next position of object B (B + Velocity)</param>
-        /// <param name="radAngle">An angle threshold in radians. E.g. if object B is not moving and the angle between (B-A) and <paramref name="a2"/>-<paramref name="a1"/>
-        /// is smaller than <paramref name="radAngle"/>, the objects will collide.</param>
+        /// <param name="radAngleErrorMargin">An angle threshold in radians. E.g. if object B is not moving and the angle between (B-A) and <paramref name="a2"/>-<paramref name="a1"/>
+        /// is smaller than <paramref name="radAngleErrorMargin"/>, the objects will collide.</param>
         /// <returns>The number of ticks in which the two objects will collide. Returns -1 if they won't.</returns>
-        static int TrajectoriesCollide(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, float radAngle = 0)
+        static int TrajectoriesCollide(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, float radAngleErrorMargin = 0, int tickErrorMargin = 0)
         {
             var p = GetLineIntersection(a1,a2,b1,b2);
             var dirA = a2 - a1;
@@ -96,14 +96,14 @@
                     //angle = asin(cross / (aLength * bLength))
                     var diffAB = b1 - a1;
                     var angleBw = Math.Abs(MathF.Asin((a1.X * diffAB.Y - a1.Y * diffAB.X) / (dirA.Length() * diffAB.Length())));
-                    return angleBw <= radAngle ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirA.Length()) : -1;
+                    return angleBw <= radAngleErrorMargin ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirA.Length()) : -1;
                 }
                 //B is moving
                 else if (dirB != Vector2.Zero)
                 {
                     var diffAB = b1 - a1;
                     var angleBw = Math.Abs(MathF.Asin((b1.X * diffAB.Y - b1.Y * diffAB.X) / (dirB.Length() * diffAB.Length())));
-                    return angleBw <= radAngle ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirB.Length()) : -1;
+                    return angleBw <= radAngleErrorMargin ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirB.Length()) : -1;
                 }
                 //Neither are moving, they cannot collide
                 return -1;
@@ -112,7 +112,7 @@
             var P = (Vector2)p;
             int distAP = (int)((a1 - P).Length() / dirA.Length());
             int distBP = (int)((b1 - P).Length() / dirB.Length());
-            return distAP == distBP ? distAP : -1;
+            return Math.Abs(distAP - distBP) < tickErrorMargin ? Math.Min(distAP,distBP) : -1;
         }
 
         /// <summary>
