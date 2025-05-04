@@ -1,8 +1,12 @@
 namespace AutomatedCar.Models
 {
+    using Avalonia.Controls;
+    using Avalonia.Controls.Shapes;
     using Avalonia.Media;
+    using Newtonsoft.Json.Linq;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Drawing;
 
     public class PropertyChangedEventArgs : EventArgs
@@ -21,7 +25,6 @@ namespace AutomatedCar.Models
 
         private int x;
         private int y;
-
         private double rotation;
 
         public WorldObject(int x, int y, string filename, int zindex = 1, bool collideable = false, WorldObjectType worldObjectType = WorldObjectType.Other)
@@ -43,6 +46,7 @@ namespace AutomatedCar.Models
             {
                 this.rotation = value % 360;
                 this.PropertyChangedEvent?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Rotation)));
+                TransformGeometries();
             }
         }
 
@@ -53,6 +57,7 @@ namespace AutomatedCar.Models
             {
                 this.x = value;
                 this.PropertyChangedEvent?.Invoke(this, new PropertyChangedEventArgs(nameof(this.X)));
+                TransformGeometries();
             }
         }
 
@@ -63,9 +68,15 @@ namespace AutomatedCar.Models
             {
                 this.y = value;
                 this.PropertyChangedEvent?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Y)));
+                TransformGeometries();
             }
         }
 
+        /// <summary>
+        /// List that contains the transformed points of each geometry of a world object.
+        /// Example: GlobalPoints[i][j] contains the global equivalent for the point Geometries[i].Points[j].
+        /// </summary>
+        public List<IList<Avalonia.Point>> GlobalPoints { get; set; } = new ();
         public Point RotationPoint { get; set; }
 
         public string RenderTransformOrigin { get; set; }
@@ -79,5 +90,41 @@ namespace AutomatedCar.Models
         public bool Collideable { get; set; }
 
         public WorldObjectType WorldObjectType { get; set; }
+
+        public void TransformGeometries()
+        {
+            var tg = new TransformGroup();
+            tg.Children.Add(new RotateTransform(Rotation, RotationPoint.X, RotationPoint.Y));
+            tg.Children.Add(new TranslateTransform(X - RotationPoint.X, Y - RotationPoint.Y));
+            for (int i = 0; i < Geometries.Count; i++)
+            {
+                Geometries[i].Transform = tg;
+                TransformGlobalPoints(i, tg);
+            }
+        }
+        void TransformGlobalPoints(int n, TransformGroup t)
+        {
+            if (GlobalPoints.Count <= 0)
+            {
+                for (int i = 0; i < Geometries.Count; i++)
+                {
+                    GlobalPoints.Add(new List<Avalonia.Point>());
+                    for (int j = 0; j < Geometries[i].Points.Count; j++)
+                    {
+                        GlobalPoints[i].Add(new Avalonia.Point(Geometries[i].Points[j].X, Geometries[i].Points[j].Y));
+                    }
+                }
+            }
+
+            var ps = GlobalPoints[n];
+            for (int j = 0; j < ps.Count; j++)
+            {
+                ps[j] = Geometries[n].Points[j];
+                for (int k = 0; k < t.Children.Count; k++)
+                {
+                    ps[j] = ps[j].Transform(t.Children[k].Value);
+                }
+            }
+        }
     }
 }
