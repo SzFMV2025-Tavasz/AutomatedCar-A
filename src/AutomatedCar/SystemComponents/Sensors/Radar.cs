@@ -70,6 +70,77 @@
         }
 
         /// <summary>
+        /// Determines if two objects (A and B) will collide based on their velocity.
+        /// </summary>
+        /// <param name="a1">Current position of object A</param>
+        /// <param name="a2">Next position of object A (A + Velocity)</param>
+        /// <param name="b1">Current position of object B</param>
+        /// <param name="b2">Next position of object B (B + Velocity)</param>
+        /// <param name="radAngle">An angle threshold in radians. E.g. if object B is not moving and the angle between (B-A) and <paramref name="a2"/>-<paramref name="a1"/>
+        /// is smaller than <paramref name="radAngle"/>, the objects will collide.</param>
+        /// <returns>The number of ticks in which the two objects will collide. Returns -1 if they won't.</returns>
+        static int TrajectoriesCollide(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2, float radAngle = 0)
+        {
+            var p = GetLineIntersection(a1,a2,b1,b2);
+            var dirA = a2 - a1;
+            var dirB = b2 - b1;
+
+            //Either the lines are parallel or one object is not moving.
+            if (p == null)
+            {
+                //A is moving
+                if (dirA != Vector2.Zero)
+                {
+                    //angle = asin(cross / (aLength * bLength))
+                    var diffAB = b1 - a1;
+                    var angleBw = Math.Abs(MathF.Asin((a1.X * diffAB.Y - a1.Y * diffAB.X) / (dirA.Length() * diffAB.Length())));
+                    return angleBw <= radAngle ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirA.Length()) : -1;
+                }
+                //B is moving
+                else if (dirB != Vector2.Zero)
+                {
+                    var diffAB = b1 - a1;
+                    var angleBw = Math.Abs(MathF.Asin((b1.X * diffAB.Y - b1.Y * diffAB.X) / (dirB.Length() * diffAB.Length())));
+                    return angleBw <= radAngle ? (int)(diffAB.Length() * MathF.Cos(angleBw) / dirB.Length()) : -1;
+                }
+                //Neither are moving, they cannot collide
+                return -1;
+            }
+
+            var P = (Vector2)p;
+            int distAP = (int)((a1 - P).Length() / dirA.Length());
+            int distBP = (int)((b1 - P).Length() / dirB.Length());
+            return distAP == distBP ? distAP : -1;
+        }
+
+        /// <summary>
+        /// Calculates the intersection point of two lines that are defined by two vectors (two points for each vector).
+        /// </summary>
+        /// <param name="a1">Current position of a point 'A'.</param>
+        /// <param name="a2">Next position of the point 'A' (A + aVec)</param>
+        /// <param name="b1">Current position of a point 'B'</param>
+        /// <param name="b2">Next position of the point 'B' (B + bVec)</param>
+        /// <returns>The intersection point.</returns>
+        static Vector2? GetLineIntersection(Vector2 a1, Vector2 a2, Vector2 b1, Vector2 b2)
+        {
+            Vector2 dirA = a2 - a1;
+            Vector2 dirB = b2 - b1;
+
+            float cross = dirA.X * dirB.Y - dirA.Y * dirB.X;
+
+            //Lines are parallel
+            if (Math.Abs(cross) < 1e-8)
+            {
+                return null;
+            }
+
+            Vector2 delta = b1 - a1;
+            float t = (delta.X * dirB.Y - delta.Y * dirB.X) / cross;
+
+            return a1 + t * dirA;
+        }
+
+        /// <summary>
         /// Outputs the indices of lanes that the <see cref="car"/> touches.
         /// Uncomment method call in <see cref="Process"/> to run.
         /// </summary>
