@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    enum NpcType
+    public enum NpcType
     {
         CAR, PEDESTRIAN
     }

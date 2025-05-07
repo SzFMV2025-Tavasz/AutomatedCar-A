@@ -15,6 +15,7 @@
 
     public class World
     {
+        public string WorldName { get; private set; }
         private int controlledCarPointer = 0;
         public List<AutomatedCar> controlledCars = new();
 
@@ -106,6 +107,7 @@
             var rotationPoints = this.ReadRotationsPoints();
             var renderTransformOrigins = this.CalculateRenderTransformOrigins();
             var worldObjectPolygons = this.ReadPolygonJSON();
+            this.WorldName = filename;
 
             StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream(filename));

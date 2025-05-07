@@ -14,16 +14,16 @@ namespace Tests.Helpers
     {
         private const double Tolerance = 1e-6;
 
-        private double GetPixelsPerTick(Speed speed)
+        private double GetPixelsPerTick(SpeedHelper speed)
         {
-            Type speedType = typeof(Speed);
+            Type speedType = typeof(SpeedHelper);
             PropertyInfo pixelsPerTickProperty = speedType.GetProperty("PixelsPerTick", BindingFlags.NonPublic | BindingFlags.Instance);
             return (double)pixelsPerTickProperty.GetValue(speed);
         }
 
-        private void SetPixelsPerTick(Speed speed, double pixelsPerTick)
+        private void SetPixelsPerTick(SpeedHelper speed, double pixelsPerTick)
         {
-            Type speedType = typeof(Speed);
+            Type speedType = typeof(SpeedHelper);
             PropertyInfo pixelsPerTickProperty = speedType.GetProperty("PixelsPerTick", BindingFlags.NonPublic | BindingFlags.Instance);
             pixelsPerTickProperty.SetValue(speed, pixelsPerTick);
         }
@@ -35,7 +35,7 @@ namespace Tests.Helpers
             double pixelsPerTick = 5.0;
 
             // Act
-            Speed speed = Speed.FromPixelsPerTick(pixelsPerTick);
+            SpeedHelper speed = SpeedHelper.FromPixelsPerTick(pixelsPerTick);
 
             // Assert
             double expected = pixelsPerTick;
@@ -49,10 +49,10 @@ namespace Tests.Helpers
             double metersPerSecond = 1.0;
 
             // Act
-            Speed speed = Speed.FromMetersPerSecond(metersPerSecond);
+            SpeedHelper speed = SpeedHelper.FromMetersPerSecond(metersPerSecond);
 
             // Assert
-            double expected = Speed.MeterToPixels / GameBase.TicksPerSecond;
+            double expected = SpeedHelper.MeterToPixels / GameBase.TicksPerSecond;
             Assert.InRange(GetPixelsPerTick(speed), expected - Tolerance, expected + Tolerance);
         }
 
@@ -63,10 +63,10 @@ namespace Tests.Helpers
             double kmPerHour = 3.6; // 1 m/s
 
             // Act
-            Speed speed = Speed.FromKmPerHour(kmPerHour);
+            SpeedHelper speed = SpeedHelper.FromKmPerHour(kmPerHour);
 
             // Assert
-            double expected = Speed.MeterToPixels / GameBase.TicksPerSecond;
+            double expected = SpeedHelper.MeterToPixels / GameBase.TicksPerSecond;
             Assert.InRange(GetPixelsPerTick(speed), expected - Tolerance, expected + Tolerance);
         }
 
@@ -75,7 +75,7 @@ namespace Tests.Helpers
         {
             // Arrange
             double pixelsPerTick = 5.0;
-            Speed speed = Speed.FromPixelsPerTick(pixelsPerTick);
+            SpeedHelper speed = SpeedHelper.FromPixelsPerTick(pixelsPerTick);
             SetPixelsPerTick(speed, pixelsPerTick);
 
             // Act
@@ -91,14 +91,14 @@ namespace Tests.Helpers
         {
             // Arrange
             double pixelsPerTick = 1.0;
-            Speed speed = Speed.FromPixelsPerTick(pixelsPerTick);
+            SpeedHelper speed = SpeedHelper.FromPixelsPerTick(pixelsPerTick);
             SetPixelsPerTick(speed, pixelsPerTick);
 
             // Act
             double result = speed.InMetersPerSecond();
 
             // Assert
-            double expected = GameBase.TicksPerSecond / Speed.MeterToPixels;
+            double expected = GameBase.TicksPerSecond / SpeedHelper.MeterToPixels;
             Assert.InRange(result, expected - Tolerance, expected + Tolerance);
         }
 
@@ -106,8 +106,8 @@ namespace Tests.Helpers
         public void InKmPerHour_ShouldReturnCorrectValue()
         {
             // Arrange
-            double pixelsPerTick = Speed.MeterToPixels / GameBase.TicksPerSecond;
-            Speed speed = Speed.FromPixelsPerTick(pixelsPerTick);
+            double pixelsPerTick = SpeedHelper.MeterToPixels / GameBase.TicksPerSecond;
+            SpeedHelper speed = SpeedHelper.FromPixelsPerTick(pixelsPerTick);
             SetPixelsPerTick(speed, pixelsPerTick);
 
             // Act
@@ -125,7 +125,7 @@ namespace Tests.Helpers
             double ticksPerSecond = 500.0;
 
             // Act
-            Speed speed = Speed.FromPixelsPerTick(ticksPerSecond);
+            SpeedHelper speed = SpeedHelper.FromPixelsPerTick(ticksPerSecond);
             double result = speed.InPixelsPerTick();
 
             // Assert
@@ -139,7 +139,7 @@ namespace Tests.Helpers
             double kmPerHour = 50.0;
 
             // Act
-            Speed speed = Speed.FromKmPerHour(kmPerHour);
+            SpeedHelper speed = SpeedHelper.FromKmPerHour(kmPerHour);
             double result = speed.InKmPerHour();
 
             // Assert
@@ -153,7 +153,7 @@ namespace Tests.Helpers
             double metersPerSecond = 10.0;
 
             // Act
-            Speed speed = Speed.FromMetersPerSecond(metersPerSecond);
+            SpeedHelper speed = SpeedHelper.FromMetersPerSecond(metersPerSecond);
             double result = speed.InMetersPerSecond();
 
             // Assert

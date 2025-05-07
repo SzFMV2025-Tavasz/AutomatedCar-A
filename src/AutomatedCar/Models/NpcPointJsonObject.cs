@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    class NpcPointJsonObject
+    public class NpcPointJsonObject
     {
         public int X { get; set; }
 

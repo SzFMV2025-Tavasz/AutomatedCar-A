@@ -3,7 +3,10 @@ namespace AutomatedCar
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
+
+    using System.Runtime.ConstrainedExecution;
     using AutomatedCar.Helpers;
     using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
@@ -38,11 +41,15 @@ namespace AutomatedCar
 
             //this.AddDummyCircleTo(world);
 
-            world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
+            world.PopulateFromJSON($"AutomatedCar.Assets.oval.json");
+
+            this.AddNpcsTo(world);
 
             this.AddNpcsTo(world);
 
             this.AddControlledCarsTo(world);
+
+            this.StartNpcs(world);
 
             return world;
         }
@@ -55,6 +62,37 @@ namespace AutomatedCar
             dynamic stuff = JObject.Parse(json_text);
             var points = new List<Point>();
             foreach (var i in stuff["objects"][0]["polys"][0]["points"])
+            {
+                points.Add(new Point(i[0].ToObject<int>(), i[1].ToObject<int>()));
+            }
+
+            return new PolylineGeometry(points, false);
+        }
+
+        private PolylineGeometry GetNpcCarBoundaryBox()
+        {
+            StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
+    .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
+            string json_text = reader.ReadToEnd();
+            dynamic stuff = JObject.Parse(json_text);
+            var points = new List<Point>();
+            foreach (var i in stuff["objects"][0]["polys"][0]["points"])
+            {
+                points.Add(new Point(i[0].ToObject<int>(), i[1].ToObject<int>()));
+            }
+
+            return new PolylineGeometry(points, false);
+        }
+
+        private PolylineGeometry GetNpcPedestrianBoundaryBox()
+        {
+            StreamReader reader = new StreamReader(Assembly.GetExecutingAssembly()
+    .GetManifestResourceStream($"AutomatedCar.Assets.worldobject_polygons.json"));
+            string json_text = reader.ReadToEnd();
+            dynamic stuff = JObject.Parse(json_text);
+            var polygonForPed = stuff["objects"] as object;
+            var points = new List<Point>();
+            foreach (var i in stuff["objects"][30]["polys"][0]["points"])
             {
                 points.Add(new Point(i[0].ToObject<int>(), i[1].ToObject<int>()));
             }
@@ -107,14 +145,38 @@ namespace AutomatedCar
                 NpcPath path = new NpcPath(npcJsonObject);
                 if (npcJsonObject.Type == NpcType.CAR)
                 {
-                    world.AddObject(new NpcCar(path));
+                    NpcCar car = new NpcCar(path);
+                    car.Geometry = this.GetNpcCarBoundaryBox();
+                    car.RawGeometries.Add(car.Geometry);
+                    car.Geometries.Add(car.Geometry);
+                    car.RotationPoint = new System.Drawing.Point(54, 120);
+                    if ($"AutomatedCar.Assets.{car.WorldName}.json" == world.WorldName)
+                    {
+                        world.AddObject(car);
+                    }
                 }
                 else
                 {
-                    world.AddObject(new NpcPedestrian(path));
+                    NpcPedestrian pedestrian = new NpcPedestrian(path);
+                    pedestrian.Geometry = this.GetNpcPedestrianBoundaryBox();
+                    pedestrian.RawGeometries.Add(pedestrian.Geometry);
+                    pedestrian.Geometries.Add(pedestrian.Geometry);
+                    //pedestrian.RotationPoint = new System.Drawing.Point(54, 120);
+                    if ($"AutomatedCar.Assets.{pedestrian.WorldName}.json" == world.WorldName)
+                    {
+                        world.AddObject(pedestrian);
+                    }
                 }
             }
 
         }
+        private void StartNpcs(World world)
+        {
+            foreach (var npc in world.WorldObjects.OfType<Npc>())
+            {
+                npc.Start();
+            }
+        }
+
     }
 }

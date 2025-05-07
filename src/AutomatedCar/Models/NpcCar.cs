@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace AutomatedCar.Models
 {
-    class NpcCar : Npc
+
+    public class NpcCar : Npc
     {
         public NpcCar(NpcPath path) 
-            : base(path, path.Filename, WorldObjectType.Car)
+            : base(path, path.Filename, WorldObjectType.Car, path.World)
         {
             
         }

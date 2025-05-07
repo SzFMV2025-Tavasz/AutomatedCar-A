@@ -17,12 +17,18 @@
     <EmbeddedResource Include="Assets\**;Resources\**" />
   </ItemGroup>
   <ItemGroup>
+    <AvaloniaResource Remove="Assets\npcs.json" />
     <AvaloniaResource Remove="Assets\oval.csv" />
     <AvaloniaResource Remove="Assets\oval.json" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\oval.csv" />
     <None Remove="Assets\oval.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\npcs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.4" />
