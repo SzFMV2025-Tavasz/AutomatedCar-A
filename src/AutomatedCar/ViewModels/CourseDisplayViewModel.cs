@@ -8,6 +8,7 @@ namespace AutomatedCar.ViewModels
 {
     using Avalonia.Controls;
     using Models;
+    using Newtonsoft.Json.Linq;
     using System;
     using Visualization;
 
@@ -49,12 +50,12 @@ namespace AutomatedCar.ViewModels
 
         internal void ThrottleOnSet(bool value)
         {
-            World.Instance.ControlledCar.ThrottleOn = value;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.Throttle, value);
         }
 
         internal void BrakeOnSet(bool value)
         {
-            World.Instance.ControlledCar.BrakeOn = value;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.Brake, value);
         }
 
         public void ToggleDebug()
@@ -84,13 +85,14 @@ namespace AutomatedCar.ViewModels
 
         internal void SetSteeringLeft(bool v)
         {
-            World.Instance.ControlledCar.SteeringLeft = v;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.SteerLeft, v);
         }
 
         internal void SetSteeringRight(bool v)
         {
-            World.Instance.ControlledCar.SteeringRight = v;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.SteerRight, v);
         }
+
         private void OnControlledCarPositionChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(WorldObject.X) || e.PropertyName == nameof(WorldObject.Y))
