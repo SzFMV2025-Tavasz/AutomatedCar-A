@@ -98,7 +98,7 @@
             }
 
             var angularVelocity = (speed.InPixelsPerTick() / radius).ToDegree();
-            return angularVelocity;
+            return this.car.ReverseOn ? -angularVelocity : angularVelocity;
         }
 
         /// <summary>
@@ -128,7 +128,8 @@
         private Vector2 CalculateMoveVectorStraight(Speed velocity, double rotation)
         {
             var moveVector = new Vector2(0, -(float)velocity.InPixelsPerTick());
-            return moveVector.Rotate((float)rotation.ToRadian());
+            moveVector = moveVector.Rotate((float)rotation.ToRadian());
+            return this.car.ReverseOn ? -moveVector : moveVector;
         }
 
         /// <summary>

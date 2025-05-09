@@ -34,7 +34,7 @@ namespace AutomatedCar.Models
         }
 
         [Obsolete("Should check the transmission instead.")]
-        public bool ReverseOn { get; }
+        public bool ReverseOn { get; } = false;
 
         [Obsolete("VirtualFunctionBus.InputHandlerPacket.SteeringLeft be used instead.")]
         public bool SteeringLeft
