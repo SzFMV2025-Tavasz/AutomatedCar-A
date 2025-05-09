@@ -32,7 +32,7 @@ namespace AutomatedCar.Models
         }
 
         [Obsolete("Should check the transmission instead.")]
-        public bool ReverseOn { get; }
+        public bool ReverseOn { get; } = true;
 
         public bool SteeringLeft
         {
