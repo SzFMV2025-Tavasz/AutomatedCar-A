@@ -21,35 +21,45 @@ namespace AutomatedCar.Models
         private double xD;
         private double yD;
 
+        [Obsolete("VirtualFunctionBus.InputHandlerPacket.Throttling be used instead.")]
         public bool ThrottleOn
         {
-            get => this.CheckInputPrioritiesWithCounterInput(InputRequestType.Throttle, InputRequestType.Brake);
+            get => this.virtualFunctionBus.InputHandlerPacket.Throttling;
         }
 
+        [Obsolete("VirtualFunctionBus.InputHandlerPacket.Braking be used instead.")]
         public bool BrakeOn
         {
-            get => this.CheckInputPrioritiesWithCounterInput(InputRequestType.Brake, InputRequestType.Throttle);
+            get => this.virtualFunctionBus.InputHandlerPacket.Braking;
         }
 
         [Obsolete("Should check the transmission instead.")]
         public bool ReverseOn { get; }
 
+        [Obsolete("VirtualFunctionBus.InputHandlerPacket.SteeringLeft be used instead.")]
         public bool SteeringLeft
         {
-            get => this.CheckInputPrioritiesWithCounterInput(InputRequestType.SteerLeft, InputRequestType.SteerRight);
+            get => this.virtualFunctionBus.InputHandlerPacket.SteeringLeft;
         }
 
+        [Obsolete("VirtualFunctionBus.InputHandlerPacket.SteeringRight be used instead.")]
         public bool SteeringRight
         {
-            get => this.CheckInputPrioritiesWithCounterInput(InputRequestType.SteerRight, InputRequestType.SteerLeft);
+            get => this.virtualFunctionBus.InputHandlerPacket.SteeringRight;
         }
+
+        /// <summary>
+        /// Gets or sets the input requests requested by the different system components.
+        /// </summary>
+        public Dictionary<InputRequesterComponent, Dictionary<InputRequestType, bool>> InputRequests { get; }
 
         public AutomatedCar(int x, int y, string filename)
             : base(x, y, filename)
         {
-            this.inputRequests = [];
+            this.InputRequests = [];
 
             this.virtualFunctionBus = new VirtualFunctionBus();
+            this.virtualFunctionBus.RegisterComponent(new InputHandler(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new Powertrain(this.virtualFunctionBus, this));
 
@@ -124,11 +134,6 @@ namespace AutomatedCar.Models
         }
 
         /// <summary>
-        /// Stores the input requests requested by the different system components.
-        /// </summary>
-        private readonly Dictionary<InputRequesterComponent, Dictionary<InputRequestType, bool>> inputRequests;
-
-        /// <summary>
         /// Sets the requested input for the given component.
         /// <para>
         /// The setting does not reset automatically.
@@ -141,33 +146,13 @@ namespace AutomatedCar.Models
         /// <param name="isOn">Whether the input is requested or not.</param>
         public void RequestInput(InputRequesterComponent component, InputRequestType type, bool isOn)
         {
-            if (!this.inputRequests.TryGetValue(component, out var typeDict))
+            if (!this.InputRequests.TryGetValue(component, out var typeDict))
             {
                 typeDict = [];
-                this.inputRequests[component] = typeDict;
+                this.InputRequests[component] = typeDict;
             }
 
             typeDict[type] = isOn;
-        }
-
-        private InputRequesterComponent? GetHighestPriorityComponentForInputRequestType(InputRequestType type)
-        {
-            var matching = this.inputRequests
-                .Where(kvp => kvp.Value.TryGetValue(type, out var isOn) && isOn)
-                .Select(kvp => kvp.Key)
-                .OrderBy(k => (int)k);
-
-            return matching.Any() ? matching.First() : (InputRequesterComponent?)null;
-        }
-
-        private bool CheckInputPrioritiesWithCounterInput(InputRequestType input, InputRequestType counterInput)
-        {
-            var highestPriorityInput = this.GetHighestPriorityComponentForInputRequestType(input);
-            var highestPriorityCounter = this.GetHighestPriorityComponentForInputRequestType(counterInput);
-
-            if (highestPriorityInput == null) return false;
-            if (highestPriorityCounter == null) return true;
-            return highestPriorityInput.Value <= highestPriorityCounter.Value;
         }
     }
 }
