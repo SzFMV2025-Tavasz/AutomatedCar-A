@@ -63,7 +63,7 @@ namespace AutomatedCar.Models
             this.deltaY = this.checkpoint.Y - this.trueY;
             this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
 
-            SpeedHelper helper = SpeedHelper.FromKmPerHour(Speed);
+            SpeedHelper helper = Helpers.SpeedHelper.FromKmPerHour(Speed);
             double pixelsPerTick = helper.InPixelsPerTick();
 
             this.ticksPerStint = (int)(stintLength / pixelsPerTick);
@@ -148,7 +148,7 @@ namespace AutomatedCar.Models
             this.deltaY = this.checkpoint.Y - this.trueY;
             this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
 
-            SpeedHelper helper = SpeedHelper.FromKmPerHour(Speed);
+            SpeedHelper helper = Helpers.SpeedHelper.FromKmPerHour(Speed);
             double pixelsPerTick = helper.InPixelsPerTick();
 
             this.ticksPerStint = (int)(stintLength / pixelsPerTick);

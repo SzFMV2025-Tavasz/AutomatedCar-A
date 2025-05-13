@@ -28,7 +28,7 @@
             return new SpeedHelper(pixelsPerTick);
         }
 
-        public static Speed FromPixelsPerSecond(double pixelsPerSecond)
+        public static SpeedHelper FromPixelsPerSecond(double pixelsPerSecond)
         {
             return FromPixelsPerTick(pixelsPerSecond / GameBase.TicksPerSecond);
         }

@@ -90,7 +90,7 @@
         /// <param name="radius">The turning radius in pixels.</param>
         /// <param name="speed">The speed of the car.</param>
         /// <returns>The angular velocity in degrees.</returns>
-        private double CalculateAngularVelocity(int radius, Speed speed)
+        private double CalculateAngularVelocity(int radius, SpeedHelper speed)
         {
             if (radius == 0)
             {
@@ -125,7 +125,7 @@
         /// <param name="velocity">The velocity of the car.</param>
         /// <param name="rotation">The current rotation of the car in degrees.</param>
         /// <returns>The movement vector of the car.</returns>
-        private Vector2 CalculateMoveVectorStraight(Speed velocity, double rotation)
+        private Vector2 CalculateMoveVectorStraight(SpeedHelper velocity, double rotation)
         {
             var moveVector = new Vector2(0, -(float)velocity.InPixelsPerTick());
             moveVector = moveVector.Rotate((float)rotation.ToRadian());

@@ -16,12 +16,12 @@ namespace AutomatedCar.SystemComponents
         /// <summary>
         /// max sebesség előremenetben: max 130 km/h.
         /// </summary>
-        private static readonly Speed maxVelocityForward = Speed.FromKmPerHour(130);
+        private static readonly SpeedHelper maxVelocityForward = SpeedHelper.FromKmPerHour(130);
 
         /// <summary>
         /// max sebesség tolatáskor: max 20 km/h.
         /// </summary>
-        private static readonly Speed maxVelocityBackward = Speed.FromKmPerHour(20);
+        private static readonly SpeedHelper maxVelocityBackward = SpeedHelper.FromKmPerHour(20);
 
         public VelocityCalculator(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
             : base(virtualFunctionBus)
@@ -44,7 +44,7 @@ namespace AutomatedCar.SystemComponents
                 newVelocity = Math.Min(newVelocity, maxVelocityForward.InPixelsPerTick());
             }
 
-            this.car.Velocity = Speed.FromPixelsPerTick(newVelocity);
+            this.car.Velocity = SpeedHelper.FromPixelsPerTick(newVelocity);
         }
     }
 }
