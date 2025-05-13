@@ -1,5 +1,6 @@
 namespace AutomatedCar.Views
 {
+    using AutomatedCar.Models;
     using AutomatedCar.ViewModels;
     using Avalonia.Controls;
     using Avalonia.Input;
@@ -10,6 +11,12 @@ namespace AutomatedCar.Views
         public MainWindow()
         {
             this.InitializeComponent();
+            this.Loaded += (sender, e) =>
+            {
+                var viewModel = (MainWindowViewModel)this.DataContext;
+                var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
+                viewModel.CourseDisplay.ScrollViewer = scrollViewer;
+            };
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -19,36 +26,26 @@ namespace AutomatedCar.Views
 
             MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
 
-            if (Keyboard.IsKeyDown(Key.Up))
-            {
-                viewModel.CourseDisplay.KeyUp();
-            }
-
-            if (Keyboard.IsKeyDown(Key.Down))
-            {
-                viewModel.CourseDisplay.KeyDown();
-            }
-
             if (Keyboard.IsKeyDown(Key.Left))
             {
-                viewModel.CourseDisplay.KeyLeft();
+                viewModel.CourseDisplay.SetSteeringLeft(true);
             }
 
             if (Keyboard.IsKeyDown(Key.Right))
             {
-                viewModel.CourseDisplay.KeyRight();
+                viewModel.CourseDisplay.SetSteeringRight(true);
             }
 
-            if (Keyboard.IsKeyDown(Key.PageUp))
+            if (Keyboard.IsKeyDown(Key.Up))
             {
-                viewModel.CourseDisplay.PageUp();
+                viewModel.CourseDisplay.ThrottleOnSet(true);
             }
 
-            if (Keyboard.IsKeyDown(Key.PageDown))
+            if (Keyboard.IsKeyDown(Key.Down))
             {
-                viewModel.CourseDisplay.PageDown();
+                viewModel.CourseDisplay.BrakeOnSet(true);
             }
-
+            
             if (Keyboard.IsKeyDown(Key.D1))
             {
                 viewModel.CourseDisplay.ToggleDebug();
@@ -91,15 +88,36 @@ namespace AutomatedCar.Views
                 viewModel.PrevControlledCar();
                 Keyboard.Keys.Remove(Key.F5);
             }
-
-            var scrollViewer = this.Get<CourseDisplayView>("courseDisplay").Get<ScrollViewer>("scrollViewer");
-            viewModel.CourseDisplay.FocusCar(scrollViewer);
         }
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
             Keyboard.Keys.Remove(e.Key);
             base.OnKeyUp(e);
+
+            MainWindowViewModel viewModel = (MainWindowViewModel)this.DataContext;
+
+            if (!Keyboard.IsKeyDown(Key.Left))
+            {
+                viewModel.CourseDisplay.SetSteeringLeft(false);
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Right))
+            {
+                viewModel.CourseDisplay.SetSteeringRight(false);
+            }
+
+
+            if (!Keyboard.IsKeyDown(Key.Up))
+            {
+                viewModel.CourseDisplay.ThrottleOnSet(false);
+            }
+
+            if (!Keyboard.IsKeyDown(Key.Down))
+            {
+                viewModel.CourseDisplay.BrakeOnSet(false);
+            }
+
         }
 
         private void InitializeComponent()

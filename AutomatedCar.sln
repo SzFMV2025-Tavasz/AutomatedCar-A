@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{354C74A2-9F27-4141-ABA2-C8BA2E09DA80}"
 EndProject
@@ -19,9 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FD81FD17-2C32-49D9-9257-FCED13C4E26B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -49,8 +46,14 @@ Global
 		{B8730729-CECD-46FE-B51D-AC3E78F1AA8A}.Release|x86.ActiveCfg = Release|Any CPU
 		{B8730729-CECD-46FE-B51D-AC3E78F1AA8A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FD81FD17-2C32-49D9-9257-FCED13C4E26B} = {354C74A2-9F27-4141-ABA2-C8BA2E09DA80}
 		{B8730729-CECD-46FE-B51D-AC3E78F1AA8A} = {42569CB2-BBDC-4052-BD07-807F3C06A6A6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {46BDB451-B8DE-4162-9229-FC0A4B3E6673}
 	EndGlobalSection
 EndGlobal

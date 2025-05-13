@@ -22,6 +22,7 @@ namespace AutomatedCar.Models
         private int x;
         private int y;
 
+        private Point rotationPoint;
         private double rotation;
 
         public WorldObject(int x, int y, string filename, int zindex = 1, bool collideable = false, WorldObjectType worldObjectType = WorldObjectType.Other)
@@ -66,13 +67,21 @@ namespace AutomatedCar.Models
             }
         }
 
-        public Point RotationPoint { get; set; }
+        public Point RotationPoint
+        {
+            get => this.rotationPoint;
+            set
+            {
+                this.rotationPoint = value;
+                this.PropertyChangedEvent?.Invoke(this, new PropertyChangedEventArgs(nameof(this.RotationPoint)));
+            }
+        }
 
         public string RenderTransformOrigin { get; set; }
 
-        public List<PolylineGeometry> Geometries { get; set; } = new ();
+        public List<PolylineGeometry> Geometries { get; set; } = new();
 
-        public List<PolylineGeometry> RawGeometries { get; set; } = new ();
+        public List<PolylineGeometry> RawGeometries { get; set; } = new();
 
         public string Filename { get; set; }
 

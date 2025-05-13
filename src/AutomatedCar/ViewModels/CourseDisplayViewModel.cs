@@ -8,20 +8,26 @@ namespace AutomatedCar.ViewModels
 {
     using Avalonia.Controls;
     using Models;
+    using Newtonsoft.Json.Linq;
     using System;
     using Visualization;
 
     public class CourseDisplayViewModel : ViewModelBase
     {
         public ObservableCollection<WorldObjectViewModel> WorldObjects { get; } = new ObservableCollection<WorldObjectViewModel>();
-      
+
         private Avalonia.Vector offset;
+
+        public ScrollViewer ScrollViewer { get; set; }
 
         public CourseDisplayViewModel(World world)
         {
             this.WorldObjects = new ObservableCollection<WorldObjectViewModel>(world.WorldObjects.Select(wo => new WorldObjectViewModel(wo)));
             this.Width = world.Width;
             this.Height = world.Height;
+
+            // Feliratkozás a ControlledCar pozícióváltozásaira
+            World.Instance.ControlledCar.PropertyChangedEvent += this.OnControlledCarPositionChanged;
         }
 
         public int Width { get; set; }
@@ -42,34 +48,14 @@ namespace AutomatedCar.ViewModels
             set => this.RaiseAndSetIfChanged(ref this.debugStatus, value);
         }
 
-        public void KeyUp()
+        internal void ThrottleOnSet(bool value)
         {
-            World.Instance.ControlledCar.Y -= 5;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.Throttle, value);
         }
 
-        public void KeyDown()
+        internal void BrakeOnSet(bool value)
         {
-            World.Instance.ControlledCar.Y += 5;
-        }
-
-        public void KeyLeft()
-        {
-            World.Instance.ControlledCar.X -= 5;
-        }
-
-        public void KeyRight()
-        {
-            World.Instance.ControlledCar.X += 5;
-        }
-
-        public void PageUp()
-        {
-            World.Instance.ControlledCar.Rotation += 5;
-        }
-
-        public void PageDown()
-        {
-            World.Instance.ControlledCar.Rotation -= 5;
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.Brake, value);
         }
 
         public void ToggleDebug()
@@ -97,10 +83,48 @@ namespace AutomatedCar.ViewModels
             //World.Instance.DebugStatus.Rotate = !World.Instance.DebugStatus.Rotate;
         }
 
-        public void FocusCar(ScrollViewer scrollViewer)
+        internal void SetSteeringLeft(bool v)
         {
-            var offsetX = World.Instance.ControlledCar.X - (scrollViewer.Viewport.Width / 2);
-            var offsetY = World.Instance.ControlledCar.Y - (scrollViewer.Viewport.Height / 2);
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.SteerLeft, v);
+        }
+
+        internal void SetSteeringRight(bool v)
+        {
+            World.Instance.ControlledCar.RequestInput(Helpers.InputRequesterComponent.Driver, Helpers.InputRequestType.SteerRight, v);
+        }
+
+        private void OnControlledCarPositionChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(WorldObject.X) || e.PropertyName == nameof(WorldObject.Y))
+            {
+                // Hívjuk meg a FocusCar metódust, amikor az X vagy Y változik
+                this.FocusCar();
+            }
+        }
+
+        public void UpdateControlledCarEvents()
+        {
+            // Távolítsuk el az eseménykezelõt a jelenlegi autóról (ha van)
+            // Ez biztosítja, hogy ne legyen duplikált feliratkozás
+            //if (World.Instance.ControlledCar != null)
+
+            World.Instance.ControlledCar.PropertyChangedEvent -= this.OnControlledCarPositionChanged;
+
+
+            // Ha történt autóváltás, akkor iratkozzunk fel az új autóra
+            //if (World.Instance.ControlledCar != null)
+
+
+            World.Instance.ControlledCar.PropertyChangedEvent += this.OnControlledCarPositionChanged;
+
+            // Azonnali fókusz az új autóra
+            this.FocusCar();
+
+        }
+        public void FocusCar()
+        {
+            var offsetX = World.Instance.ControlledCar.X - (this.ScrollViewer.Viewport.Width / 2);
+            var offsetY = World.Instance.ControlledCar.Y - (this.ScrollViewer.Viewport.Height / 2);
             this.Offset = new Avalonia.Vector(offsetX, offsetY);
         }
     }
