@@ -1,4 +1,5 @@
-﻿namespace AutomatedCar.Models
+﻿
+namespace AutomatedCar.Models
 {
     using System;
     using System.Collections.Generic;
@@ -148,27 +149,27 @@
                     }
 
                     // apply rotation
-                    foreach (var geometry in wo.Geometries)
-                    {
-                        var rotate = new RotateTransform(wo.Rotation);
-                        var translate = new TranslateTransform(-wo.RotationPoint.X, -wo.RotationPoint.Y);
-                        var transformGroup = new TransformGroup();
-                        transformGroup.Children.Add(rotate);
-                        transformGroup.Children.Add(translate);
+                    //foreach (var geometry in wo.Geometries)
+                    //{
+                    //    var rotate = new RotateTransform(wo.Rotation);
+                    //    var translate = new TranslateTransform(-wo.RotationPoint.X, -wo.RotationPoint.Y);
+                    //    var transformGroup = new TransformGroup();
+                    //    transformGroup.Children.Add(rotate);
+                    //    transformGroup.Children.Add(translate);
 
-                        var mx2 = new System.Drawing.Drawing2D.Matrix(rwo.M11, rwo.M12, rwo.M21, rwo.M22, wo.RotationPoint.X, wo.RotationPoint.Y);
-                        var mx = new System.Drawing.Drawing2D.Matrix();
-                        mx.RotateAt(Convert.ToSingle(wo.Rotation), new PointF(wo.RotationPoint.X, wo.RotationPoint.Y));
-                        mx.Translate(wo.RotationPoint.X, wo.RotationPoint.Y);
-                        PointF[] gpa = new PointF[geometry.Points.Count];
+                    //    var mx2 = new System.Drawing.Drawing2D.Matrix(rwo.M11, rwo.M12, rwo.M21, rwo.M22, wo.RotationPoint.X, wo.RotationPoint.Y);
+                    //    var mx = new System.Drawing.Drawing2D.Matrix();
+                    //    mx.RotateAt(Convert.ToSingle(wo.Rotation), new PointF(wo.RotationPoint.X, wo.RotationPoint.Y));
+                    //    mx.Translate(wo.RotationPoint.X, wo.RotationPoint.Y);
+                    //    PointF[] gpa = new PointF[geometry.Points.Count];
 
-                        var gpa2 = this.ToDotNetPoints(geometry.Points).ToArray();
-                        this.ToDotNetPoints(geometry.Points).CopyTo(gpa);
-                        mx2.TransformPoints(gpa2);
-                        geometry.Points = this.ToAvaloniaPoints(gpa2);
-                    }
+                    //    var gpa2 = this.ToDotNetPoints(geometry.Points).ToArray();
+                    //    this.ToDotNetPoints(geometry.Points).CopyTo(gpa);
+                    //    mx2.TransformPoints(gpa2);
+                    //    geometry.Points = this.ToAvaloniaPoints(gpa2);
+                    //}
                 }
-
+                wo.TransformGeometries();
                 this.AddObject(wo);
             }
         }

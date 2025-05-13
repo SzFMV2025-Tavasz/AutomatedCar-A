@@ -6,10 +6,16 @@
 
     public class RadarPacket : ReactiveObject, IReadOnlyRadarPacket
     {
+        WorldObjectType type;
         double angle;
         double distance;
-        Vector2 relativeVelocity;
-        WorldObjectType type;
+        int willCollideInTicks;
+        bool isInSameLane;
+        public WorldObjectType Type
+        {
+            get => this.type;
+            set => this.RaiseAndSetIfChanged(ref this.type, value);
+        }
         public double Angle
         {
             get => this.angle;
@@ -20,15 +26,17 @@
             get => this.distance;
             set => this.RaiseAndSetIfChanged(ref this.distance, value);
         }
-        public Vector2 RelativeVelocity
+
+        public int WillCollideInTicks
         {
-            get => this.relativeVelocity;
-            set => this.RaiseAndSetIfChanged(ref this.relativeVelocity, value);
+            get => this.willCollideInTicks;
+            set => this.RaiseAndSetIfChanged(ref this.willCollideInTicks, value);
         }
-        public WorldObjectType Type
+
+        public bool IsInSameLane
         {
-            get => this.type;
-            set => this.RaiseAndSetIfChanged(ref this.type, value);
+            get => this.isInSameLane;
+            set => this.RaiseAndSetIfChanged(ref this.isInSameLane, value);
         }
     }
 }
