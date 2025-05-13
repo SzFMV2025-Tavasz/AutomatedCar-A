@@ -41,7 +41,7 @@ namespace AutomatedCar
 
             //this.AddDummyCircleTo(world);
 
-            world.PopulateFromJSON($"AutomatedCar.Assets.oval.json");
+            world.PopulateFromJSON($"AutomatedCar.Assets.test_world.json");
 
             this.AddNpcsTo(world);
 
