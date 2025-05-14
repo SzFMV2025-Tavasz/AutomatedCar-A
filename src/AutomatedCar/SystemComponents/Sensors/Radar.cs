@@ -21,6 +21,7 @@
         int offsetLength;
         Vector2 dir;
         Vector2 anchor;
+        int willCollide;
 
         public Vector2 Position
         {
@@ -51,12 +52,17 @@
                 var vecToObj = objPos - Position;
                 var objRotInRadians = CorrectRotation(obj.Rotation) * (Math.PI / 180);
                 var objDirVec = new Vector2((float)Math.Cos(objRotInRadians), (float)Math.Sin(objRotInRadians));
+                willCollide = TrajectoriesCollide(Position, Position + (dir * 1000), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 0.1f, 5);
+                if (!car.EmergencyBrakingTrigger && willCollide < car.BrakingDistance)
+                {
+                    car.EmergencyBrakingTrigger = true;
+                }
                 bus.RadarPackets.Add(new RadarPacket()
                 {
                     Type = obj.WorldObjectType,
                     Angle = Math.Atan2(vecToObj.Y, vecToObj.X),
                     Distance = vecToObj.Length(),
-                    WillCollideInTicks = TrajectoriesCollide(Position, Position + (dir * car.Speed), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 10*(MathF.PI/180), 5),
+                    WillCollideInTicks = willCollide,
                     IsInSameLane = IsInTheSameLane(obj)
                 });
 
@@ -65,6 +71,7 @@
                 //    sameLaneObjects.Add(obj);
                 //}
             });
+            
             //var closestObj = sameLaneObjects?.MinBy(obj => (new Vector2(car.X, car.Y) - new Vector2(obj.X, obj.Y)).Length());
             //if (closestObj != null)
             //    Debug.WriteLine($"Object at ({closestObj.X}, {closestObj.Y}) is closest.");

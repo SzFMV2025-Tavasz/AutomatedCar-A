@@ -21,6 +21,10 @@ namespace AutomatedCar.Models
         private double xD;
         private double yD;
 
+        public bool EmergencyBrakingTrigger { get; set; } = false;
+        public bool EmergencyBrakingActive { get; set; } = false;
+        public int BrakingDistance { get; set; } = 0;
+
         [Obsolete("VirtualFunctionBus.InputHandlerPacket.Throttling be used instead.")]
         public bool ThrottleOn
         {
@@ -57,8 +61,9 @@ namespace AutomatedCar.Models
             : base(x, y, filename)
         {
             this.InputRequests = [];
-
+            
             this.virtualFunctionBus = new VirtualFunctionBus();
+            this.virtualFunctionBus.RegisterComponent(new Radar(this.virtualFunctionBus, this, 5));
             this.virtualFunctionBus.RegisterComponent(new InputHandler(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new Powertrain(this.virtualFunctionBus, this));
