@@ -118,7 +118,7 @@ namespace AutomatedCar.Models
             this.Width = rawWorld.Width;
             foreach (RawWorldObject rwo in rawWorld.Objects)
             {
-                var wo = new WorldObject(rwo.X, rwo.Y, rwo.Type + ".png", this.DetermineZIndex(rwo.Type), this.DetermineCollidablity(rwo.Type), this.DetermineType(rwo.Type));
+                var wo = new WorldObject(rwo.X, rwo.Y, rwo.Type + ".png", this.DetermineZIndex(rwo.Type), false, this.DetermineType(rwo.Type));
                 (int x, int y) rp = (0, 0);
 
                 if (rotationPoints.ContainsKey(rwo.Type))

@@ -6,7 +6,7 @@
 
     internal class SteeringWheel : SystemComponent
     {
-        private const int RotationSpeed = 3;
+        private const int RotationSpeed = 6;
 
         private AutomatedCar car;
 

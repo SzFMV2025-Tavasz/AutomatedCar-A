@@ -88,7 +88,7 @@ namespace AutomatedCar.Models
         /// Example: GlobalPoints[i][j] contains the global equivalent for the point Geometries[i].Points[j].
         /// </summary>
         public List<IList<Avalonia.Point>> GlobalPoints { get; set; } = new ();
-        //public Point RotationPoint { get; set; }
+        public Point RotationPoint2 { get; set; }
 
         public string RenderTransformOrigin { get; set; }
 
@@ -105,8 +105,8 @@ namespace AutomatedCar.Models
         public void TransformGeometries()
         {
             var tg = new TransformGroup();
-            tg.Children.Add(new RotateTransform(Rotation, rotationPoint.X, rotationPoint.Y));
-            tg.Children.Add(new TranslateTransform(X - rotationPoint.X, Y - rotationPoint.Y));
+            tg.Children.Add(new RotateTransform(Rotation, RotationPoint2.X, RotationPoint2.Y));
+            tg.Children.Add(new TranslateTransform(X - RotationPoint2.X, Y - RotationPoint2.Y));
             for (int i = 0; i < Geometries.Count; i++)
             {
                 Geometries[i].Transform = tg;

@@ -52,19 +52,25 @@
                 var vecToObj = objPos - Position;
                 var objRotInRadians = CorrectRotation(obj.Rotation) * (Math.PI / 180);
                 var objDirVec = new Vector2((float)Math.Cos(objRotInRadians), (float)Math.Sin(objRotInRadians));
-                willCollide = TrajectoriesCollide(Position, Position + (dir * 1000), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 0.1f, 5);
-                if (!car.EmergencyBrakingTrigger && willCollide < car.BrakingDistance)
+                willCollide = TrajectoriesCollide(Position, Position + (dir * 1000), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 5f, 500);
+                Debug.WriteLine($"Will collide in {willCollide} ticks. Distance: {vecToObj.Length()}. {car.BrakingDistance}");
+                if (vecToObj.Length() < car.BrakingDistance)
                 {
                     car.EmergencyBrakingTrigger = true;
                 }
-                bus.RadarPackets.Add(new RadarPacket()
+                else
                 {
-                    Type = obj.WorldObjectType,
-                    Angle = Math.Atan2(vecToObj.Y, vecToObj.X),
-                    Distance = vecToObj.Length(),
-                    WillCollideInTicks = willCollide,
-                    IsInSameLane = IsInTheSameLane(obj)
-                });
+                    car.EmergencyBrakingTrigger = false;
+                }
+
+                    bus.RadarPackets.Add(new RadarPacket()
+                    {
+                        Type = obj.WorldObjectType,
+                        Angle = Math.Atan2(vecToObj.Y, vecToObj.X),
+                        Distance = vecToObj.Length(),
+                        WillCollideInTicks = willCollide,
+                        IsInSameLane = IsInTheSameLane(obj)
+                    });
 
                 //if (IsInTheSameLane(obj))
                 //{
@@ -220,7 +226,7 @@
                 var lane = road.GlobalPoints[i];
                 var nextLane = road.GlobalPoints[i + 1];
                 var poly = CreatePolyFromLanes(lane, nextLane);
-                if (DoPolygonsIntersect(poly, wObject.GlobalPoints[0]))
+                if (wObject.GlobalPoints.Count != 0 && DoPolygonsIntersect(poly, wObject.GlobalPoints[0]))
                     lanes.Add(i);
             }
             if (lanes.Count <= 0)

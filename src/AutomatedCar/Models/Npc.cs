@@ -62,6 +62,7 @@ namespace AutomatedCar.Models
             this.deltaX = this.checkpoint.X - this.trueX;
             this.deltaY = this.checkpoint.Y - this.trueY;
             this.stintLength = Math.Sqrt(Math.Pow(this.deltaX, 2) + Math.Pow(this.deltaY, 2));
+            this.Collideable = true;
 
             SpeedHelper helper = Helpers.SpeedHelper.FromKmPerHour(Speed);
             double pixelsPerTick = helper.InPixelsPerTick();

@@ -24,7 +24,7 @@
         /// The distance between the front of the car and the rear wheels.
         /// </summary>
         private const int CarFrontRearWheelsDistance = 180;
-        private const double maxDeceleration = 9 * SpeedHelper.MeterToPixels; // meter to pixels, 9m/s 
+        private const double maxDeceleration = 9; // meter to pixels, 9m/s 
         private readonly AutomatedCar car;
 
         public Powertrain(VirtualFunctionBus virtualFunctionBus, AutomatedCar car)
@@ -36,9 +36,9 @@
         public override void Process()
         {
             // Calculating braking distance in case of emergency braking is needed. (in pixels)
-            double BrakingDistanceInPixels = (int)(Math.Pow(car.Velocity.InPixelsPerSecond(), 2) / (2 * maxDeceleration));
+            double BrakingDistanceInMeters = (Math.Pow(car.Velocity.InMetersPerSecond(), 2) / (2 * maxDeceleration));
             // Exchanging the braking distance in pixels to the braking distance in ticks
-            this.car.BrakingDistance = (int)(BrakingDistanceInPixels / this.car.Velocity.InPixelsPerTick());
+            this.car.BrakingDistance = BrakingDistanceInMeters * SpeedHelper.MeterToPixels;
             // Calculating with edge cases
             int frontWheelRotation = this.virtualFunctionBus.SteeringWheelPacket.FrontWheelState;
 
@@ -55,7 +55,7 @@
             Vector2 moveVector;
             if (car.EmergencyBrakingTrigger)
             {
-                car.EmergencyBrakingActive = true;
+                car.Velocity = SpeedHelper.FromPixelsPerTick(0);
             }
             if (car.EmergencyBrakingActive)
             {

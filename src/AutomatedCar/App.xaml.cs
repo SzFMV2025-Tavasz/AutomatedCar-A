@@ -45,8 +45,6 @@ namespace AutomatedCar
 
             this.AddNpcsTo(world);
 
-            this.AddNpcsTo(world);
-
             this.AddControlledCarsTo(world);
 
             this.StartNpcs(world);

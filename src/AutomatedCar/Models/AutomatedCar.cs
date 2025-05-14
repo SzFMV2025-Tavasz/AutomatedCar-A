@@ -23,7 +23,7 @@ namespace AutomatedCar.Models
 
         public bool EmergencyBrakingTrigger { get; set; } = false;
         public bool EmergencyBrakingActive { get; set; } = false;
-        public int BrakingDistance { get; set; } = 0;
+        public double BrakingDistance { get; set; } = 0;
 
         [Obsolete("VirtualFunctionBus.InputHandlerPacket.Throttling be used instead.")]
         public bool ThrottleOn
@@ -63,11 +63,11 @@ namespace AutomatedCar.Models
             this.InputRequests = [];
             
             this.virtualFunctionBus = new VirtualFunctionBus();
-            this.virtualFunctionBus.RegisterComponent(new Radar(this.virtualFunctionBus, this, 5));
+            this.virtualFunctionBus.RegisterComponent(new Radar(this.virtualFunctionBus, this, 200));
             this.virtualFunctionBus.RegisterComponent(new InputHandler(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new SteeringWheel(this.virtualFunctionBus, this));
             this.virtualFunctionBus.RegisterComponent(new Powertrain(this.virtualFunctionBus, this));
-
+            
             //sorrend fontos. Amilyen sorrendben vannak hozzáadva a VFB-hez, olyan sorrendben hívódnak meg az egyes Process() függvények.
             //ctor-okat meg kell oldani h működjenek:
             this.virtualFunctionBus.RegisterComponent(new AccelerationCalculator(virtualFunctionBus, this));
