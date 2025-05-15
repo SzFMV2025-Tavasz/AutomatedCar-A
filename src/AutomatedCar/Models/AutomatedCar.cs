@@ -22,7 +22,7 @@ namespace AutomatedCar.Models
         private double yD;
 
         public bool EmergencyBrakingTrigger { get; set; } = false;
-        public bool EmergencyBrakingActive { get; set; } = false;
+        //public bool EmergencyBrakingActive { get; set; } = false;
         public double BrakingDistance { get; set; } = 0;
 
         [Obsolete("VirtualFunctionBus.InputHandlerPacket.Throttling be used instead.")]

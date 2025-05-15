@@ -1,6 +1,8 @@
 namespace AutomatedCar.SystemComponents
 {
     using System;
+    using System.Diagnostics;
+    using AutomatedCar.Helpers;
     using AutomatedCar.Models;
     using AutomatedCar.SystemComponents.Packets;
 
@@ -9,7 +11,7 @@ namespace AutomatedCar.SystemComponents
 
         //Data:
         private AccelerationPacket accelerationPacket;
-
+        private const double maxDeceleration = 9;
         private readonly AutomatedCar car;
 
         //Constants for calculation:
@@ -32,6 +34,8 @@ namespace AutomatedCar.SystemComponents
         //Methods:
         public override void Process()
         {
+
+          
             this.UpdateAccelerationThrottle();
             this.UpdateAccelerationBrake();
             this.UpdateAcceleration();
@@ -60,13 +64,16 @@ namespace AutomatedCar.SystemComponents
 
         private void UpdateAccelerationBrake()                      //Likewise.
         {
+
+         
             var accelerationBrake = this.accelerationPacket.AccelerationBrake;
             if (World.Instance.ControlledCar.BrakeOn)
             {
                 accelerationBrake -= deltaAccelerationAbs;
                 accelerationBrake = Math.Max(accelerationBrake, -maxAccelerationAbs);
             }
-            else{
+            else
+            {
                 accelerationBrake += deltaAccelerationAbs;
                 accelerationBrake = Math.Min(accelerationBrake, 0);
             }
@@ -76,7 +83,16 @@ namespace AutomatedCar.SystemComponents
         private void UpdateAcceleration()
         {
             //a három gyorsulás összege:
-            this.accelerationPacket.Acceleration = this.accelerationPacket.AccelerationThrottle + this.accelerationPacket.AccelerationBrake + IReadOnlyAccelerationPacket.AccelerationFriction;
+            if (!car.EmergencyBrakingTrigger)
+            {
+                this.accelerationPacket.Acceleration = this.accelerationPacket.AccelerationThrottle + this.accelerationPacket.AccelerationBrake + IReadOnlyAccelerationPacket.AccelerationFriction;
+            }
+            else
+            {
+                this.accelerationPacket.Acceleration = -0.12;
+                
+            }
+            Debug.WriteLine($"Acceleration: {this.accelerationPacket.Acceleration}"); //for debugging
         }
     }
 }

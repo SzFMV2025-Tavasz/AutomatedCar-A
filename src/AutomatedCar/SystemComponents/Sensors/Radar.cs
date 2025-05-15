@@ -46,6 +46,7 @@
                 .ToList();
 
             //var sameLaneObjects = new List<WorldObject>();
+            var emergencyBraking = false;
             collidableObjects.ForEach(obj =>
             {
                 var objPos = new Vector2(obj.X, obj.Y);
@@ -53,17 +54,17 @@
                 var objRotInRadians = CorrectRotation(obj.Rotation) * (Math.PI / 180);
                 var objDirVec = new Vector2((float)Math.Cos(objRotInRadians), (float)Math.Sin(objRotInRadians));
                 willCollide = TrajectoriesCollide(Position, Position + (dir * 1000), objPos, objPos + (objDirVec * GetObjectSpeed(obj)), 5f, 500);
-                Debug.WriteLine($"Will collide in {willCollide} ticks. Distance: {vecToObj.Length()}. {car.BrakingDistance}");
-                if (vecToObj.Length() < car.BrakingDistance)
+                //Debug.WriteLine($"Will collide in {willCollide} ticks. Distance: {vecToObj.Length()}. {car.BrakingDistance}");
+                if (vecToObj.Length() < (car.BrakingDistance * 1.8))
                 {
-                    car.EmergencyBrakingTrigger = true;
+                    emergencyBraking = true;
                 }
                 else
                 {
-                    car.EmergencyBrakingTrigger = false;
+                    emergencyBraking = false;
                 }
 
-                    bus.RadarPackets.Add(new RadarPacket()
+                bus.RadarPackets.Add(new RadarPacket()
                     {
                         Type = obj.WorldObjectType,
                         Angle = Math.Atan2(vecToObj.Y, vecToObj.X),
@@ -77,7 +78,7 @@
                 //    sameLaneObjects.Add(obj);
                 //}
             });
-            
+            car.EmergencyBrakingTrigger = emergencyBraking;
             //var closestObj = sameLaneObjects?.MinBy(obj => (new Vector2(car.X, car.Y) - new Vector2(obj.X, obj.Y)).Length());
             //if (closestObj != null)
             //    Debug.WriteLine($"Object at ({closestObj.X}, {closestObj.Y}) is closest.");

@@ -53,18 +53,11 @@
 
             // Move car
             Vector2 moveVector;
-            if (car.EmergencyBrakingTrigger)
-            {
-                car.Velocity = SpeedHelper.FromPixelsPerTick(0);
-            }
-            if (car.EmergencyBrakingActive)
-            {
-                //car.Velocity);
-                //if (car.Velocity <= 0)
-                //{
-                //    car.Velocity = 0;
-                //}
-            }
+            //if (car.EmergencyBrakingTrigger)
+            //{
+            //    car.Velocity = SpeedHelper.FromPixelsPerTick(0);
+            //}
+            
             if (frontWheelRotation == 0)
             {
                 moveVector = this.CalculateMoveVectorStraight(this.car.Velocity, this.car.Rotation);
