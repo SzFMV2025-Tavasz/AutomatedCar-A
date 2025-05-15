@@ -31,6 +31,18 @@
             {
                 this.SteeringWheelPacket.SteeringWheelState = Math.Min(450, this.SteeringWheelPacket.SteeringWheelState + RotationSpeed);
             }
+
+            if (!this.car.SteeringRight && !this.car.SteeringLeft)
+            {
+                if (this.SteeringWheelPacket.SteeringWheelState < 0)
+                {
+                    this.SteeringWheelPacket.SteeringWheelState = Math.Min(450, this.SteeringWheelPacket.SteeringWheelState + RotationSpeed);
+                }
+                else if (this.SteeringWheelPacket.SteeringWheelState > 0)
+                {
+                    this.SteeringWheelPacket.SteeringWheelState = Math.Min(450, this.SteeringWheelPacket.SteeringWheelState - RotationSpeed);
+                }
+            }
         }
     }
 }
